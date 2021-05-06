@@ -9,7 +9,7 @@ import {
 
 import EditDocument from './documents/EditDocument.js';
 import ViewDocument from './documents/ViewDocument';
-import Explore from './explore/Explore.js';
+import Explore from './explore/explore.js';
 import Welcome from './welcome/Welcome.js';
 import MyDocuments from './documents/MyDocuments';
 

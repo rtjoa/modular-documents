@@ -1,0 +1,31 @@
+.search {
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+}
+
+.search input{
+    padding: 10px 15px 10px 15px ;
+    font-size: 20px;
+    width: 60%;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.searchHeading {
+    margin-top: 100px;
+    text-align: center;
+    font-size: xx-large;
+}
+
+.searchButton {
+    align-content: center;
+    vertical-align: center;
+    padding: 7px 5px 0px 5px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+
+.searchButton img {
+    width:1.5vw;
+}
