@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function Explore() {
+function Welcome() {
   return (
     <div>
-      I am an Explore component!
+      I am a Welcome component!
     </div>
   );
 }
 
-export default Explore;
+export default Welcome;
