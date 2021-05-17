@@ -1,23 +1,15 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import Popup from 'reactjs-popup';
-import { useParams } from 'react-router';
+import React from 'react';
+import { BaseModule } from './BaseModule';
 
-class TextModule extends React.Component{
-  constructor(props){
-    super(props)
-    this.state={
-      body: props.body,
-    }
+export class TextModule extends BaseModule{
+  constructor(body){
+    super(body)
   }
 
-  edit(props){
-   this.setState({
-    body: props.body
-   })
+  render(index){
+    return(
+      <div key={index}>{this.body}</div>
+    )
   }
-
-
 }
 
-export default TextModule
