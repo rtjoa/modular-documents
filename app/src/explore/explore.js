@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './explore.css';
-import search from './searchIcon.svg';
+import SearchBar from '../shared/SearchBar.js';
+
 
 function Explore() {
   return (
@@ -9,15 +9,7 @@ function Explore() {
       <div class = 'searchHeading'>
           Explore other people's work!
       </div>
-      <div class ='search'>
-        <input 
-                type="text" 
-                placeholder="Search for a document by title or content"
-            />
-        <button class='searchButton'>
-            <img src={search} alt="search icon"/>
-        </button>
-      </div>
+      <SearchBar placeholder="Search for a document by title or content"/>
     </div>
   );
 }
