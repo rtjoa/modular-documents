@@ -1,8 +1,10 @@
-
 import React from 'react';
 import { useParams } from 'react-router';
 import SearchBar from '../shared/SearchBar.js';
 import './MyDocuments.css';
+
+import tempIMG from '../cards/temp.png';
+import DocumentCard from '../cards/DocumentCards.js';
 
 function MyDocuments() {
   let { id } = useParams();
@@ -18,6 +20,9 @@ function MyDocuments() {
         </div>
       </div>
       <br/>
+      <div className="document-cards-list">
+        <DocumentCard name="Test" img={tempIMG} />
+      </div>
       I am an MyDocuments component! Document ID: {id}
     </div>
   );
