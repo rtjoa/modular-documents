@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Popup from 'reactjs-popup'
+import ImageUploader from 'react-images-upload'
 import { useParams } from 'react-router';
 
 import { ShowModules } from './ShowModules.js';
 import { TextModule } from './modules/TextModule.js'
+import { ImageModule } from './modules/ImageModule.js'
 
 //TODO: Split a lot of this stuff up into its own files.
 //Figure out the class structure and design of modules (skeleton somewhat exists)
@@ -69,11 +71,19 @@ function AddModulePopup(props){
 
 //Handles how input is received based on the type of module requested
 function HandleModuleInput(props){
-  const [body, setBody] = useState("")
+  const [body, setBody] = useState(null)
  
   function handleSubmit(e){
     e.preventDefault()
     props.setModules([...props.modules, new TextModule(body)])
+  }
+
+  function uploadImage(image) {
+    const temp = URL.createObjectURL(new Blob(image));
+    setBody(temp)
+    console.log(body)
+    console.log(temp)
+    props.setModules([...props.modules, new ImageModule(temp)])
   }
   
   switch(props.type){
@@ -82,12 +92,24 @@ function HandleModuleInput(props){
         <form onSubmit={e => handleSubmit(e)}>
           <input
             type="text" 
-            placeholder="Search for a document by title or content"
+            placeholder="Copy-Paste Suggested"
             onChange={e => setBody(e.target.value)}
           />
           <input type="submit" value="Submit"/> 
         </form>
       ) 
+      case 'Image':
+        return (
+          <ImageUploader
+                withIcon={true}
+                buttonText='Choose Image'
+                onChange={uploadImage}
+                imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                maxFileSize={5242880}
+                singleImage={true}
+                label=""
+            />
+        )
     default:
       return(
         <span>{props.modules.length}</span>
