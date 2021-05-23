@@ -8,7 +8,14 @@ export class ImageModule extends BaseModule{
 
   render(index){
     return(
-      <img key={index} src={this.body}/>
+      <img key={index} src={this.body} 
+        style={{
+          maxWidth:"80vw",
+          maxHeight: "60vh",
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}/>
     )
   }
 }

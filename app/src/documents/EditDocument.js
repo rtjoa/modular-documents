@@ -16,40 +16,53 @@ import './EditDocument.css';
 
 function EditDocument() {
   let { id } = useParams();
-  const [modules, setModules] = useState([])
 
   return (
     <div>
       <div>
-        I am an EditDocument component! Document ID: {id}
+        here's the document
       </div>
-      <ShowModules modules={modules}/>
-      <AddModulePopupMenu modules={modules} setModules={setModules}/>
+      <ViewDocument/>
     </div>
   );
 }
 
+
+function ViewDocument()
+{
+  const [modules, setModules] = useState([])
+  return (
+    <div className="documentModules">
+    <ShowModules modules={modules}/>
+    <AddModulePopupMenu modules={modules} setModules={setModules}/>
+    </div>
+  )
+}
+
+
 //Popup that appears in the middle of the screen when user requests to add a module
 function AddModulePopupMenu(props){
   return(
-    <Popup
-      trigger={open => (
-        <button className="button">Add Module</button>
-      )}
-      modal
-      nested
-    >
-      <div className="module-popup">
-        <span> Choose a module type: </span>
-        <ol>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Text'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Image'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='4'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li>
-        </ol>
-      </div>
-    </Popup>
+    <div className="addModulePopup">
+      <Popup
+        trigger={open => (
+          <button className="addModuleButton">Add Module</button>
+        )}
+        modal
+        nested
+      >
+        <div className="module-popup">
+          <span> Choose a module type: </span>
+          <ol>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Text'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Image'/> </li>
+            {/* <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='4'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li> */}
+          </ol>
+        </div>
+      </Popup>
+    </div>
   )
 }
 
