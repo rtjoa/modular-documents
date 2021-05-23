@@ -8,6 +8,8 @@ import { ShowModules } from './ShowModules.js';
 import { TextModule } from './modules/TextModule.js'
 import { ImageModule } from './modules/ImageModule.js'
 
+import './EditDocument.css';
+
 //TODO: Split a lot of this stuff up into its own files.
 //Figure out the class structure and design of modules (skeleton somewhat exists)
 //Figure out how to store and render each module
@@ -95,7 +97,7 @@ function HandleModuleInput(props){
             placeholder="Copy-Paste Suggested"
             onChange={e => setBody(e.target.value)}
           />
-          <input type="submit" value="Submit"/> 
+          <button className="submitModule"> submit </button> 
         </form>
       ) 
       case 'Image':

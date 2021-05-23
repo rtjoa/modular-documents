@@ -1,0 +1,12 @@
+.submitModule{
+    background-color:aqua;
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+
+}
