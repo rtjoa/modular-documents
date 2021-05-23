@@ -10,3 +10,32 @@
     border-radius: 5px;
 
 }
+
+.documentModules{
+    width:80%;
+    min-height: 86.3vh;
+    align-self: center;
+    background-color: lightgrey;
+    margin: auto;
+    padding: 10px;
+    margin-top: 8vh;;
+}
+
+.addModuleButton{
+    background-color:aqua;
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    margin-left: 10px;
+    padding: 15px;
+    border-radius: 7px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.addModulePopup{
+    position: absolute;
+    left: 47%;
+}

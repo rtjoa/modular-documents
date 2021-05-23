@@ -21,10 +21,12 @@ function EditDocument() {
   return (
     <div>
       <div>
-        I am an EditDocument component! Document ID: {id}
+        here's the document
       </div>
-      <ShowModules modules={modules}/>
-      <AddModulePopupMenu modules={modules} setModules={setModules}/>
+      <div className="documentModules">
+        <ShowModules modules={modules}/>
+        <AddModulePopupMenu modules={modules} setModules={setModules}/>
+      </div>
     </div>
   );
 }
@@ -32,9 +34,10 @@ function EditDocument() {
 //Popup that appears in the middle of the screen when user requests to add a module
 function AddModulePopupMenu(props){
   return(
+    <div className="addModulePopup">
     <Popup
       trigger={open => (
-        <button className="button">Add Module</button>
+        <button className="addModuleButton">Add Module</button>
       )}
       modal
       nested
@@ -50,6 +53,7 @@ function AddModulePopupMenu(props){
         </ol>
       </div>
     </Popup>
+    </div>
   )
 }
 
