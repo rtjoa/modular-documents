@@ -16,20 +16,29 @@ import './EditDocument.css';
 
 function EditDocument() {
   let { id } = useParams();
-  const [modules, setModules] = useState([])
 
   return (
     <div>
       <div>
         here's the document
       </div>
-      <div className="documentModules">
-        <ShowModules modules={modules}/>
-        <AddModulePopupMenu modules={modules} setModules={setModules}/>
-      </div>
+      <ViewDocument/>
     </div>
   );
 }
+
+
+function ViewDocument()
+{
+  const [modules, setModules] = useState([])
+  return (
+    <div className="documentModules">
+    <ShowModules modules={modules}/>
+    <AddModulePopupMenu modules={modules} setModules={setModules}/>
+    </div>
+  )
+}
+
 
 //Popup that appears in the middle of the screen when user requests to add a module
 function AddModulePopupMenu(props){
