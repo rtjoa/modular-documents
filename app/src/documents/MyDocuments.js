@@ -21,7 +21,9 @@ function MyDocuments() {
       </div>
       <br/>
       <div className="document-cards-list">
-        <DocumentCard name="Test" img={tempIMG} />
+        <DocumentCard name="Test1" img={tempIMG} />
+        <DocumentCard name="Test2" img={tempIMG} />
+        <DocumentCard name="Test3" img={tempIMG} />
       </div>
       I am an MyDocuments component! Document ID: {id}
     </div>
