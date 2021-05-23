@@ -6,6 +6,8 @@ import { useParams } from 'react-router';
 import { ShowModules } from './ShowModules.js';
 import { TextModule } from './modules/TextModule.js'
 
+import './EditDocument.css';
+
 //TODO: Split a lot of this stuff up into its own files.
 //Figure out the class structure and design of modules (skeleton somewhat exists)
 //Figure out how to store and render each module
@@ -85,7 +87,7 @@ function HandleModuleInput(props){
             placeholder="Search for a document by title or content"
             onChange={e => setBody(e.target.value)}
           />
-          <input type="submit" value="Submit"/> 
+          <button className="submitModule"> submit </button> 
         </form>
       ) 
     default:
