@@ -1,23 +1,29 @@
 .button {
-    background-color: #333;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    margin-top: 50px;
-    margin-right: 15vw;
- }
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin-top: 50px;
+  margin-right: 15vw;
+}
 
-  .searchAndCreate{
-    display: flex;
-  }
+.searchAndCreate{
+  display: flex;
+}
 
-  .searchRegion{
-    flex: 1;
- }
+.searchRegion{
+  flex: 1;
+}
 
- .search{
-     padding-top: 50px;
- }
+.search{
+  padding-top: 50px;
+}
+
+.document-cards-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

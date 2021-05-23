@@ -1,0 +1,42 @@
+.document-cards-container {
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 0 15px;
+    width: 200px;
+}
+
+.document-cards-name {
+    font-size: 24px;
+    margin: 0;
+}
+
+.document-cards-image {
+    width: 155px;
+    height: 135px;
+    margin: 15px;
+    border-radius: 10px;
+}
+
+a:link {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: inherit;
+}
+
+a:active {
+    text-decoration: none;
+    color: inherit;
+}
