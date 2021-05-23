@@ -7,9 +7,11 @@ export function ShowModules(props){
   }else{
     return(
         <div>{props.modules.map((module, index) => (
-          <div className="module"> {module.render(index)} </div>
+          <div className="module"> 
+            {module.render(index)} 
+            <span className="moduleIndex">{index}</span> 
+          </div>
         ))}
-        {/* <div>Current Length: {props.modules.length}</div> */}
         </div>
     )
   }

@@ -3,4 +3,11 @@
     border-color: #333;
     margin-bottom: 10px;
     padding:10px;
+    width: 100%;
+}
+
+.moduleIndex{
+    text-align-last: right;
+    width: 100%;
+    display: inline-block;
 }
