@@ -35,24 +35,24 @@ function EditDocument() {
 function AddModulePopupMenu(props){
   return(
     <div className="addModulePopup">
-    <Popup
-      trigger={open => (
-        <button className="addModuleButton">Add Module</button>
-      )}
-      modal
-      nested
-    >
-      <div className="module-popup">
-        <span> Choose a module type: </span>
-        <ol>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Text'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Image'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='4'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li>
-        </ol>
-      </div>
-    </Popup>
+      <Popup
+        trigger={open => (
+          <button className="addModuleButton">Add Module</button>
+        )}
+        modal
+        nested
+      >
+        <div className="module-popup">
+          <span> Choose a module type: </span>
+          <ol>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Text'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Image'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='4'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li>
+          </ol>
+        </div>
+      </Popup>
     </div>
   )
 }
