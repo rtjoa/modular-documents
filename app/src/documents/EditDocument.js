@@ -56,9 +56,9 @@ function AddModulePopupMenu(props){
           <ol>
             <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Text'/> </li>
             <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Image'/> </li>
-            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
+            {/* <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
             <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='4'/> </li>
-            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li> */}
           </ol>
         </div>
       </Popup>

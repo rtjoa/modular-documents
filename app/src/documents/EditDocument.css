@@ -13,12 +13,12 @@
 
 .documentModules{
     width:80%;
-    min-height: 87.3vh;
+    min-height: 89.3vh;
     align-self: center;
     background-color: lightgrey;
     margin: auto;
     padding: 10px;
-    margin-top: 7vh;;
+    margin-top: 5vh;;
 }
 
 .addModuleButton{
@@ -37,4 +37,9 @@
 .addModulePopup{
     margin: auto; 
     text-align:center;
+}
+
+.module-popup{
+    background-color: aqua;
+    padding: 20px;
 }
