@@ -94,14 +94,12 @@ function HandleModuleInput(props){
     firestore.collection("Documents").add({
       Text: "hi",
     })
+    console.log(typeof(body))
     props.setModules([...props.modules, new TextModule(body)])
   }
 
   function uploadImage(image) {
     const temp = URL.createObjectURL(new Blob(image));
-    setBody(temp)
-    console.log(body)
-    console.log(temp)
     props.setModules([...props.modules, new ImageModule(temp)])
   }
   
@@ -109,12 +107,12 @@ function HandleModuleInput(props){
     case 'Text':
       return(  
         <form onSubmit={e => handleSubmit(e)}>
-          <input
-            type="text" 
-            placeholder="Copy-Paste Suggested"
-            onChange={e => setBody(e.target.value)}
+          <textarea
+              onChange={(e)=> setBody(e.target.value)}
+              rows="5"
+              cols="30"
           />
-          <button className="submitModule"> submit </button> 
+          <input type="submit" value="submit"></input> 
         </form>
       ) 
       case 'Image':
