@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Popup from 'reactjs-popup'
 import { useParams } from 'react-router';
+import { firestore }from "../firebase"
 
 import { ShowModules } from './ShowModules.js';
 import { TextModule } from './modules/TextModule.js'
@@ -73,6 +74,9 @@ function HandleModuleInput(props){
  
   function handleSubmit(e){
     e.preventDefault()
+    firestore.collection("Documents").add({
+      Text: "hi",
+    })
     props.setModules([...props.modules, new TextModule(body)])
   }
   
