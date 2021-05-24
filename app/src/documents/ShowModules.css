@@ -1,0 +1,16 @@
+.module{
+    border: 2px solid;
+    border-color: #333;
+    padding:10px;
+    width: 98%;
+    background-color: white;
+    margin: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.moduleIndex{
+    text-align-last: right;
+    width: 100%;
+    display: inline-block;
+}

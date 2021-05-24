@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Popup from 'reactjs-popup'
+import ImageUploader from 'react-images-upload'
 import { useParams } from 'react-router';
 import { firestore }from "../firebase"
 
 import { ShowModules } from './ShowModules.js';
 import { TextModule } from './modules/TextModule.js'
+import { ImageModule } from './modules/ImageModule.js'
+
+import './EditDocument.css';
 
 //TODO: Split a lot of this stuff up into its own files.
 //Figure out the class structure and design of modules (skeleton somewhat exists)
@@ -13,40 +17,53 @@ import { TextModule } from './modules/TextModule.js'
 
 function EditDocument() {
   let { id } = useParams();
-  const [modules, setModules] = useState([])
 
   return (
     <div>
       <div>
-        I am an EditDocument component! Document ID: {id}
+        here's the document
       </div>
-      <ShowModules modules={modules}/>
-      <AddModulePopupMenu modules={modules} setModules={setModules}/>
+      <ViewDocument/>
     </div>
   );
 }
 
+
+function ViewDocument()
+{
+  const [modules, setModules] = useState([])
+  return (
+    <div className="documentModules">
+    <ShowModules modules={modules}/>
+    <AddModulePopupMenu modules={modules} setModules={setModules}/>
+    </div>
+  )
+}
+
+
 //Popup that appears in the middle of the screen when user requests to add a module
 function AddModulePopupMenu(props){
   return(
-    <Popup
-      trigger={open => (
-        <button className="button">Add Module</button>
-      )}
-      modal
-      nested
-    >
-      <div className="module-popup">
-        <span> Choose a module type: </span>
-        <ol>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Text'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Image'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='4'/> </li>
-          <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li>
-        </ol>
-      </div>
-    </Popup>
+    <div className="addModulePopup">
+      <Popup
+        trigger={open => (
+          <button className="addModuleButton">Add Module</button>
+        )}
+        modal
+        nested
+      >
+        <div className="module-popup">
+          <span> Choose a module type: </span>
+          <ol>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Text'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Image'/> </li>
+            {/* <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='4'/> </li>
+            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li> */}
+          </ol>
+        </div>
+      </Popup>
+    </div>
   )
 }
 
@@ -70,7 +87,7 @@ function AddModulePopup(props){
 
 //Handles how input is received based on the type of module requested
 function HandleModuleInput(props){
-  const [body, setBody] = useState("")
+  const [body, setBody] = useState(null)
  
   function handleSubmit(e){
     e.preventDefault()
@@ -79,6 +96,14 @@ function HandleModuleInput(props){
     })
     props.setModules([...props.modules, new TextModule(body)])
   }
+
+  function uploadImage(image) {
+    const temp = URL.createObjectURL(new Blob(image));
+    setBody(temp)
+    console.log(body)
+    console.log(temp)
+    props.setModules([...props.modules, new ImageModule(temp)])
+  }
   
   switch(props.type){
     case 'Text':
@@ -86,12 +111,24 @@ function HandleModuleInput(props){
         <form onSubmit={e => handleSubmit(e)}>
           <input
             type="text" 
-            placeholder="Search for a document by title or content"
+            placeholder="Copy-Paste Suggested"
             onChange={e => setBody(e.target.value)}
           />
-          <input type="submit" value="Submit"/> 
+          <button className="submitModule"> submit </button> 
         </form>
       ) 
+      case 'Image':
+        return (
+          <ImageUploader
+                withIcon={true}
+                buttonText='Choose Image'
+                onChange={uploadImage}
+                imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                maxFileSize={5242880}
+                singleImage={true}
+                label=""
+            />
+        )
     default:
       return(
         <span>{props.modules.length}</span>
