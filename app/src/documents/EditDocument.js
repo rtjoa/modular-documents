@@ -34,6 +34,12 @@ function EditDocument() {
     setModules(nextModules);
   }
 
+  function moduleDidUpdate(i, updatedModule){
+    let nextModules = modules.slice();
+    nextModules[i] = updatedModule;
+    setModules(nextModules);
+  }
+
   return (
     <div className="edit-document-page">
       <div className="toolbar">
@@ -45,7 +51,7 @@ function EditDocument() {
       <div className="document">
           {modules.map((m, i) => (
             <div key={i} class='module-wrapper'>
-              {m.render()} {m.editing}
+              {m.render((updatedModule) => moduleDidUpdate(i, updatedModule))} {m.editing}
               <button onClick={() => editModule(i)}>{m.editing? "View":"Edit"}</button>
             </div>
           ))}

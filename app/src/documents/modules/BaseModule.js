@@ -13,11 +13,11 @@ export class BaseModule {
       throw new Error("Abstract function not implemented")
   }
 
-  render() {
+  render(updateCallback) {
     if (this.editing) {
-      return this.renderEdit();
+      return this.renderEdit(updateCallback);
     } else {
-      return this.renderView();
+      return this.renderView(updateCallback);
     }
   }
 

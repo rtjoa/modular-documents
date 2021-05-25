@@ -18,10 +18,15 @@ export class TextModule extends BaseModule {
     )
   }
 
-  renderEdit(onChange) {
+  onTextChange(event, updateCallback) {
+    this.text = event.target.value;
+    updateCallback(this);
+  }
+
+  renderEdit(updateCallback) {
     return(
       <div className='text-module-edit'>
-        <textarea onChange={onChange} value={this.text}></textarea>
+        <textarea onChange={(event) => this.onTextChange(event, updateCallback)} value={this.text}></textarea>
       </div>
     )
   }
