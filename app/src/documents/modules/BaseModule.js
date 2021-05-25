@@ -1,20 +1,31 @@
 import React from 'react';
 
-export class BaseModule{
-  constructor(body){
-    this.body = body;
+export class BaseModule {
+  constructor(){
+    this.editing = false;
   }
 
-  getBody(){
-    return this.body
+  renderView(){
+      throw new Error("Abstract function not implemented")
   }
 
-  setBody(other){
-   this.body = other
+  renderEdit(){
+      throw new Error("Abstract function not implemented")
   }
 
-  render(index){
+  render() {
+    if (this.editing) {
+      return this.renderEdit();
+    } else {
+      return this.renderView();
+    }
+  }
+
+  toJSON(){
+      throw new Error("Abstract function not implemented")
+  }
+
+  fromJSON(){
       throw new Error("Abstract function not implemented")
   }
 }
-

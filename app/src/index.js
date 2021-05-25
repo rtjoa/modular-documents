@@ -28,8 +28,8 @@ class App extends React.Component {
           <Link class="logo" to="/welcome">🧊🖊️</Link>
           <Link to="/">My Docs</Link>
           <Link to="/explore">Explore</Link>
-          <Link to="/document/1">(debug) Edit Document 1</Link>
-          <Link to="/view/1">(debug) View Document 1</Link>
+          <Link to="/document/1">Edit Document 1</Link>
+          <Link to="/view/1">View Document 1</Link>
         </nav>
 
         <Switch>

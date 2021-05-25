@@ -1,22 +1,21 @@
 import React from 'react';
 import { BaseModule } from './BaseModule';
 
-export class ImageModule extends BaseModule{
-  constructor(body){
-    super(body)
+import './modules.scss';
+export class ImageModule extends BaseModule {
+  static moduleName = "Image";
+
+  constructor(){
+    super();
+    this.href = "/noImage.png";
   }
 
-  render(index){
+  renderView(){
     return(
-      <img key={index} src={this.body} 
-        style={{
-          maxWidth:"80vw",
-          maxHeight: "60vh",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}/>
-    )
+      <div className='image-module'>
+        <img src={this.href} />
+      </div>
+    );
   }
 }
 

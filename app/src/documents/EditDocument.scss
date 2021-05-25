@@ -1,0 +1,98 @@
+.submitModule{
+    background-color:aqua;
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+
+}
+
+.edit-document-page {
+    background: #eee;
+    flex-grow: 1;
+}
+
+.document {
+    /* width:80%; */
+    /* min-height: 89.3vh; */
+    max-width: 600px;
+    background: white;
+    align-self: center;
+    margin: auto;
+    padding: 10px;
+}
+
+.module-wrapper {
+    position: relative;
+    padding: 10px 0;
+
+    button {
+        position: absolute;
+        top: 0px;
+        right: 10px;
+    }
+}
+
+.text-module-edit {
+    textarea {
+        width: 100%;
+    }
+}
+
+.image-module {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    img {
+        width: 300px;
+        margin: 0 auto;
+    }
+}
+
+.toolbar {
+    background: white;
+    flex-direction: row;
+    outline: 1px solid lightgrey;
+}
+
+.toolbar-group {
+    margin: 0 5px;
+}
+
+.toolbar-button {
+    border: none;
+    background: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    &:hover {
+        background: #eee;
+    }
+  }
+
+.addModuleButton{
+    background-color:aqua;
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 7px;
+}
+
+.addModulePopup{
+    margin: auto; 
+    text-align:center;
+}
+
+.module-popup{
+    background-color: aqua;
+    padding: 20px;
+}

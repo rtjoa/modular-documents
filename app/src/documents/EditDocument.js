@@ -9,130 +9,106 @@ import { ShowModules } from './ShowModules.js';
 import { TextModule } from './modules/TextModule.js'
 import { ImageModule } from './modules/ImageModule.js'
 
-import './EditDocument.css';
+import './EditDocument.scss';
 
 //TODO: Split a lot of this stuff up into its own files.
 //Figure out the class structure and design of modules (skeleton somewhat exists)
 //Figure out how to store and render each module
 
+
+
 function EditDocument() {
   let { id } = useParams();
+  const [modules, setModules] = useState([]);
+
+  function addModule(type) {
+    console.log(type);
+    const nextModules = modules.slice();
+    nextModules.push(new type());
+    setModules(nextModules);
+  }
+
+  function editModule(i) {
+    const nextModules = modules.slice();
+    nextModules[i].editing = !nextModules[i].editing;
+    setModules(nextModules);
+  }
 
   return (
-    <div>
-      <div>
-        here's the document
+    <div className="edit-document-page">
+      <div className="toolbar">
+        <span className="toolbar-group">
+          <AddModuleButton type={TextModule} addModule={addModule} />
+          <AddModuleButton type={ImageModule} addModule={addModule} />
+        </span>
       </div>
-      <ViewDocument/>
+      <div className="document">
+          {modules.map((m, i) => (
+            <div key={i} class='module-wrapper'>
+              {m.render()} {m.editing}
+              <button onClick={() => editModule(i)}>{m.editing? "View":"Edit"}</button>
+            </div>
+          ))}
+      </div>
+
     </div>
+  )
+}
+
+function AddModuleButton(props) {
+  return (
+    <button className="toolbar-button" onClick={() => props.addModule(props.type)}>+ {props.type.moduleName}</button>
   );
 }
 
-
-function ViewDocument()
-{
-  const [modules, setModules] = useState([])
-  return (
-    <div className="documentModules">
-    <ShowModules modules={modules}/>
-    <AddModulePopupMenu modules={modules} setModules={setModules}/>
-    </div>
-  )
-}
-
-
-//Popup that appears in the middle of the screen when user requests to add a module
-function AddModulePopupMenu(props){
-  return(
-    <div className="addModulePopup">
-      <Popup
-        trigger={open => (
-          <button className="addModuleButton">Add Module</button>
-        )}
-        modal
-        nested
-      >
-        <div className="module-popup">
-          <span> Choose a module type: </span>
-          <ol>
-            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Text'/> </li>
-            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='Image'/> </li>
-            {/* <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='3'/> </li>
-            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='4'/> </li>
-            <li> <AddModulePopup modules={props.modules} setModules={props.setModules} type='5'/> </li> */}
-          </ol>
-        </div>
-      </Popup>
-    </div>
-  )
-}
-
-//The individual buttons that handle each type of module 
-//Each button will create its own popup menu, of which the contents is determined by `HandleModuleInput`
-function AddModulePopup(props){
-  return(
-  <div>
-    <Popup
-      trigger={open => (
-        <button className="button">Add {props.type} Module</button>
-      )}
-      position="right center"
-      closeOnDocumentClick
-    >
-      <HandleModuleInput modules={props.modules} setModules={props.setModules} type={props.type}/>
-    </Popup>
-  </div>
-  )
-}
-
-//Handles how input is received based on the type of module requested
-function HandleModuleInput(props){
-  const [body, setBody] = useState(null)
+// //Handles how input is received based on the type of module requested
+// function HandleModuleInput(props){
+//   const [body, setBody] = useState(null)
  
-  function handleSubmit(e){
-    e.preventDefault()
-    firestore.collection("Documents").add({
-      Text: "hi",
-    })
-    console.log(typeof(body))
-    props.setModules([...props.modules, new TextModule(body)])
-  }
+//   function handleSubmit(e){
+//     e.preventDefault()
+//     firestore.collection("Documents").add({
+//       Text: "hi",
+//     })
+//     console.log(typeof(body))
+//     props.setModules([...props.modules, new TextModule(body)])
+//   }
 
-  function uploadImage(image) {
-    const temp = URL.createObjectURL(new Blob(image));
-    props.setModules([...props.modules, new ImageModule(temp)])
-  }
+//   function uploadImage(image) {
+//     const temp = URL.createObjectURL(new Blob(image));
+//     props.setModules([...props.modules, new ImageModule(temp)])
+//   }
   
-  switch(props.type){
-    case 'Text':
-      return(  
-        <form onSubmit={e => handleSubmit(e)}>
-          <textarea
-              onChange={(e)=> setBody(e.target.value)}
-              rows="5"
-              cols="30"
-          />
-          <input type="submit" value="submit"></input> 
-        </form>
-      ) 
-      case 'Image':
-        return (
-          <ImageUploader
-                withIcon={true}
-                buttonText='Choose Image'
-                onChange={uploadImage}
-                imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                maxFileSize={5242880}
-                singleImage={true}
-                label=""
-            />
-        )
-    default:
-      return(
-        <span>{props.modules.length}</span>
-      )
-  }
-}
+//   switch(props.type){
+//     case 'Text':
+//       return(  
+//         <form onSubmit={e => handleSubmit(e)}>
+//           <textarea
+//               onChange={(e)=> setBody(e.target.value)}
+//               rows="5"
+//               cols="30"
+//           />
+//           <input type="submit" value="submit"></input> 
+//         </form>
+//       ) 
+//       case 'Image':
+//         return (
+//           <ImageUploader
+//                 withIcon={true}
+//                 buttonText='Choose Image'
+//                 onChange={uploadImage}
+//                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
+//                 maxFileSize={5242880}
+//                 singleImage={true}
+//                 label=""
+//             />
+//         )
+//     default:
+//       return(
+//         <span>{props.modules.length}</span>
+//       )
+//   }
+// }
 
 
 
