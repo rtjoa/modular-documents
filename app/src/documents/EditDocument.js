@@ -1,57 +1,71 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import Popup from 'reactjs-popup'
 import { useParams } from 'react-router';
-import { firestore }from "../firebase"
-
-import { ShowModules } from './ShowModules.js';
 import { TextModule } from './modules/TextModule.js'
 import { ImageModule } from './modules/ImageModule.js'
 
 import './EditDocument.scss';
 
-//TODO: Split a lot of this stuff up into its own files.
-//Figure out the class structure and design of modules (skeleton somewhat exists)
-//Figure out how to store and render each module
+const MODULE_TYPES = {text: TextModule, image: ImageModule};
+
+const capitalizeWord = word => word ? word[0].toUpperCase() + word.substr(1) : '';
+const capitalizeWords = s => s.split(' ').map(capitalizeWord).join(' ');
 
 function EditDocument() {
   let { id } = useParams();
   const [modules, setModules] = useState([]);
 
   function addModule(type) {
-    console.log(type);
-    const nextModules = modules.slice();
-    nextModules.push(new type());
-    setModules(nextModules);
+    setModules(modules => {
+      modules = modules.slice();
+      modules.push({
+        type: type,
+        data: MODULE_TYPES[type].initData,
+      });
+      return modules;
+    });
+  }
+  
+  function setModuleEditing(i, editing) {
+    setModules(modules => {
+      modules = modules.slice();
+      modules[i].editing = editing;
+      return modules;
+    });
   }
 
-  function editModule(i) {
-    const nextModules = modules.slice();
-    nextModules[i].editing = !nextModules[i].editing;
-    setModules(nextModules);
-  }
-
-  function moduleDidUpdate(i, updatedModule){
-    let nextModules = modules.slice();
-    nextModules[i] = updatedModule;
-    setModules(nextModules);
+  function setModuleData(i, newData) {
+    setModules(modules => {
+      modules = modules.slice();
+      modules[i].data = newData;
+      return modules;
+    });
   }
 
   return (
     <div className="edit-document-page">
       <div className="toolbar">
         <span className="toolbar-group">
-          <AddModuleButton type={TextModule} addModule={addModule} />
-          <AddModuleButton type={ImageModule} addModule={addModule} />
+          <AddModuleButton type={'text'} addModule={addModule} />
+          <AddModuleButton type={'image'} addModule={addModule} />
         </span>
       </div>
       <div className="document">
-          {modules.map((m, i) => (
-            <div key={i} class='module-wrapper'>
-              {m.render((updatedModule) => moduleDidUpdate(i, updatedModule))} {m.editing}
-              <button onClick={() => editModule(i)}>{m.editing? "View":"Edit"}</button>
-            </div>
-          ))}
+          {modules.map((m, i) => {
+            const ModuleComponent = MODULE_TYPES[m.type];
+            return (
+              <div key={i} class='module-wrapper'>
+                <ModuleComponent
+                  data={m.data}
+                  setData={data => setModuleData(i, data)}
+                  editing={m.editing}
+                  setEditing={editing => setModuleEditing(i, editing)}
+                />
+                <button onClick={() => setModuleEditing(i, !m.editing)}>
+                  {m.editing? "Done":"Edit"}
+                </button>
+              </div> 
+            );
+          })}
       </div>
 
     </div>
@@ -60,57 +74,10 @@ function EditDocument() {
 
 function AddModuleButton(props) {
   return (
-    <button className="toolbar-button" onClick={() => props.addModule(props.type)}>+ {props.type.moduleName}</button>
+    <button className="toolbar-button" onClick={() => props.addModule(props.type)}>
+      + {capitalizeWords(props.type)}
+    </button>
   );
 }
-
-// //Handles how input is received based on the type of module requested
-// function HandleModuleInput(props){
-//   const [body, setBody] = useState(null)
- 
-//   function handleSubmit(e){
-//     e.preventDefault()
-//     firestore.collection("Documents").add({
-//       Text: "hi",
-//     })
-//     console.log(typeof(body))
-//     props.setModules([...props.modules, new TextModule(body)])
-//   }
-
-//   function uploadImage(image) {
-//     const temp = URL.createObjectURL(new Blob(image));
-//     props.setModules([...props.modules, new ImageModule(temp)])
-//   }
-  
-//   switch(props.type){
-//     case 'Text':
-//       return(  
-//         <form onSubmit={e => handleSubmit(e)}>
-//           <textarea
-//               onChange={(e)=> setBody(e.target.value)}
-//               rows="5"
-//               cols="30"
-//           />
-//           <input type="submit" value="submit"></input> 
-//         </form>
-//       ) 
-//       case 'Image':
-//         return (
-//           <ImageUploader
-//                 withIcon={true}
-//                 buttonText='Choose Image'
-//                 onChange={uploadImage}
-//                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
-//                 maxFileSize={5242880}
-//                 singleImage={true}
-//                 label=""
-//             />
-//         )
-//     default:
-//       return(
-//         <span>{props.modules.length}</span>
-//       )
-//   }
-// }
 
 export default EditDocument;

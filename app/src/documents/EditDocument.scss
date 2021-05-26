@@ -1,29 +1,15 @@
-.submitModule{
-    background-color:aqua;
-    border: none;
-    color: black;
-    text-align: center;
-    text-decoration: none;
-    font-size: 12px;
-    margin-left: 10px;
-    padding: 5px;
-    border-radius: 5px;
-
-}
-
 .edit-document-page {
     background: #eee;
     flex-grow: 1;
 }
 
 .document {
-    /* width:80%; */
-    /* min-height: 89.3vh; */
     max-width: 600px;
     background: white;
     align-self: center;
-    margin: auto;
+    margin: 30px auto auto auto;
     padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
 }
 
 .module-wrapper {
@@ -74,25 +60,4 @@
     &:hover {
         background: #eee;
     }
-  }
-
-.addModuleButton{
-    background-color:aqua;
-    border: none;
-    color: black;
-    text-align: center;
-    text-decoration: none;
-    font-size: 20px;
-    padding: 15px;
-    border-radius: 7px;
-}
-
-.addModulePopup{
-    margin: auto; 
-    text-align:center;
-}
-
-.module-popup{
-    background-color: aqua;
-    padding: 20px;
 }

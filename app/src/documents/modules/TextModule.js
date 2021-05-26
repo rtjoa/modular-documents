@@ -1,34 +1,26 @@
 import React from 'react';
-import { BaseModule } from './BaseModule';
-export class TextModule extends BaseModule {
-  static moduleName = "Text";
 
-  constructor(){
-    super();
-    this.text = "Click \"Edit\" to change this text";
+export function TextModule(props) {
+  const onTextChange = (event) => {
+    props.setData({text: event.target.value});
   }
 
-  renderView(){
-    return(
+  if (props.editing) {
+    return (
+      <div className='text-module-edit'>
+        <textarea onChange={onTextChange} value={props.data.text}></textarea>
+      </div>
+    );
+  } else {
+    return (
       <div className='text-module-view'>
-        {this.text.split('\n').map(line => 
+        {props.data.text.split('\n').map(line => 
           <div>{line}</div>
         )}
       </div>
-    )
-  }
-
-  onTextChange(event, updateCallback) {
-    this.text = event.target.value;
-    updateCallback(this);
-  }
-
-  renderEdit(updateCallback) {
-    return(
-      <div className='text-module-edit'>
-        <textarea onChange={(event) => this.onTextChange(event, updateCallback)} value={this.text}></textarea>
-      </div>
-    )
+    );
   }
 }
 
+TextModule.initData = {text: 'Click "Edit" to change this text'};
+TextModule.moduleName = 'Text';
