@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Popup from 'reactjs-popup'
-import ImageUploader from 'react-images-upload'
 import { useParams } from 'react-router';
 import { firestore }from "../firebase"
 
@@ -14,8 +13,6 @@ import './EditDocument.scss';
 //TODO: Split a lot of this stuff up into its own files.
 //Figure out the class structure and design of modules (skeleton somewhat exists)
 //Figure out how to store and render each module
-
-
 
 function EditDocument() {
   let { id } = useParams();
@@ -115,7 +112,5 @@ function AddModuleButton(props) {
 //       )
 //   }
 // }
-
-
 
 export default EditDocument;
