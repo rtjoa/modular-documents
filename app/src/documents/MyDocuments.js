@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import SearchBar from '../shared/SearchBar.js';
-import './MyDocuments.css';
+import '../styles/MyDocuments.scss';
 
 import tempIMG from '../cards/temp.png';
 import DocumentCard from '../cards/DocumentCards.js';

@@ -3,7 +3,7 @@ import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
 import PropTypes from 'prop-types';
 
-import './EditDocument.scss';
+import '../styles/EditDocument.scss';
 
 const MODULE_TYPES = { text: TextModule, image: ImageModule };
 

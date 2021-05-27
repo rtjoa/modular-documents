@@ -1,5 +1,5 @@
 import React from 'react';
-import './explore.css';
+import '../styles/explore.scss';
 import SearchBar from '../shared/SearchBar.js';
 
 function Explore() {
