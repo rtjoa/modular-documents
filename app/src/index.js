@@ -28,7 +28,7 @@ class App extends React.Component {
           <Link to="/explore">Explore</Link>
           <Link to="/document/1">Edit Document 1</Link>
           <Link to="/view/1">View Document 1</Link>
-          <Link className="button" className="login-provider-button" onClick={signInWithGoogle} to="/">Login</Link>
+          <Link className="button" onClick={signInWithGoogle} to="/">Login</Link>
         </nav>
 
         <Switch>
