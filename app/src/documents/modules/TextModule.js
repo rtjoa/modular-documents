@@ -2,7 +2,10 @@ import React from 'react';
 
 export function TextModule(props) {
   const onTextChange = (event) => {
-    props.setData({ text: event.target.value });
+    // if(event.target.value !== "")
+      props.setData({ text: event.target.value });
+    // else
+    //   props.setData({ text: " " });
   };
 
   if (props.editing) {
@@ -15,12 +18,18 @@ export function TextModule(props) {
     return (
       <div className="text-module-view">
         {props.data.text.split('\n').map((line, i) => (
-          <div key={i}>{line}</div>
+          <div key={i}>{props.data.text.trim() ? line : <EmptyText/>}</div>
         ))}
       </div>
     );
   }
 }
 
-TextModule.initData = { text: 'Click "Edit" to change this text' };
+function EmptyText(){
+  return(
+    <div>Click &quot;Edit&quot; to change this text</div>
+  )
+}
+
+TextModule.initData = { text: '' };
 TextModule.moduleName = 'Text';

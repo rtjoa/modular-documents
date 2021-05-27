@@ -4,7 +4,7 @@
 }
 
 .document {
-  max-width: 600px;
+  max-width: 800px;
   background: white;
   align-self: center;
   margin: 30px auto auto auto;
@@ -30,7 +30,12 @@
 .text-module-edit {
   textarea {
     width: 100%;
+    box-shadow: 0 0 10px lightgrey;
+    resize:vertical;  
   }
+}
+.image-upload-wrapper{
+  box-shadow: 0px 0px 10px lightgrey;
 }
 
 .image-module {
@@ -38,7 +43,7 @@
   display: flex;
   justify-content: center;
   img {
-    width: 300px;
+    max-width: 600px;
     margin: 0 auto;
   }
 }
