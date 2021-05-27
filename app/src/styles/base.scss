@@ -17,8 +17,6 @@ html {
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    // height: -webkit-fill-available; // Chrome
-    // height: 100%;
 }
 
 $bg-color: #333;
@@ -28,8 +26,8 @@ $bg-color: #333;
     overflow: auto;
     display: flex;
     flex-direction: column;
-    // height: 100vh;
 }
+
 //TODO: Modify text and logo to allow logo to justify left, and other links justify rights
 
 nav {

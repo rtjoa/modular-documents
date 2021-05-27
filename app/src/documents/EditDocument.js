@@ -11,33 +11,66 @@ const capitalizeWord = word => word ? word[0].toUpperCase() + word.substr(1) : '
 const capitalizeWords = s => s.split(' ').map(capitalizeWord).join(' ');
 
 function EditDocument() {
-  let { id } = useParams();
-  const [modules, setModules] = useState([]);
+  const [state, setState] = useState({
+    modules: [],
+    nextKey: 0,
+  });
 
   function addModule(type) {
-    setModules(modules => {
-      modules = modules.slice();
+    setState(state => {
+      const modules = state.modules.slice();
       modules.push({
         type: type,
         data: MODULE_TYPES[type].initData,
+        key: state.nextKey,
+        editing: true,
       });
-      return modules;
-    });
-  }
-  
-  function setModuleEditing(i, editing) {
-    setModules(modules => {
-      modules = modules.slice();
-      modules[i].editing = editing;
-      return modules;
+      return {
+        ...state,
+        modules: modules,
+        nextKey: state.nextKey + 1,
+      };
     });
   }
 
-  function setModuleData(i, newData) {
-    setModules(modules => {
-      modules = modules.slice();
-      modules[i].data = newData;
-      return modules;
+  function moveModuleUp(i) {
+    if (i === 0) return;
+
+    setState(state => {
+      const modules = state.modules.slice();
+      modules[i - 1] = state.modules[i];
+      modules[i] = state.modules[i - 1];
+      return {
+        ...state,
+        modules: modules
+      };
+    });
+  }
+
+  function moveModuleDown(i) {
+    setState(state => {
+      if (i === state.modules.length - 1) return state;
+
+      const modules = state.modules.slice();
+      modules[i + 1] = state.modules[i];
+      modules[i] = state.modules[i + 1];
+      return {...state, modules: modules};
+    });
+  }
+
+  function setModuleEditing(i, editing) {
+    setState(state => {
+      const modules = state.modules.slice();
+      modules[i].editing = editing;
+      return {...state, modules: modules};
+    });
+  }
+
+  function setModuleData(i, data) {
+    setState(state => {
+      const modules = state.modules.slice();
+      modules[i].data = data;
+      return {...state, modules: modules};
     });
   }
 
@@ -50,19 +83,23 @@ function EditDocument() {
         </span>
       </div>
       <div className="document">
-          {modules.map((m, i) => {
+          {state.modules.map((m, i) => {
             const ModuleComponent = MODULE_TYPES[m.type];
             return (
-              <div key={i} class='module-wrapper'>
+              <div key={m.key} class='module-wrapper'>
                 <ModuleComponent
                   data={m.data}
                   setData={data => setModuleData(i, data)}
                   editing={m.editing}
                   setEditing={editing => setModuleEditing(i, editing)}
                 />
-                <button onClick={() => setModuleEditing(i, !m.editing)}>
-                  {m.editing? "Done":"Edit"}
-                </button>
+                <div class='module-buttons'>
+                  <button onClick={() => setModuleEditing(i, !m.editing)}>
+                    {m.editing? "Done":"Edit"}
+                  </button>
+                  <button onClick={() => moveModuleUp(i)}>&uarr;</button>
+                  <button onClick={() => moveModuleDown(i)}>&darr;</button>
+                </div>
               </div> 
             );
           })}
