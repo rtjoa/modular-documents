@@ -9,15 +9,17 @@ export function ImageModule(props) {
 
   if (props.editing) {
     return (
-      <ImageUploader
-        withIcon={true}
-        buttonText="Choose Image"
-        onChange={onImageUpload}
-        imgExtension={['.jpg', '.gif', '.png', '.gif']}
-        maxFileSize={5242880}
-        singleImage={true}
-        label=""
-      />
+      <div className="image-upload-wrapper">
+        <ImageUploader
+          withIcon={true}
+          buttonText="Choose Image"
+          onChange={onImageUpload}
+          imgExtension={['.jpg', '.gif', '.png', '.gif']}
+          maxFileSize={5242880}
+          singleImage={true}
+          label=""
+        />
+      </div>
     );
   } else {
     return (

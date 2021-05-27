@@ -18,7 +18,7 @@ export function TextModule(props) {
     return (
       <div className="text-module-view">
         {props.data.text.split('\n').map((line, i) => (
-          <div key={i}>{line.trim() ? line : <EmptyText/>}</div>
+          <div key={i}>{props.data.text.trim() ? line : <EmptyText/>}</div>
         ))}
       </div>
     );

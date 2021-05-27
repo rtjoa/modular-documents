@@ -30,7 +30,12 @@
 .text-module-edit {
   textarea {
     width: 100%;
+    box-shadow: 0 0 10px lightgrey
   }
+}
+
+.image-upload-wrapper{
+  box-shadow: 0px 0px 10px lightgrey;
 }
 
 .image-module {
