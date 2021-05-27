@@ -1,11 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import EditDocument from './documents/EditDocument.js';
 import ViewDocument from './documents/ViewDocument';
@@ -25,7 +20,9 @@ class App extends React.Component {
             logged in users, and Welcome otherwise. For now, they are separate
             links.
           */}
-          <Link class="logo" to="/welcome">🧊🖊️</Link>
+          <Link class="logo" to="/welcome">
+            🧊🖊️
+          </Link>
           <Link to="/">My Docs</Link>
           <Link to="/explore">Explore</Link>
           <Link to="/document/1">Edit Document 1</Link>
@@ -34,15 +31,15 @@ class App extends React.Component {
 
         <Switch>
           <Route path="/explore">
-            <Explore/>
+            <Explore />
           </Route>
           <Route path="/welcome">
-            <Welcome/>
+            <Welcome />
           </Route>
           <Route path="/document/:id" children={<EditDocument />} />
           <Route path="/view/:id" children={<ViewDocument />} />
           <Route path="/">
-            <MyDocuments/>
+            <MyDocuments />
           </Route>
         </Switch>
       </Router>
@@ -50,8 +47,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <App/>,
-  document.getElementById('root')
-);
-  
+ReactDOM.render(<App />, document.getElementById('root'));

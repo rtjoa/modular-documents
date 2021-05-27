@@ -13,13 +13,16 @@ function MyDocuments() {
       <div className="searchAndCreate">
         <div className="searchRegion">
           <SearchBar placeholder="Search for a document by title or content" />
-          <createIcon/>
+          <createIcon />
         </div>
         <div>
-          <button className="button" onClick = { () => createDoc() }> Create Doc </button>
+          <button className="button" onClick={() => createDoc()}>
+            {' '}
+            Create Doc{' '}
+          </button>
         </div>
       </div>
-      <br/>
+      <br />
       <div className="document-cards-list">
         <DocumentCard name="Test1" img={tempIMG} />
         <DocumentCard name="Test2" img={tempIMG} />
@@ -30,8 +33,10 @@ function MyDocuments() {
   );
 }
 
-function createDoc(){
-  alert("Not implemented yet\n This should take you to the EditDocument page, with an empty document.")
+function createDoc() {
+  alert(
+    'Not implemented yet\n This should take you to the EditDocument page, with an empty document.'
+  );
 }
 
 export default MyDocuments;

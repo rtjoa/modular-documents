@@ -1,67 +1,67 @@
 .edit-document-page {
-    background: #eee;
-    flex-grow: 1;
+  background: #eee;
+  flex-grow: 1;
 }
 
 .document {
-    max-width: 600px;
-    background: white;
-    align-self: center;
-    margin: 30px auto auto auto;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+  max-width: 600px;
+  background: white;
+  align-self: center;
+  margin: 30px auto auto auto;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .module-wrapper {
-    position: relative;
-    padding: 10px 0;
+  position: relative;
+  padding: 10px 0;
 
-    .module-buttons {
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: flex;
-        & button:not(:first-child) {
-            margin-left: 10px;
-        }
+  .module-buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    & button:not(:first-child) {
+      margin-left: 10px;
     }
+  }
 }
 
 .text-module-edit {
-    textarea {
-        width: 100%;
-    }
+  textarea {
+    width: 100%;
+  }
 }
 
 .image-module {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    img {
-        width: 300px;
-        margin: 0 auto;
-    }
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  img {
+    width: 300px;
+    margin: 0 auto;
+  }
 }
 
 .toolbar {
-    background: white;
-    flex-direction: row;
-    outline: 1px solid lightgrey;
+  background: white;
+  flex-direction: row;
+  outline: 1px solid lightgrey;
 }
 
 .toolbar-group {
-    margin: 0 5px;
+  margin: 0 5px;
 }
 
 .toolbar-button {
-    border: none;
-    background: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 14px;
-    cursor: pointer;
-    &:hover {
-        background: #eee;
-    }
+  border: none;
+  background: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    background: #eee;
+  }
 }
