@@ -1,7 +1,10 @@
 #root {
-  // height: 100%;
   min-height: 100%;
   width: 100%;
+  position: fixed;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 *,
@@ -21,32 +24,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-$bg-color: #333;
-
-#root {
-  position: fixed;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-//TODO: Modify text and logo to allow logo to justify left, and other links justify rights
+$highlight: #add8e6;
 
 nav {
   padding: 20px;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  outline: 1px solid lightgrey;
+  height: 80px;
+  box-shadow: 0 2px 10px -5px gray;
   z-index: 1;
+  display: flex;
+  font-weight: bold;
+  justify-content: space-between;
   a {
     text-decoration: none;
-
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex-direction: row;
+    justify-content: space-evenly;
     &:hover {
       transition-duration: 0.1s;
       cursor: pointer;
-      color: grey;
+      color: $highlight;
       text-decoration: none;
     }
   }
@@ -59,6 +58,31 @@ nav {
     }
   }
   .logo {
-    margin-top: -3px;
+    display: grid;
+    font-size: 35px;
+    margin-top: -5px;
+    margin-left: 20px;
+    margin-right: 30vw;
+  }
+  .button {
+    border-radius: 4px;
+    background: #256ce1;
+    padding: 10px 20px;
+    color: #fff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    margin-left: 30vw;
+    margin-right: 20px;
+    margin-top: 0px;
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      background: #010606;
+      color: #fff;
+    }
+
   }
 }
