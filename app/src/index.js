@@ -20,13 +20,14 @@ class App extends React.Component {
             logged in users, and Welcome otherwise. For now, they are separate
             links.
           */}
-          <Link class="logo" to="/welcome">
+          <Link className="logo" to="/welcome">
             🧊🖊️
           </Link>
           <Link to="/">My Docs</Link>
           <Link to="/explore">Explore</Link>
           <Link to="/document/1">Edit Document 1</Link>
           <Link to="/view/1">View Document 1</Link>
+          <Link className="button" to="/">Login</Link>
         </nav>
 
         <Switch>
