@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
+import React from 'react';
 
 import './DocumentCards.css';
 
-export default function DocumentCards(props) {
+/* eslint-disable react/prop-types */
+
+function DocumentCards(props) {
   return (
     <div className="document-cards-container">
       <Link to={`/view/${props.name}`} id="link">
@@ -12,3 +15,5 @@ export default function DocumentCards(props) {
     </div>
   );
 }
+
+export default DocumentCards;
