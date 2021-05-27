@@ -24,10 +24,10 @@ class App extends React.Component {
           <Link className="logo" to="/welcome">
             🧊🖊️
           </Link>
-          <Link to="/">My Docs</Link>
-          <Link to="/explore">Explore</Link>
-          <Link to="/document/1">Edit Document 1</Link>
-          <Link to="/view/1">View Document 1</Link>
+          <Link className="navbar-link" to="/">My Docs</Link>
+          <Link className="navbar-link" to="/explore">Explore</Link>
+          <Link className="navbar-link" to="/document/1">Edit Document 1</Link>
+          <Link className="navbar-link" to="/view/1">View Document 1</Link>
           <Link className="button" onClick={signInWithGoogle} to="/">Login</Link>
         </nav>
 

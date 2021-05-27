@@ -62,7 +62,12 @@ nav {
     font-size: 35px;
     margin-top: -5px;
     margin-left: 20px;
-    margin-right: 30vw;
+    margin-right: 15vw;
+    min-width: 10vw;
+  }
+
+  .navbar-link{
+    min-width: 10vw;
   }
   .button {
     border-radius: 4px;
@@ -74,7 +79,6 @@ nav {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     text-decoration: none;
-    margin-left: 30vw;
     margin-right: 20px;
     margin-top: 0px;
 
@@ -85,4 +89,19 @@ nav {
     }
 
   }
+
+  @media screen and (max-width: 900px) {
+    .logo{
+      font-size: 20px;
+      margin-right: 0;
+    }
+    .navbar-link{
+      font-size: 12px;
+    }
+    .button{
+      border-radius: 4px;
+      width: 8vw;
+      font-size: 10px;
+    }
+  }  
 }
