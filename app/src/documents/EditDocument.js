@@ -59,6 +59,14 @@ function EditDocument() {
     });
   }
 
+  function deleteModule(i) {
+    setState((state) => {
+      const modules = state.modules.slice();
+      modules.splice(i, 1);
+      return { ...state, modules: modules };
+    });
+  }
+
   function setModuleEditing(i, editing) {
     setState((state) => {
       const modules = state.modules.slice();
@@ -100,6 +108,7 @@ function EditDocument() {
                 </button>
                 <button onClick={() => moveModuleUp(i)}>&uarr;</button>
                 <button onClick={() => moveModuleDown(i)}>&darr;</button>
+                <button onClick={() => deleteModule(i)}>x</button>
               </div>
             </div>
           );
