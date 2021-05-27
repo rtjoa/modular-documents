@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
+import PropTypes from 'prop-types';
 
 import './EditDocument.scss';
 
@@ -95,14 +95,14 @@ function EditDocument() {
         {state.modules.map((m, i) => {
           const ModuleComponent = MODULE_TYPES[m.type];
           return (
-            <div key={m.key} class="module-wrapper">
+            <div key={m.key} className="module-wrapper">
               <ModuleComponent
                 data={m.data}
                 setData={(data) => setModuleData(i, data)}
                 editing={m.editing}
                 setEditing={(editing) => setModuleEditing(i, editing)}
               />
-              <div class="module-buttons">
+              <div className="module-buttons">
                 <button onClick={() => setModuleEditing(i, !m.editing)}>
                   {m.editing ? 'Done' : 'Edit'}
                 </button>
@@ -128,5 +128,10 @@ function AddModuleButton(props) {
     </button>
   );
 }
+
+AddModuleButton.propTypes = {
+  type: PropTypes.string,
+  addModule: PropTypes.func,
+};
 
 export default EditDocument;
