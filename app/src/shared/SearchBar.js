@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './SearchBar.css';
+import '../styles/SearchBar.scss';
 import search from './searchIcon.svg';
 
 function SearchBar(props) {
