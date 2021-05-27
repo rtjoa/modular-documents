@@ -36,8 +36,12 @@ class App extends React.Component {
           <Route path="/welcome">
             <Welcome />
           </Route>
-          <Route path="/document/:id"> <EditDocument /> </Route>
-          <Route path="/view/:id"> <ViewDocument /> </Route>
+          <Route path="/document/:id">
+            <EditDocument />
+          </Route>
+          <Route path="/view/:id">
+            <ViewDocument />
+          </Route>
           <Route path="/">
             <MyDocuments />
           </Route>

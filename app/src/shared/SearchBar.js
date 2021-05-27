@@ -1,8 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SearchBar.css';
 import search from './searchIcon.svg';
-
-/* eslint-disable react/prop-types */
 
 function SearchBar(props) {
   return (
@@ -14,5 +13,9 @@ function SearchBar(props) {
     </div>
   );
 }
+
+SearchBar.propTypes = {
+  placeholder: PropTypes.string,
+};
 
 export default SearchBar;

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
+import PropTypes from 'prop-types';
 
 import './EditDocument.scss';
-
-/* eslint-disable react/prop-types */
 
 const MODULE_TYPES = { text: TextModule, image: ImageModule };
 
@@ -129,5 +128,10 @@ function AddModuleButton(props) {
     </button>
   );
 }
+
+AddModuleButton.propTypes = {
+  type: PropTypes.string,
+  addModule: PropTypes.func,
+};
 
 export default EditDocument;

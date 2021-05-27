@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import './DocumentCards.css';
 
-/* eslint-disable react/prop-types */
 
 function DocumentCards(props) {
   return (
@@ -15,5 +14,10 @@ function DocumentCards(props) {
     </div>
   );
 }
+
+DocumentCards.propTypes = {
+  name: PropTypes.string,
+  img: PropTypes.string,
+};
 
 export default DocumentCards;

@@ -14,8 +14,8 @@ export function TextModule(props) {
   } else {
     return (
       <div className="text-module-view">
-        {props.data.text.split('\n').map((line) => (
-          <div key={props.data.text}>{line}</div>
+        {props.data.text.split('\n').map((line, i) => (
+          <div key={i}>{line}</div>
         ))}
       </div>
     );
