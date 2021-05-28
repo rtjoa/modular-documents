@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
+import { QuizModule } from './modules/QuizModule.js';
 import PropTypes from 'prop-types';
 
 import '../styles/EditDocument.scss';
 
-const MODULE_TYPES = { text: TextModule, image: ImageModule };
+const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule };
 
 const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
@@ -89,6 +90,7 @@ function EditDocument() {
         <span className="toolbar-group">
           <AddModuleButton type={'text'} addModule={addModule} />
           <AddModuleButton type={'image'} addModule={addModule} />
+          <AddModuleButton type={'quiz'} addModule={addModule} />
         </span>
       </div>
       <div className="document">
