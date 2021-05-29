@@ -1,5 +1,6 @@
 // src/firebase.js
 import firebase from 'firebase';
+import { React, useState } from 'react';
 const config = {
   apiKey: 'AIzaSyDeq4qg--xA_xiRwOG29NGK8SeohHKkpqI',
   authDomain: 'modular-documents-2b3dd.firebaseapp.com',
@@ -14,10 +15,31 @@ export const firestore = firebase.firestore();
 export default firebase;
 export const auth = firebase.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider()
+
 export const signInWithGoogle = () => {
   auth.signInWithPopup(googleProvider).then((res) => {
     console.log(res.user)
+    
   }).catch((error) => {
     console.log(error.message)
   })
-}
+};
+export const SignIn = () => {
+    let loggedIn = false;
+    // const [loggedIn, setLoggedIn] = useState(false);
+    if(!{loggedIn}){
+      // {setLoggedIn(true)}
+      return(
+        <div className="button" onClick={signInWithGoogle}>
+          Login
+        </div>
+      )
+    }
+    else{
+      return(
+        <div className="button" onClick = {auth.signOut}> 
+         Logout 
+        </div>
+      )
+    }
+};

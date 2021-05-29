@@ -7,7 +7,7 @@ import ViewDocument from './documents/ViewDocument';
 import Explore from './explore/explore.js';
 import Welcome from './welcome/Welcome.js';
 import MyDocuments from './documents/MyDocuments';
-import {signInWithGoogle} from './firebase.js';
+import {SignIn} from './firebase.js';
 import './styles/base.scss';
 
 class App extends React.Component {
@@ -27,10 +27,10 @@ class App extends React.Component {
           <Link className="navbar-link" to="/explore">Explore</Link>
           <Link className="navbar-link" to="/document/1">Edit Document 1</Link>
           <Link className="navbar-link" to="/view/1">View Document 1</Link>
-          <Link className="button" onClick={signInWithGoogle} to="/">Login</Link>
+          <SignIn/>
+          {/* <Link className="button" onClick={signInWithGoogle} to="/">Login</Link> */}
         </nav>
 
-        
 
         <Switch>
           <Route path="/explore">

@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
 import PropTypes from 'prop-types';
-import { firestore } from '../firebase.js';
-import { auth } from '../firebase.js'
+import { firestore, auth } from '../firebase.js';
 
 import '../styles/EditDocument.scss';
-var user = auth.currentUser;
 
 const MODULE_TYPES = { text: TextModule, image: ImageModule };
 const capitalizeWord = (word) =>
@@ -87,7 +85,7 @@ function EditDocument() {
   }
 
   function sendToDatabase() {
-    var Token = user.uid;
+    var Token = auth.currentUser.uid;
     firestore.collection("Documents").doc(state.DocId).set({DocOwner: Token, data: state.modules, view: 0, url_code: "XXXXXXXX"});
   }
 
