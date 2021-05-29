@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
 import PropTypes from 'prop-types';
+import { firestore } from '../firebase.js';
 
 import '../styles/EditDocument.scss';
 
 const MODULE_TYPES = { text: TextModule, image: ImageModule };
-
 const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
 const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
@@ -15,6 +15,7 @@ function EditDocument() {
   const [state, setState] = useState({
     modules: [],
     nextKey: 0,
+    DocId: "Test Doc", //change this to be variable 
   });
 
   function addModule(type) {
@@ -83,12 +84,20 @@ function EditDocument() {
     });
   }
 
+  function sendToDatabase() {
+    for (var i = 0; i < state.modules.length; i++) {
+      firestore.collection("Documents").doc(state.DocId).set({[i]: [state.modules[i].data]}, {merge: true});
+    }
+  }
+
+  //the added button should probably be changed to some kind of timer
   return (
     <div className="edit-document-page">
       <div className="toolbar">
         <span className="toolbar-group">
           <AddModuleButton type={'text'} addModule={addModule} />
           <AddModuleButton type={'image'} addModule={addModule} />
+          <button onClick={sendToDatabase} />
         </span>
       </div>
       <div className="document">

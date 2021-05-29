@@ -8,7 +8,6 @@ import Explore from './explore/explore.js';
 import Welcome from './welcome/Welcome.js';
 import MyDocuments from './documents/MyDocuments';
 import {signInWithGoogle} from './firebase.js';
-
 import './styles/base.scss';
 
 class App extends React.Component {
@@ -30,6 +29,8 @@ class App extends React.Component {
           <Link className="navbar-link" to="/view/1">View Document 1</Link>
           <Link className="button" onClick={signInWithGoogle} to="/">Login</Link>
         </nav>
+
+        
 
         <Switch>
           <Route path="/explore">
