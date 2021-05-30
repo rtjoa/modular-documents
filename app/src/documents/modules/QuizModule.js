@@ -12,7 +12,7 @@ import React from 'react';
 */
 
 export function QuizModule(props) {
-  //For while editing
+  // Editing: Change question text
   const onQuestionChange = (event) => {
     props.setData({
       ...props.data,
@@ -20,89 +20,113 @@ export function QuizModule(props) {
     });
   };
 
+  // Editing: Change option text
   const onOptionChange = (event,index) => {
-    const tempOptions = props.data.options
-    tempOptions[index] = event.target.value
+    const tempOptions = props.data.options;
+    tempOptions[index] = event.target.value;
     props.setData({
       ...props.data, 
-      options: tempOptions,})
+      options: tempOptions,
+    });
   }
 
-  const onCorrectChoiceClick = (event) =>{
-    props.setData({
-      ...props.data, 
-      correctAnswer: event.target.value,
-      answerChoice: -1,
-    })
-  }
-
-  const onOptionAddClick = () => {
+  // Editing: Change which option is correct
+  const onAnswerChange = (i) => {
     props.setData({
       ...props.data,
-      options: [...props.data.options, '']
-    })
+      answer: i,
+    });
   }
-  
-  //For while viewing
-  const onAnswerChoose = (event) =>{
+
+  // Editing: Add an option
+  const onOptionAdd = () => {
     props.setData({
       ...props.data,
-      answerChoice: event.target.value,
+      options: [...props.data.options, ''],
+    });
+  };
+
+  // Editing: Remove an option
+  const onOptionRemove = (i) => {
+    let answer = props.data.answer;
+    if (answer === i) {
+      answer = null;
+    } else if (answer > i) {
+      answer--;
+    }
+    const options = props.data.options.slice();
+    options.splice(i, 1);
+    props.setData({
+      ...props.data,
+      options: options,
+      answer: answer,
     })
   }
 
-  const checkAnswer = (event) =>{
-    event.preventDefault()
-    if(props.data.correctAnswer == props.data.answerChoice)
-      console.log("true")
-    else
-      console.log("false")
+  // Viewing: Guess an option
+  const onOptionChoose = (i) => {
+    props.setTempData({
+      ...props.tempData,
+      choice: i,
+    });
   }
 
   if (props.editing) {
-      console.log(props.data)
     return (
       <div className="quiz-module-edit">
         <textarea onChange={onQuestionChange} value={props.data.question} placeholder="Question"></textarea> <br/>
         <div>
         {props.data.options.map((option, i) => (
             <div key={i}>
-                <input onChange={onCorrectChoiceClick} type = "radio" name={"QuizModuleEdit" + props.i} value={i}/>
-                <textarea  onChange={(event) => onOptionChange(event, i)} value={option} placeholder={"Answer choice " + (i+1)}></textarea>
+                <input
+                  onChange={() => onAnswerChange(i)}
+                  type="radio"
+                  name={"quiz-module-edit-" + props.i}
+                  value={i}
+                  checked={props.data.answer === i}
+                />
+                <input
+                  onChange={(event) => onOptionChange(event, i)}
+                  value={option}
+                  placeholder={"Answer choice " + (i+1)}
+                />
+                <button onClick={() => onOptionRemove(i)}>x</button>
             </div>
         ))}
         </div>
-        <button onClick={onOptionAddClick}>Add Answer Choice</button>
+        <button onClick={onOptionAdd}>Add Answer Choice</button>
       </div>
     );
   } else {
-      console.log(props.data)
     return (
       <div className="quiz-module-view">
+        {}
         <div>
+            {props.data.answer === null &&
+              <p>(Warning: Correct answer not set.)</p>}
             {props.data.question.split('\n').map((line, i) => (
-                <div key={i}>{props.data.question.trim() ? line : <EmptyText/>}</div>
+                <div key={i}>
+                  {props.data.question.trim() ?
+                  line : <div>Click &quot;Edit&quot; to write the question prompt.</div>
+                  }
+                </div>
             ))}
         </div>
-        <form onSubmit={checkAnswer}>
             {props.data.options.map((option, i) => (
             <div key={i}>
-                <input onChange={onAnswerChoose} type="radio" id={option} name={"QuizModuleView" + props.i} value={i}/>
+                <input onChange={() => onOptionChoose(i)} type="radio" id={option} name={"quiz-module-view-" + props.i} value={i}/>
                 <label htmlFor={option}>{option}</label>
             </div>
             ))}
-            <input type="submit" value="Submit"/>
-        </form>
+            {props.tempData.choice !== null && props.tempData.choice === props.data.answer &&
+              <p>Correct!</p>}
+            {props.tempData.choice !== null && props.tempData.choice !== props.data.answer &&
+              <p>Not quite. Try again?</p>}
       </div>
     );
   }
 }
 
-function EmptyText(){
-  return(
-    <div>Click &quot;Edit&quot; to change this text</div>
-  )
-}
-
-QuizModule.initData = { question: '' , options: [''], correctAnswer: -1, answerChoice: -1};
+QuizModule.initData = { question: '' , options: ['', '', ''], answer: null };
+QuizModule.initTempData = { choice: null };
 QuizModule.moduleName = 'Quiz';

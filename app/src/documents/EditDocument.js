@@ -24,6 +24,7 @@ function EditDocument() {
       modules.push({
         type: type,
         data: MODULE_TYPES[type].initData,
+        tempData: MODULE_TYPES[type].initTempData,
         key: state.nextKey,
         editing: true,
       });
@@ -72,6 +73,9 @@ function EditDocument() {
     setState((state) => {
       const modules = state.modules.slice();
       modules[i].editing = editing;
+      // Reset tempData
+      modules[i].tempData = MODULE_TYPES[modules[i].type].initTempData;
+
       return { ...state, modules: modules };
     });
   }
@@ -80,6 +84,14 @@ function EditDocument() {
     setState((state) => {
       const modules = state.modules.slice();
       modules[i].data = data;
+      return { ...state, modules: modules };
+    });
+  }
+
+  function setModuleTempData(i, tempData) {
+    setState((state) => {
+      const modules = state.modules.slice();
+      modules[i].tempData = tempData;
       return { ...state, modules: modules };
     });
   }
@@ -101,8 +113,11 @@ function EditDocument() {
               <ModuleComponent
                 data={m.data}
                 setData={(data) => setModuleData(i, data)}
+                tempData={m.tempData}
+                setTempData={(tempData) => setModuleTempData(i, tempData)}
                 editing={m.editing}
                 setEditing={(editing) => setModuleEditing(i, editing)}
+                i={i}
               />
               <div className="module-buttons">
                 <button onClick={() => setModuleEditing(i, !m.editing)}>
