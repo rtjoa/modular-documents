@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
+import { QuizModule } from './modules/QuizModule.js';
 import PropTypes from 'prop-types';
 
 import '../styles/EditDocument.scss';
 
-const MODULE_TYPES = { text: TextModule, image: ImageModule };
+const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule };
 
 const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
@@ -23,6 +24,7 @@ function EditDocument() {
       modules.push({
         type: type,
         data: MODULE_TYPES[type].initData,
+        tempData: MODULE_TYPES[type].initTempData,
         key: state.nextKey,
         editing: true,
       });
@@ -71,6 +73,9 @@ function EditDocument() {
     setState((state) => {
       const modules = state.modules.slice();
       modules[i].editing = editing;
+      // Reset tempData
+      modules[i].tempData = MODULE_TYPES[modules[i].type].initTempData;
+
       return { ...state, modules: modules };
     });
   }
@@ -83,12 +88,21 @@ function EditDocument() {
     });
   }
 
+  function setModuleTempData(i, tempData) {
+    setState((state) => {
+      const modules = state.modules.slice();
+      modules[i].tempData = tempData;
+      return { ...state, modules: modules };
+    });
+  }
+
   return (
     <div className="edit-document-page">
       <div className="toolbar">
         <span className="toolbar-group">
           <AddModuleButton type={'text'} addModule={addModule} />
           <AddModuleButton type={'image'} addModule={addModule} />
+          <AddModuleButton type={'quiz'} addModule={addModule} />
         </span>
       </div>
       <div className="document">
@@ -99,8 +113,11 @@ function EditDocument() {
               <ModuleComponent
                 data={m.data}
                 setData={(data) => setModuleData(i, data)}
+                tempData={m.tempData}
+                setTempData={(tempData) => setModuleTempData(i, tempData)}
                 editing={m.editing}
                 setEditing={(editing) => setModuleEditing(i, editing)}
+                i={i}
               />
               <div className="module-buttons">
                 <button onClick={() => setModuleEditing(i, !m.editing)}>
