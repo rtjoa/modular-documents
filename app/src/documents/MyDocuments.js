@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import SearchBar from '../shared/SearchBar.js';
 import '../styles/MyDocuments.scss';
+import { auth, firestore } from '../firebase.js';
 
 import tempIMG from '../cards/temp.png';
 import DocumentCard from '../cards/DocumentCards.js';
@@ -37,6 +38,11 @@ function createDoc() {
   alert(
     'Not implemented yet\n This should take you to the EditDocument page, with an empty document.'
   );
+
+  firestore.collection("Documents").add({DocOwner: auth.currentUser.uid, view: 0, url_code: "XXXXXXXX"}).then(function(docRef){
+    //give docRef.id to the new document to store
+    console.log("Document written with ID: ", docRef.id);
+  })
 }
 
 export default MyDocuments;

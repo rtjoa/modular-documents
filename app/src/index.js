@@ -7,11 +7,46 @@ import ViewDocument from './documents/ViewDocument';
 import Explore from './explore/explore.js';
 import Welcome from './welcome/Welcome.js';
 import MyDocuments from './documents/MyDocuments';
-import {SignIn} from './firebase.js';
+//import {SignIn} from './firebase.js';
 import './styles/base.scss';
+import { auth, googleProvider } from './firebase.js';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      user: null
+    }
+    this.login = this.login.bind(this)
+    this.logout = this.logout.bind(this)
+  }
+
+  login() {
+    auth.signInWithPopup(googleProvider).then((result) => {
+      this.setState({
+        user: result.user
+      })
+    })  
+  }
+
+  logout() {
+    auth.signOut().then(() => {
+      this.setState({
+        user: null
+      })
+    })
+  }
+
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({user})
+      }
+    })
+  }
+
   render() {
+    let authButton = this.state.user ? <button onClick = {this.logout}>Log Out</button> : <button onClick={this.login}>Log In</button>
     return (
       <Router>
         <nav>
@@ -27,8 +62,7 @@ class App extends React.Component {
           <Link className="navbar-link" to="/explore">Explore</Link>
           <Link className="navbar-link" to="/document/1">Edit Document 1</Link>
           <Link className="navbar-link" to="/view/1">View Document 1</Link>
-          <SignIn/>
-          {/* <Link className="button" onClick={signInWithGoogle} to="/">Login</Link> */}
+          {authButton}
         </nav>
 
 
