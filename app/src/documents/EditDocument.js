@@ -109,7 +109,9 @@ function EditDocument() {
         {state.modules.map((m, i) => {
           const ModuleComponent = MODULE_TYPES[m.type];
           return (
-            <div key={m.key} className="module-wrapper">
+            <div key={m.key} className="module-wrapper"
+            onDoubleClick = {() => {setModuleEditing(i, !m.editing)}}
+            >
               <ModuleComponent
                 data={m.data}
                 setData={(data) => setModuleData(i, data)}
