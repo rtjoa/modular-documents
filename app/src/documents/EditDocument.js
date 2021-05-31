@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
+import { QuizModule } from './modules/QuizModule.js';
 import PropTypes from 'prop-types';
 import { firestore, auth } from '../firebase.js';
 
 import '../styles/EditDocument.scss';
 
-const MODULE_TYPES = { text: TextModule, image: ImageModule };
+const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule };
+
 const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
 const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
@@ -24,6 +26,7 @@ function EditDocument() {
       modules.push({
         type: type,
         data: MODULE_TYPES[type].initData,
+        tempData: MODULE_TYPES[type].initTempData,
         key: state.nextKey,
         editing: true,
       });
@@ -72,6 +75,9 @@ function EditDocument() {
     setState((state) => {
       const modules = state.modules.slice();
       modules[i].editing = editing;
+      // Reset tempData
+      modules[i].tempData = MODULE_TYPES[modules[i].type].initTempData;
+
       return { ...state, modules: modules };
     });
   }
@@ -84,18 +90,28 @@ function EditDocument() {
     });
   }
 
+
   function sendToDatabase() {
     var Token = auth.currentUser.uid;
     firestore.collection("Documents").doc(state.DocId).set({DocOwner: Token, data: state.modules, view: 0, url_code: "XXXXXXXX"});
   }
 
   //the added button should probably be changed to some kind of timer
+  function setModuleTempData(i, tempData) {
+    setState((state) => {
+      const modules = state.modules.slice();
+      modules[i].tempData = tempData;
+      return { ...state, modules: modules };
+    });
+  }
+
   return (
     <div className="edit-document-page">
       <div className="toolbar">
         <span className="toolbar-group">
           <AddModuleButton type={'text'} addModule={addModule} />
           <AddModuleButton type={'image'} addModule={addModule} />
+          <AddModuleButton type={'quiz'} addModule={addModule} />
           <button onClick={sendToDatabase} />
         </span>
       </div>
@@ -103,12 +119,17 @@ function EditDocument() {
         {state.modules.map((m, i) => {
           const ModuleComponent = MODULE_TYPES[m.type];
           return (
-            <div key={m.key} className="module-wrapper">
+            <div key={m.key} className="module-wrapper"
+            onDoubleClick = {() => {setModuleEditing(i, !m.editing)}}
+            >
               <ModuleComponent
                 data={m.data}
                 setData={(data) => setModuleData(i, data)}
+                tempData={m.tempData}
+                setTempData={(tempData) => setModuleTempData(i, tempData)}
                 editing={m.editing}
                 setEditing={(editing) => setModuleEditing(i, editing)}
+                i={i}
               />
               <div className="module-buttons">
                 <button onClick={() => setModuleEditing(i, !m.editing)}>

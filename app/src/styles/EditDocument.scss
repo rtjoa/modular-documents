@@ -1,6 +1,8 @@
 .edit-document-page {
   background: #eee;
   flex-grow: 1;
+  overflow: auto;
+  height: 100vh;
 }
 
 .document {
@@ -10,6 +12,7 @@
   margin: 30px auto auto auto;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  margin-top: 5%;
 }
 
 .module-wrapper {
@@ -52,6 +55,9 @@
   background: white;
   flex-direction: row;
   outline: 1px solid lightgrey;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
 }
 
 .toolbar-group {
