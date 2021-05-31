@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { firestore, auth } from '../firebase.js';
 
 import '../styles/EditDocument.scss';
+import '../styles/ViewDocument.scss';
 
 const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule };
 
@@ -29,7 +30,9 @@ function EditDocument() {
     firestore.collection("Documents").doc(id).get().then((doc) => {
       setState({
         ...state,
-        modules: doc.get('data')
+        title: doc.get('title'),
+        modules: doc.get('data'),
+        nextKey: doc.get('data').length
       })
     })    
   }, [])
