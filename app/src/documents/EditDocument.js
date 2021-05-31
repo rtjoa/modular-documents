@@ -3,13 +3,14 @@ import { useParams } from 'react-router'
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
 import { QuizModule } from './modules/QuizModule.js';
+import { TitleModule } from './modules/TitleModule.js';
 import PropTypes from 'prop-types';
 import { firestore, auth } from '../firebase.js';
 
 import '../styles/EditDocument.scss';
 import '../styles/ViewDocument.scss';
 
-const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule };
+const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule, title: TitleModule };
 
 const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
@@ -21,20 +22,17 @@ function EditDocument() {
 
   const [state, setState] = useState({
     DocID: id, 
-    title: "new document",
     modules: [],
-    nextKey: 0,
   });
 
   useEffect(() => {
     firestore.collection("Documents").doc(id).get().then((doc) => {
-      setState({
-        ...state,
-        title: doc.get('title'),
-        modules: doc.get('data'),
-        nextKey: doc.get('data').length
-      })
-    })    
+        setState({
+          ...state,
+          modules: doc.get('data'),
+          nextKey: doc.get('data').length,
+        })
+    }).catch(() => { setState({ status: 404 }) })
   }, [])
   
   function addModule(type) {
@@ -56,7 +54,7 @@ function EditDocument() {
   }
 
   function moveModuleUp(i) {
-    if (i === 0) return;
+    if (i === 0 || i === 1) return;
 
     setState((state) => {
       const modules = state.modules.slice();
@@ -81,6 +79,8 @@ function EditDocument() {
   }
 
   function deleteModule(i) {
+    if (i === 0) return
+
     setState((state) => {
       const modules = state.modules.slice();
       modules.splice(i, 1);
@@ -109,12 +109,9 @@ function EditDocument() {
 
 
   function sendToDatabase() {
-    setState((state) => {
-      const docid = window.location.pathname.split("/")[2];
-      return { ...state, DocID: docid};
-    });
     var Token = auth.currentUser.uid;
-    firestore.collection("Documents").doc(state.DocID).set({DocOwner: Token, title: state.title, data: state.modules, view: 0});
+    console.log(state)
+    firestore.collection("Documents").doc(state.DocID).set({DocOwner: Token, title: state.modules[0].data, data: state.modules, view: 0});
   }
 
   //the added button should probably be changed to some kind of timer
@@ -125,6 +122,11 @@ function EditDocument() {
       return { ...state, modules: modules };
     });
   }
+
+  if(state.status === 404)
+    return <div> Error 404 Page not Found </div>
+  if(state.modules.length===0)
+    addModule('title');
 
   return (
     <div className="edit-document-page">
@@ -156,9 +158,11 @@ function EditDocument() {
                 <button onClick={() => setModuleEditing(i, !m.editing)}>
                   {m.editing ? 'Done' : 'Edit'}
                 </button>
-                <button onClick={() => moveModuleUp(i)}>&uarr;</button>
-                <button onClick={() => moveModuleDown(i)}>&darr;</button>
-                <button onClick={() => deleteModule(i)}>x</button>
+                {i != 0 && <div>
+                  {i != 1 && <button onClick={() => moveModuleUp(i)}>&uarr;</button>}
+                  {i != state.modules.length-1 && <button onClick={() => moveModuleDown(i)}>&darr;</button>}
+                  <button onClick={() => deleteModule(i)}>x</button>
+                </div>}
               </div>
             </div>
           );

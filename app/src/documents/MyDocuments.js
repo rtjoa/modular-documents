@@ -71,7 +71,11 @@ function createDoc(history) {
     return;
   }
   else {
-    firestore.collection("Documents").add({DocOwner: auth.currentUser.uid, view: 0, url_code: "XXXXXXXX"}).then(function(docRef){
+    firestore.collection("Documents").add({
+      DocOwner: auth.currentUser.uid, 
+      view: 0, 
+      data: [],
+    }).then(function(docRef){
       history.push('/document/'+docRef.id)
       console.log("Document written with ID: ", docRef.id);
   })}
