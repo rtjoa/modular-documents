@@ -3,6 +3,7 @@ import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
 import { QuizModule } from './modules/QuizModule.js';
 import PropTypes from 'prop-types';
+import { firestore, auth } from '../firebase.js';
 
 import '../styles/EditDocument.scss';
 
@@ -16,6 +17,7 @@ function EditDocument() {
   const [state, setState] = useState({
     modules: [],
     nextKey: 0,
+    DocId: "Test Doc", //change this to be variable 
   });
 
   function addModule(type) {
@@ -88,6 +90,13 @@ function EditDocument() {
     });
   }
 
+
+  function sendToDatabase() {
+    var Token = auth.currentUser.uid;
+    firestore.collection("Documents").doc(state.DocId).set({DocOwner: Token, data: state.modules, view: 0, url_code: "XXXXXXXX"});
+  }
+
+  //the added button should probably be changed to some kind of timer
   function setModuleTempData(i, tempData) {
     setState((state) => {
       const modules = state.modules.slice();
@@ -103,6 +112,7 @@ function EditDocument() {
           <AddModuleButton type={'text'} addModule={addModule} />
           <AddModuleButton type={'image'} addModule={addModule} />
           <AddModuleButton type={'quiz'} addModule={addModule} />
+          <button onClick={sendToDatabase} />
         </span>
       </div>
       <div className="document">

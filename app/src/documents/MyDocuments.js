@@ -2,11 +2,40 @@ import React from 'react';
 import { useParams } from 'react-router';
 import SearchBar from '../shared/SearchBar.js';
 import '../styles/MyDocuments.scss';
+import { auth, firestore } from '../firebase.js';
 
 import tempIMG from '../cards/temp.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
+function getUserDocuments() {
+  if (!auth.currentUser) {
+    console.log("Not Signed In");
+    return;
+  }
+  firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      //send these doc.id's to get displayed
+      console.log(doc.id);
+    });
+  });
+}
+
+function serachDocumentTitle(query) {
+  if (!auth.currentUser) {
+    console.log("Not Signed In");
+    return;
+  }
+  firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).where("title", ">=", query).where("title", "<=", query + '\uf8ff').get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      //send these doc.id's to get displayed
+      console.log(doc.id);
+    });
+  });
+}
+
 function MyDocuments() {
+  getUserDocuments();
+  serachDocumentTitle("");
   let { id } = useParams();
   return (
     <div>
@@ -34,9 +63,18 @@ function MyDocuments() {
 }
 
 function createDoc() {
-  alert(
-    'Not implemented yet\n This should take you to the EditDocument page, with an empty document.'
-  );
+  if (!auth.currentUser) {
+    alert(
+      'Need to be signed in to Create a Doc'
+    );
+    return;
+  }
+  else {
+    firestore.collection("Documents").add({DocOwner: auth.currentUser.uid, view: 0, url_code: "XXXXXXXX"}).then(function(docRef){
+      //give docRef.id to the new document to store
+      console.log("Document written with ID: ", docRef.id);
+  })}
 }
 
 export default MyDocuments;
+
