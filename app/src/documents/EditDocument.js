@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router'
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
 import { QuizModule } from './modules/QuizModule.js';
@@ -13,13 +14,20 @@ const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
 const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
 
+
 function EditDocument() {
+  let { id } = useParams()
+  let data = firestore.collection("Documents").doc(id).get().then((doc) => {
+    return doc.get('data')
+  })
+  console.log(data)
   const [state, setState] = useState({
-    DocID: window.location.pathname.split("/")[2], 
+    DocID: id, 
     title: "new document",
-    modules: [],
+    modules: data,
     nextKey: 0,
   });
+  console.log(state)
 
   function addModule(type) {
     setState((state) => {
@@ -93,13 +101,12 @@ function EditDocument() {
 
 
   function sendToDatabase() {
-    
     setState((state) => {
       const docid = window.location.pathname.split("/")[2];
       return { ...state, DocID: docid};
     });
     var Token = auth.currentUser.uid;
-    firestore.collection("Documents").doc(state.DocID).set({DocOwner: Token, title: state.title, data: state.modules, view: 0, url_code: "XXXXXXXX"});
+    firestore.collection("Documents").doc(state.DocID).set({DocOwner: Token, title: state.title, data: state.modules, view: 0});
   }
 
   //the added button should probably be changed to some kind of timer
@@ -118,7 +125,7 @@ function EditDocument() {
           <AddModuleButton type={'text'} addModule={addModule} />
           <AddModuleButton type={'image'} addModule={addModule} />
           <AddModuleButton type={'quiz'} addModule={addModule} />
-          <button onClick={sendToDatabase} />
+          <button onClick={sendToDatabase}>Save </button>
         </span>
       </div>
       <div className="document">

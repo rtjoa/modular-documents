@@ -45,7 +45,7 @@ class App extends React.Component {
   }
 
   render() {
-    let authButton = this.state.user ? <button onClick = {this.logout}>Log Out</button> : <button onClick={this.login}>Log In</button>
+    let authButton = this.state.user ? <Link className="button" onClick = {this.logout} to="/">Log Out</Link> : <Link className="button" onClick={this.login} to="/">Log In</Link>
     return (
       <Router>
         <nav>
