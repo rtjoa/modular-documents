@@ -32,4 +32,5 @@ function EmptyText(){
 }
 
 TextModule.initData = { text: '' };
+TextModule.initTempData = null;
 TextModule.moduleName = 'Text';

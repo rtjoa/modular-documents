@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import SearchBar from '../shared/SearchBar.js';
 import '../styles/MyDocuments.scss';
 import { auth, firestore } from '../firebase.js';
@@ -20,7 +20,7 @@ function getUserDocuments() {
   });
 }
 
-function serachDocumentTitle(query) {
+function searchDocumentTitle(query) {
   if (!auth.currentUser) {
     console.log("Not Signed In");
     return;
@@ -35,7 +35,8 @@ function serachDocumentTitle(query) {
 
 function MyDocuments() {
   getUserDocuments();
-  serachDocumentTitle("");
+  searchDocumentTitle("");
+  const history = useHistory()
   let { id } = useParams();
   return (
     <div>
@@ -45,7 +46,7 @@ function MyDocuments() {
           <createIcon />
         </div>
         <div>
-          <button className="button" onClick={() => createDoc()}>
+          <button className="button" onClick={() => createDoc(history)}>
             {' '}
             Create Doc{' '}
           </button>
@@ -62,7 +63,7 @@ function MyDocuments() {
   );
 }
 
-function createDoc() {
+function createDoc(history) {
   if (!auth.currentUser) {
     alert(
       'Need to be signed in to Create a Doc'
@@ -71,7 +72,7 @@ function createDoc() {
   }
   else {
     firestore.collection("Documents").add({DocOwner: auth.currentUser.uid, view: 0, url_code: "XXXXXXXX"}).then(function(docRef){
-      //give docRef.id to the new document to store
+      history.push('/document/'+docRef.id)
       console.log("Document written with ID: ", docRef.id);
   })}
 }

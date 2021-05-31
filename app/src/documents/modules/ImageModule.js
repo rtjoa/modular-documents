@@ -31,4 +31,5 @@ export function ImageModule(props) {
 }
 
 ImageModule.initData = { src: '/noImage.png' };
+ImageModule.initTempData = null
 ImageModule.moduleName = 'Image';

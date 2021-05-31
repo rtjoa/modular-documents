@@ -15,9 +15,10 @@ const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
 
 function EditDocument() {
   const [state, setState] = useState({
+    DocID: window.location.pathname.split("/")[2], 
+    title: "new document",
     modules: [],
     nextKey: 0,
-    DocId: "Test Doc", //change this to be variable 
   });
 
   function addModule(type) {
@@ -92,8 +93,13 @@ function EditDocument() {
 
 
   function sendToDatabase() {
+    
+    setState((state) => {
+      const docid = window.location.pathname.split("/")[2];
+      return { ...state, DocID: docid};
+    });
     var Token = auth.currentUser.uid;
-    firestore.collection("Documents").doc(state.DocId).set({DocOwner: Token, data: state.modules, view: 0, url_code: "XXXXXXXX"});
+    firestore.collection("Documents").doc(state.DocID).set({DocOwner: Token, title: state.title, data: state.modules, view: 0, url_code: "XXXXXXXX"});
   }
 
   //the added button should probably be changed to some kind of timer

@@ -1,9 +1,30 @@
-import React from 'react';
-import { useParams } from 'react-router';
+import { React } from 'react';
+
+// import { TextModule } from './modules/TextModule.js';
+// import { ImageModule } from './modules/ImageModule.js';
+// import { QuizModule } from './modules/QuizModule.js';
+
+import '../styles/EditDocument.scss';
+
+// const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule };
 
 function ViewDocument() {
-  let { id } = useParams();
-  return <div>I am a ViewDocument component! Document ID: {id}</div>;
+  return (
+    <div className="document">
+    {/* {state.modules.map((m, i) => {
+      const ModuleComponent = MODULE_TYPES[m.type];
+      return (
+        <div key={m.key} className="module-wrapper">
+          <ModuleComponent
+            data={m.data}
+            setData={(data) => setModuleData(i, data)}
+            i={i}
+          />
+        </div>
+      );
+    })} */}
+  </div>
+  )
 }
 
 export default ViewDocument;
