@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router'
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
@@ -17,18 +17,23 @@ const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
 
 function EditDocument() {
   let { id } = useParams()
-  let data = firestore.collection("Documents").doc(id).get().then((doc) => {
-    return doc.get('data')
-  })
-  console.log(data)
+
   const [state, setState] = useState({
     DocID: id, 
     title: "new document",
-    modules: data,
+    modules: [],
     nextKey: 0,
   });
-  console.log(state)
 
+  useEffect(() => {
+    firestore.collection("Documents").doc(id).get().then((doc) => {
+      setState({
+        ...state,
+        modules: doc.get('data')
+      })
+    })    
+  }, [])
+  
   function addModule(type) {
     setState((state) => {
       const modules = state.modules.slice();
