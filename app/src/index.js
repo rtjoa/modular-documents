@@ -7,7 +7,6 @@ import ViewDocument from './documents/ViewDocument';
 import Explore from './explore/explore.js';
 import Welcome from './welcome/Welcome.js';
 import MyDocuments from './documents/MyDocuments';
-//import {SignIn} from './firebase.js';
 import './styles/base.scss';
 import { auth, googleProvider } from './firebase.js';
 

@@ -19,8 +19,23 @@ function getUserDocuments() {
     });
   });
 }
+
+function serachDocumentTitle(query) {
+  if (!auth.currentUser) {
+    console.log("Not Signed In");
+    return;
+  }
+  firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).where("title", ">=", query).where("title", "<=", query + '\uf8ff').get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      //send these doc.id's to get displayed
+      console.log(doc.id);
+    });
+  });
+}
+
 function MyDocuments() {
   getUserDocuments();
+  serachDocumentTitle("");
   let { id } = useParams();
   return (
     <div>

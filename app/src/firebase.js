@@ -1,6 +1,5 @@
 // src/firebase.js
 import firebase from 'firebase';
-//import { React} from 'react';
 const config = {
   apiKey: 'AIzaSyDeq4qg--xA_xiRwOG29NGK8SeohHKkpqI',
   authDomain: 'modular-documents-2b3dd.firebaseapp.com',
