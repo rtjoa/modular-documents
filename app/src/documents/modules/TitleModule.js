@@ -11,7 +11,7 @@ export function TitleModule(props) {
   if (props.editing) {
     return (
       <div className="title-module-edit">
-        <textarea onChange={onTextChange} value={props.data.title}></textarea>
+        <textarea placeholder="Enter title here" onChange={onTextChange} value={props.data.title}></textarea>
       </div>
     );
   } else {
@@ -27,7 +27,7 @@ export function TitleModule(props) {
 
 function EmptyText(){
   return(
-    <div>Click &quot;Edit&quot; to set your title!</div>
+    <div>Click &quot;Edit&quot; to set a title</div>
   )
 }
 

@@ -1,28 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router'
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
 import { QuizModule } from './modules/QuizModule.js';
+import { TitleModule } from './modules/TitleModule.js';
 import { firestore } from '../firebase.js';
 
 import '../styles/EditDocument.scss';
+import '../styles/ViewDocument.scss';
 
-const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule };
+const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule, title: TitleModule };
 
 function ViewDocument() {
+  let { id } = useParams()
+
   const [state, setState] = useState({
-    DocID: window.location.pathname.split("/")[2], 
-    title: "new document",
+    DocID: id, 
     modules: [],
-    nextKey: 0,
   });
 
-
-  firestore.collection("Documents").doc(state.DocID).get().then(function(doc) {
-    setState({
-      ...state,
-      modules: doc.get('data')
-    })
-  })
+  useEffect(() => {
+    firestore.collection("Documents").doc(id).get().then((doc) => {
+        setState({
+          ...state,
+          modules: doc.get('data'),
+          nextKey: doc.get('data').length,
+        })
+    }).catch(() => { setState({ status: 404 }) })
+  }, [])
+  
+  function addModule(type) {
+    setState((state) => {
+      const modules = state.modules.slice();
+      modules.push({
+        type: type,
+        data: MODULE_TYPES[type].initData,
+        tempData: MODULE_TYPES[type].initTempData,
+        key: state.nextKey,
+        editing: true,
+      });
+      return {
+        ...state,
+        modules: modules,
+        nextKey: state.nextKey + 1,
+      };
+    });
+  }
 
   function setModuleData(i, data) {
     setState((state) => {
@@ -41,14 +64,18 @@ function ViewDocument() {
     });
   }
 
+  if(state.status === 404)
+    return <div> Error 404 Page not Found </div>
+  if(state.modules.length===0)
+    addModule('title');
+
   return (
     <div className="edit-document-page">
       <div className="document">
         {state.modules.map((m, i) => {
           const ModuleComponent = MODULE_TYPES[m.type];
           return (
-            <div key={m.key} className="module-wrapper"
-            >
+            <div key={m.key} className="module-wrapper">
               <ModuleComponent
                 data={m.data}
                 setData={(data) => setModuleData(i, data)}
