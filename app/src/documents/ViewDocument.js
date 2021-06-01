@@ -6,8 +6,7 @@ import { QuizModule } from './modules/QuizModule.js';
 import { TitleModule } from './modules/TitleModule.js';
 import { firestore } from '../firebase.js';
 
-import '../styles/EditDocument.scss';
-import '../styles/ViewDocument.scss';
+import '../styles/ViewAndEditDocument.scss';
 
 const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule, title: TitleModule };
 
