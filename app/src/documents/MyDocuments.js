@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router';
 import SearchBar from '../shared/SearchBar.js';
 import '../styles/MyDocuments.scss';
@@ -7,63 +7,54 @@ import { auth, firestore } from '../firebase.js';
 import tempIMG from '../cards/temp.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
-function getUserDocuments() {
-  //TODO: REPLACE WITH []
-  var userdocs = [
-    {
-      id: "NUy1X0C3nCsPexG46dVj",
-      title: "test 1"
-    },
-    {
-      id: "2",
-      title: "test 2"
-    },
-    {
-      id: "3",
-      title: "test 3"
-    }
-  ];
-  if (!auth.currentUser) {
-    console.log("Not Signed In");
-    return userdocs;
-  }
-  firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      //send these doc.id's to get displayed
-      userdocs.push({
-        id: doc.id,
-        title: (doc.get('data')[0] ? doc.get('data')[0]['data']['title'] : "Untitled Document")
-      });
-      console.log(userdocs)
-    });
-  });
-  return userdocs;
-}
-
-function searchDocumentTitle(query) {
-  if (!auth.currentUser) {
-    console.log("Not Signed In");
-    return;
-  }
-  firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).where("title", ">=", query).where("title", "<=", query + '\uf8ff').get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      //send these doc.id's to get displayed
-      console.log(doc.id);
-    });
-  });
+async function searchDocumentTitle(query){
+  console.log("Query: " + query)
+  // if (!auth.currentUser) {
+  //   console.log("Not Signed In");
+  //   return;
+  // }
+  // firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).where("title", ">=", query).where("title", "<=", query + '\uf8ff').get().then((querySnapshot) => {
+  //   querySnapshot.forEach((doc) => {
+  //     //send these doc.id's to get displayed
+  //     console.log(doc.id);
+  //   });
+  // });
 }
 
 function MyDocuments() {
-  getUserDocuments();
+  const [userDocs, setUserDocs] = useState([])
+  
+  useEffect(async () => { 
+    while (!auth.currentUser) {
+      console.log("Not Signed In...");
+      await new Promise(r => setTimeout(r, 1000))
+    }
+    await firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        //send these doc.id's to get displayed
+        setUserDocs((userDocs) => {
+          const docs = userDocs.slice();
+          docs.push({
+            id: doc.id,
+            title: (doc.get('data')[0] ? doc.get('data')[0]['data']['title'] : "Untitled Document")
+          });
+          return docs
+        });
+      });
+    }).catch( ()=> console.log("An error has occured in acquiring the user's documents") );
+  }, [])
+  
   searchDocumentTitle("");
+  console.log(userDocs)
   const history = useHistory()
   let { id } = useParams();
+
   return (
     <div>
       <div className="searchAndCreate">
         <div className="searchRegion">
           <SearchBar placeholder="Search for a document by title or content" />
-          <createIcon />
+          {/* idk the purpose of this line, im doing this to supress errors <createIcon />*/}
         </div>
         <div>
           <button className="button" onClick={() => createDoc(history)}>
@@ -74,7 +65,7 @@ function MyDocuments() {
       </div>
       <br />
       <div className="document-cards-list">
-        {getUserDocuments().map( (data) => (
+        {userDocs.map( (data) => (
            <div className='card-wrapper' key={data.id}>
               <DocumentCard name={data.title} url={data.id} img={tempIMG} />
            </div>
@@ -85,7 +76,7 @@ function MyDocuments() {
   );
 }
 
-function createDoc(history) {
+async function createDoc(history) {
   if (!auth.currentUser) {
     alert(
       'Need to be signed in to Create a Doc'
@@ -93,14 +84,18 @@ function createDoc(history) {
     return;
   }
   else {
-    firestore.collection("Documents").add({
+    const docRef = await firestore.collection("Documents").add({
       DocOwner: auth.currentUser.uid, 
       view: 0, 
       data: [],
-    }).then(function(docRef){
+    }).then(async (docRef) => {
+      return docRef
+    }).catch(() => {return false})
+    if(docRef){
       history.push('/document/'+docRef.id)
       console.log("Document written with ID: ", docRef.id);
-  })}
+    }
+  }
 }
 
 export default MyDocuments;
