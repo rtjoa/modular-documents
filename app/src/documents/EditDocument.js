@@ -15,7 +15,6 @@ const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
 const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
 
-
 function EditDocument() {
   let { id } = useParams()
 
@@ -33,7 +32,12 @@ function EditDocument() {
         })
     }).catch(() => { setState({ status: 404 }) })
   }, [])
-  
+
+  useEffect(() => {
+    var timer = setInterval(sendToDatabase, 30000)
+    return () => {clearInterval(timer);}
+  })    
+
   function addModule(type) {
     setState((state) => {
       const modules = state.modules.slice();
@@ -109,7 +113,7 @@ function EditDocument() {
 
   function sendToDatabase() {
     var Token = auth.currentUser.uid;
-    console.log(state)
+    console.log("SAVING")
     firestore.collection("Documents").doc(state.DocID).set({DocOwner: Token, title: state.modules[0].data, data: state.modules, view: 0});
   }
 
@@ -142,7 +146,9 @@ function EditDocument() {
           const ModuleComponent = MODULE_TYPES[m.type];
           return (
             <div key={m.key} className="module-wrapper"
-            onDoubleClick = {() => {setModuleEditing(i, !m.editing)}}
+            onDoubleClick = {() => {
+              setModuleEditing(i, !m.editing)
+            }}
             >
               <ModuleComponent
                 data={m.data}
