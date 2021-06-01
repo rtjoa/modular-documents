@@ -17,6 +17,7 @@ const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
 
 function EditDocument() {
   let { id } = useParams()
+  const [loading, setLoading] = useState(true)
   const [owner, setOwner] = useState("");
   const [state, setState] = useState({
     DocID: id, 
@@ -38,6 +39,7 @@ function EditDocument() {
       })
       setOwner(doc.get('DocOwner'))
     }
+    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -138,6 +140,7 @@ function EditDocument() {
     });
   }
 
+  if(loading) return <div> Loading </div>
   if(state.status === 404)
     return <div> Error 404 Page not Found </div>
   if(state.modules.length===0)

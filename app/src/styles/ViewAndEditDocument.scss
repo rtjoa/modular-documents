@@ -46,8 +46,6 @@
   }
 }
 
-
-
 .title-module-view{
   width: 100%;
   margin: auto;
@@ -56,6 +54,11 @@
   text-align: center;
 }
 
+.text-module-view{
+  div{
+    word-wrap: break-word;
+  }
+}
 .image-upload-wrapper{
   box-shadow: 0px 0px 10px lightgrey;
 }
