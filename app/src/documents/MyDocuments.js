@@ -36,7 +36,7 @@ function MyDocuments() {
           const docs = userDocs.slice();
           docs.push({
             id: doc.id,
-            title: (doc.get('data')[0] ? doc.get('data')[0]['data']['title'] : "Untitled Document")
+            title: (doc.get('data')[0] && doc.get('data')[0]['data']['title'] != "" ? doc.get('data')[0]['data']['title'] : "Untitled Document")
           });
           return docs
         });
