@@ -17,20 +17,29 @@ const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
 
 function EditDocument() {
   let { id } = useParams()
-
+  const [loading, setLoading] = useState(true)
+  const [owner, setOwner] = useState("");
   const [state, setState] = useState({
     DocID: id, 
     modules: [],
+    nextKey: 0
   });
 
-  useEffect(() => {
-    firestore.collection("Documents").doc(id).get().then((doc) => {
-        setState({
-          ...state,
-          modules: doc.get('data'),
-          nextKey: doc.get('data').length,
-        })
-    }).catch(() => { setState({ status: 404 }) })
+  useEffect(async () => {
+    const doc = await firestore.collection("Documents").doc(id).get().then((doc) => {
+        return doc
+    }).catch(() => {return null})
+    if(doc===null){
+      setState( { status: 404 })
+    }else{
+      setState({
+        ...state,
+        modules: doc.get('data'),
+        nextKey: doc.get('data').length,
+      })
+      setOwner(doc.get('DocOwner'))
+    }
+    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -112,9 +121,14 @@ function EditDocument() {
 
 
   function sendToDatabase() {
-    var Token = auth.currentUser.uid;
-    console.log("SAVING")
-    firestore.collection("Documents").doc(state.DocID).set({DocOwner: Token, title: state.modules[0].data, data: state.modules, view: 0});
+    console.log("Attemping to save...")
+    const TOKEN = auth.currentUser.uid
+    if(state.status !== 404 &&  TOKEN === owner){
+      firestore.collection("Documents").doc(state.DocID).set({DocOwner: TOKEN, title: state.modules[0].data, data: state.modules, view: 0});
+      console.log("Save successful!")
+    }else{
+      console.log("Save failed!")  
+    } 
   }
 
   //the added button should probably be changed to some kind of timer
@@ -126,6 +140,7 @@ function EditDocument() {
     });
   }
 
+  if(loading) return <div> Loading </div>
   if(state.status === 404)
     return <div> Error 404 Page not Found </div>
   if(state.modules.length===0)
