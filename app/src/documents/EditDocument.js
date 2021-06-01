@@ -21,6 +21,7 @@ function EditDocument() {
   const [state, setState] = useState({
     DocID: id, 
     modules: [],
+    nextKey: 0
   });
 
   useEffect(() => {
@@ -30,10 +31,11 @@ function EditDocument() {
           modules: doc.get('data'),
           nextKey: doc.get('data').length,
         })
-    }).catch(() => { setState({ status: 404 }) })
+    }).catch(() => {setState({ status: 404 }) })
   }, [])
 
   useEffect(() => {
+    console.log(state)
     var timer = setInterval(sendToDatabase, 30000)
     return () => {clearInterval(timer);}
   })    

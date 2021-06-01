@@ -8,17 +8,18 @@ import tempIMG from '../cards/temp.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
 function getUserDocuments() {
+  //TODO: REPLACE WITH []
   var userdocs = [
     {
-      id: 1,
+      id: "NUy1X0C3nCsPexG46dVj",
       title: "test 1"
     },
     {
-      id: 2,
+      id: "2",
       title: "test 2"
     },
     {
-      id: 3,
+      id: "3",
       title: "test 3"
     }
   ];
@@ -31,7 +32,7 @@ function getUserDocuments() {
       //send these doc.id's to get displayed
       userdocs.push({
         id: doc.id,
-        title: 'Untitled Document' //(doc.get('data'))[0] ? doc.get('data')[0] :)
+        title: (doc.get('data')[0] ? doc.get('data')[0]['data']['title'] : "Untitled Document")
       });
       console.log(userdocs)
     });
@@ -74,9 +75,9 @@ function MyDocuments() {
       <br />
       <div className="document-cards-list">
         {getUserDocuments().map( (data) => (
-            <div className='card-wrapper' key={data.id}>
-              <DocumentCard name={data.title} img={tempIMG} />
-          </div>
+           <div className='card-wrapper' key={data.id}>
+              <DocumentCard name={data.title} url={data.id} img={tempIMG} />
+           </div>
         ))}
       </div>
       I am an MyDocuments component! Document ID: {id}
