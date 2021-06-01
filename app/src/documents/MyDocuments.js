@@ -8,16 +8,35 @@ import tempIMG from '../cards/temp.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
 function getUserDocuments() {
+  var userdocs = [
+    {
+      id: 1,
+      title: "test 1"
+    },
+    {
+      id: 2,
+      title: "test 2"
+    },
+    {
+      id: 3,
+      title: "test 3"
+    }
+  ];
   if (!auth.currentUser) {
     console.log("Not Signed In");
-    return;
+    return userdocs;
   }
   firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       //send these doc.id's to get displayed
-      console.log(doc.id);
+      userdocs.push({
+        id: doc.id,
+        title: 'Untitled Document' //(doc.get('data'))[0] ? doc.get('data')[0] :)
+      });
+      console.log(userdocs)
     });
   });
+  return userdocs;
 }
 
 function searchDocumentTitle(query) {
@@ -54,9 +73,11 @@ function MyDocuments() {
       </div>
       <br />
       <div className="document-cards-list">
-        <DocumentCard name="Test1" img={tempIMG} />
-        <DocumentCard name="Test2" img={tempIMG} />
-        <DocumentCard name="Test3" img={tempIMG} />
+        {getUserDocuments().map( (data) => (
+            <div className='card-wrapper' key={data.id}>
+              <DocumentCard name={data.title} img={tempIMG} />
+          </div>
+        ))}
       </div>
       I am an MyDocuments component! Document ID: {id}
     </div>
