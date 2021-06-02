@@ -45,7 +45,7 @@ function MyDocuments() {
   }, [])
   
   searchDocumentTitle("");
-  console.log(userDocs)
+  console.log("UserDocs: " + userDocs)
   const history = useHistory()
   let { id } = useParams();
 

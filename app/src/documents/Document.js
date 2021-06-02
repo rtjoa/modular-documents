@@ -186,15 +186,37 @@ function Document () {
     });
   }
 
-  if(state.status === STATUSES.loading)
-    return <div>Loading</div>;
-  if(state.status === STATUSES.not_found)
-    return <div>Sorry, the document you have requested does not exist.</div>;
-  if(state.status === STATUSES.unknown_error)
-    return <div>Error loading document. See console for details.</div>;
+  async function deleteDoc(){
+    if(state.editing){
+      if(confirm("Are you sure you want to delete?")){
+        console.log("Delete would succeed")
+        await firestore.collection("Documents").doc(id).delete().then(() => {
+          console.log("Document successfully deleted.")
+          history.push("/")
+        }).catch(() => {
+          console.log("Error deleting document.")
+        });
+      }else{
+        console.log("Delete cancelled by user.")
+      }
+    }else{
+      alert("You can't delete a document you don't own!")
+    }
+  }
 
-  if(state.modules.length === 0)
-    addModule('title');
+  switch(state.status){
+    case STATUSES.loading:
+      return <div>Loading</div>;
+    case STATUSES.not_found:
+      return <div>Sorry, the document you have requested does not exist.</div>;
+    case STATUSES.unknown_error:
+      return <div>Error loading document. See console for details.</div>;
+    default:
+      if(state.modules.length === 0)
+        addModule('title');
+      break;
+  }
+
 
   return (
     <div className="document-page">
@@ -213,6 +235,9 @@ function Document () {
         <span className="toolbar-group">
           <button className="toolbar-button" onClick={() => createDoc(history, state.modules)}>Make a Copy</button>
         </span>
+        {state.editing && <span className="toolbar-group">
+          <button className="toolbar-button" onClick={() => deleteDoc()}>Delete Document</button>
+        </span>}
       </div>
       <div className="document">
         {state.modules.map((m, i) => {

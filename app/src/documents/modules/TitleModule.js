@@ -27,7 +27,7 @@ export function TitleModule(props) {
 
 function EmptyText(){
   return(
-    <div>Click &quot;Edit&quot; to set a title</div>
+    <div>Double click to set your title!</div>
   )
 }
 
