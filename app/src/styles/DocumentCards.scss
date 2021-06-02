@@ -7,10 +7,15 @@
   padding: 20px;
   margin: 0 15px;
   width: 200px;
+  height: 250px;
+  margin-top: 30px;
 }
 
 .document-cards-name {
   font-size: 24px;
+  max-width: 200px;
+  max-height: 55px;
+  overflow: hidden;
   margin: 0;
 }
 
