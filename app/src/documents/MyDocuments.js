@@ -76,26 +76,23 @@ function MyDocuments() {
   );
 }
 
-async function createDoc(history) {
+export async function createDoc(history, data=[]) {
   if (!auth.currentUser) {
-    alert(
-      'Need to be signed in to Create a Doc'
-    );
+    alert('Please sign in to create a document.');
     return;
   }
-  else {
-    const docRef = await firestore.collection("Documents").add({
-      DocOwner: auth.currentUser.uid, 
-      view: 0, 
-      data: [],
-    }).then(async (docRef) => {
-      return docRef
-    }).catch(() => {return false})
-    if(docRef){
-      history.push('/document/'+docRef.id)
-      console.log("Document written with ID: ", docRef.id);
-    }
-  }
+  
+  await firestore.collection("Documents").add({
+    DocOwner: auth.currentUser.uid, 
+    view: 0, 
+    data: data,
+  }).then((docRef) => {
+    history.push('/document/'+docRef.id)
+    console.log("Document written with ID: ", docRef.id);
+  }).catch((error) => {
+    console.log(error);
+    alert("Could not create document. See console for details");
+  });
 }
 
 export default MyDocuments;

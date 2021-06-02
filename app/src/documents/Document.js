@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router'
+import { useParams, useHistory } from 'react-router'
+import PropTypes from 'prop-types';
+import { firestore, auth } from '../firebase.js';
+
 import { TextModule } from './modules/TextModule.js';
 import { ImageModule } from './modules/ImageModule.js';
 import { QuizModule } from './modules/QuizModule.js';
 import { TitleModule } from './modules/TitleModule.js';
-import PropTypes from 'prop-types';
-import { firestore, auth } from '../firebase.js';
+import { createDoc } from './MyDocuments.js';
 
-import '../styles/ViewAndEditDocument.scss';
+import '../styles/Document.scss';
 
 const MODULE_TYPES = Object.freeze({
   text: TextModule,
@@ -17,24 +19,25 @@ const MODULE_TYPES = Object.freeze({
 });
 
 const STATUSES = Object.freeze({
-  loading: -1,
   ok: 0,
-  not_found: 1,
-  unknown_error: 2,
+  loading: 1,
+  not_found: 2,
+  unknown_error: 3,
 });
 
 const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
 const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
 
-function EditDocument() {
-  let { id } = useParams()
+function Document () {
+  const { id } = useParams();
+  const history = useHistory();
   const [state, setState] = useState({
     DocID: id, 
     modules: [],
     nextKey: 0,
     status: STATUSES.loading,
-    owner: null,
+    editing: false,
   });
 
   useEffect(() => {
@@ -52,7 +55,7 @@ function EditDocument() {
             modules: modules,
             nextKey: modules.length,
             status: STATUSES.ok,
-            owner: doc.get('DocOwner'),
+            editing: auth.currentUser && doc.get('DocOwner') === auth.currentUser.uid,
           });
         } else {
           setState({
@@ -69,12 +72,7 @@ function EditDocument() {
       });
     };
     fetchDoc();
-  }, [id]);
-
-  useEffect(() => {
-    const timer = setInterval(sendToDatabase, 30000)
-    return () => {clearInterval(timer);}
-  })    
+  }, [id, auth.currentUser]);
 
   function addModule(type) {
     setState((state) => {
@@ -130,6 +128,11 @@ function EditDocument() {
   }
 
   function setModuleEditing(i, editing) {
+    if (!state.editing) {
+      alert("You do not have permission to edit this document."
+        + " Click \"Make a copy\" to get an editable version");
+      return;
+    }
     setState((state) => {
       const modules = state.modules.slice();
       modules[i].editing = editing;
@@ -152,7 +155,7 @@ function EditDocument() {
   function sendToDatabase() {
     console.log("Attemping to save...")
 
-    if (auth.currentUser.uid !== state.owner) { // TODO: validate this server-side
+    if (!state.editing) { // TODO: validate this server-side
       console.log("Save failed: not document owner");
       return;
     }
@@ -190,13 +193,21 @@ function EditDocument() {
     addModule('title');
 
   return (
-    <div className="edit-document-page">
+    <div className="document-page">
       <div className="toolbar">
+        {state.editing &&
+          <>
+            <span className="toolbar-group">
+                <AddModuleButton type={'text'} addModule={addModule}/>
+                <AddModuleButton type={'image'} addModule={addModule} />
+                <AddModuleButton type={'quiz'} addModule={addModule} />
+            </span>
+            <span className="toolbar-group">
+                <button className="toolbar-button" onClick={sendToDatabase}>Save</button>
+            </span>
+          </>}
         <span className="toolbar-group">
-          <AddModuleButton type={'text'} addModule={addModule} />
-          <AddModuleButton type={'image'} addModule={addModule} />
-          <AddModuleButton type={'quiz'} addModule={addModule} />
-          <button onClick={sendToDatabase}>Save </button>
+          <button className="toolbar-button" onClick={() => createDoc(history, state.modules)}>Make a Copy</button>
         </span>
       </div>
       <div className="document">
@@ -256,4 +267,4 @@ AddModuleButton.propTypes = {
   addModule: PropTypes.func,
 };
 
-export default EditDocument;
+export default Document;

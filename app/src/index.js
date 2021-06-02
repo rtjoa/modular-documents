@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-import EditDocument from './documents/EditDocument.js';
-import ViewDocument from './documents/ViewDocument';
+import Document from './documents/Document.js';
 import Explore from './explore/explore.js';
 import Welcome from './welcome/Welcome.js';
 import MyDocuments from './documents/MyDocuments';
@@ -45,7 +44,9 @@ class App extends React.Component {
   }
 
   render() {
-    let authButton = this.state.user ? <Link className="button" onClick = {this.logout} to="/">Log Out</Link> : <Link className="button" onClick={this.login} to="/">Log In</Link>
+    let authButton = this.state.user ?
+      <Link className="button" onClick = {this.logout}>Log Out</Link>
+      : <Link className="button" onClick={this.login}>Log In</Link>
     return (
       <Router>
         <nav>
@@ -59,8 +60,7 @@ class App extends React.Component {
           </Link>
           <Link className="navbar-link" to="/">My Docs</Link>
           <Link className="navbar-link" to="/explore">Explore</Link>
-          <Link className="navbar-link" to="/document/NUy1X0C3nCsPexG46dVj">Edit Document 1</Link>
-          <Link className="navbar-link" to="/view/NUy1X0C3nCsPexG46dVj">View Document 1</Link>
+          <Link className="navbar-link" to="/document/NUy1X0C3nCsPexG46dVj">Example Document</Link>
           {authButton}
         </nav>
 
@@ -73,10 +73,7 @@ class App extends React.Component {
             <Welcome />
           </Route>
           <Route path="/document/:id">
-            <EditDocument />
-          </Route>
-          <Route path="/view/:id">
-            <ViewDocument />
+            <Document />
           </Route>
           <Route path="/">
             <MyDocuments />
