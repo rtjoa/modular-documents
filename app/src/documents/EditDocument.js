@@ -218,16 +218,20 @@ function EditDocument() {
                   i={i}
                 />
               </div>
-              <div className="module-buttons">
-                <button onClick={() => setModuleEditing(i, !m.editing)}>
-                  {m.editing ? 'Done' : 'Edit'}
-                </button>
-                {i != 0 && <div>
-                  {i != 1 && <button onClick={() => moveModuleUp(i)}>&uarr;</button>}
-                  {i != state.modules.length-1 && <button onClick={() => moveModuleDown(i)}>&darr;</button>}
-                  <button onClick={() => deleteModule(i)}>x</button>
-                </div>}
-              </div>
+              {m.editing &&
+                <div className="module-buttons">
+                  <button className="module-toggle-edit-button" onClick={() => setModuleEditing(i, false)}>
+                    Done
+                  </button>
+                  {i != 0 &&
+                    [
+                      <button onClick={() => moveModuleUp(i)} disabled={i == 1} key={1}>&uarr;</button>,
+                      <button onClick={() => moveModuleDown(i)} disabled={i == state.modules.length-1} key={2}>&darr;</button>,
+                      <button onClick={() => deleteModule(i)} key={3}>&#10005;</button>,
+                    ]
+                  }
+                </div>
+              }
             </div>
           );
         })}

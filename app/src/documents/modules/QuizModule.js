@@ -107,7 +107,7 @@ export function QuizModule(props) {
             {props.data.question.split('\n').map((line, i) => (
                 <div key={i}>
                   {props.data.question.trim() ?
-                  line : <div>Click &quot;Edit&quot; to write the question prompt.</div>
+                  line : <div>Double-click to edit the question prompt.</div>
                   }
                 </div>
             ))}

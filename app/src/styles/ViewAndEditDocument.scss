@@ -21,12 +21,37 @@
 
   .module-buttons {
     position: absolute;
-    top: 0;
+    top: -10px;
     right: 0;
     display: flex;
-    & button:not(:first-child) {
-      margin-left: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    height: 20px;
+    button {
+      background: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      align-items: center;
+      &:hover {
+        background: #eee;
+      }
+      &:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+      &:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
     }
+  }
+
+  .module-toggle-edit-button {
+    width: 45px;
+    // TODO: !important is bad practice
+    // Ideally we use icons instead of unicode and have all be non-bold
+    font-weight: normal !important; 
   }
 }
 

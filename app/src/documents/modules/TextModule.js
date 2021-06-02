@@ -27,7 +27,7 @@ export function TextModule(props) {
 
 function EmptyText(){
   return(
-    <div>Click &quot;Edit&quot; to change this text</div>
+    <div>Double-click to edit this text</div>
   )
 }
 
