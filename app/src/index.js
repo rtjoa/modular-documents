@@ -59,8 +59,8 @@ class App extends React.Component {
           </Link>
           <Link className="navbar-link" to="/">My Docs</Link>
           <Link className="navbar-link" to="/explore">Explore</Link>
-          <Link className="navbar-link" to="/document/NUy1X0C3nCsPexG46dVj ">Edit Document 1</Link>
-          <Link className="navbar-link" to="/view/NUy1X0C3nCsPexG46dVj ">View Document 1</Link>
+          <Link className="navbar-link" to="/document/NUy1X0C3nCsPexG46dVj">Edit Document 1</Link>
+          <Link className="navbar-link" to="/view/NUy1X0C3nCsPexG46dVj">View Document 1</Link>
           {authButton}
         </nav>
 

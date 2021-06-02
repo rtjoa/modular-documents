@@ -9,7 +9,19 @@ import { firestore, auth } from '../firebase.js';
 
 import '../styles/ViewAndEditDocument.scss';
 
-const MODULE_TYPES = { text: TextModule, image: ImageModule, quiz: QuizModule, title: TitleModule };
+const MODULE_TYPES = Object.freeze({
+  text: TextModule,
+  image: ImageModule,
+  quiz: QuizModule,
+  title: TitleModule,
+});
+
+const STATUSES = Object.freeze({
+  loading: -1,
+  ok: 0,
+  not_found: 1,
+  unknown_error: 2,
+});
 
 const capitalizeWord = (word) =>
   word ? word[0].toUpperCase() + word.substr(1) : '';
@@ -17,33 +29,50 @@ const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
 
 function EditDocument() {
   let { id } = useParams()
-  const [loading, setLoading] = useState(true)
-  const [owner, setOwner] = useState("");
   const [state, setState] = useState({
     DocID: id, 
     modules: [],
-    nextKey: 0
+    nextKey: 0,
+    status: STATUSES.loading,
+    owner: null,
   });
 
-  useEffect(async () => {
-    const doc = await firestore.collection("Documents").doc(id).get().then((doc) => {
-        return doc
-    }).catch(() => {return null})
-    if(doc===null){
-      setState( { status: 404 })
-    }else{
-      setState({
-        ...state,
-        modules: doc.get('data'),
-        nextKey: doc.get('data').length,
-      })
-      setOwner(doc.get('DocOwner'))
-    }
-    setLoading(false)
-  }, [])
+  useEffect(() => {
+    const fetchDoc = async () => {
+      await firestore.collection("Documents").doc(id).get().then(doc => {
+        if (doc.exists) {
+          let modules = doc.get('data');
+          for (let i = 0; i < modules.length; i++) {
+            modules[i].tempData = MODULE_TYPES[modules[i].type].initTempData;
+            modules[i].editing = false;
+            modules[i].key = i;
+          }
+          setState({
+            ...state,
+            modules: modules,
+            nextKey: modules.length,
+            status: STATUSES.ok,
+            owner: doc.get('DocOwner'),
+          });
+        } else {
+          setState({
+            ...state,
+            status: STATUSES.not_found,
+          });
+        }
+      }).catch((error) => {
+        console.log(error);
+        setState({
+          ...state,
+          status: STATUSES.unknown_error,
+        });
+      });
+    };
+    fetchDoc();
+  }, [id]);
 
   useEffect(() => {
-    var timer = setInterval(sendToDatabase, 30000)
+    const timer = setInterval(sendToDatabase, 30000)
     return () => {clearInterval(timer);}
   })    
 
@@ -122,13 +151,23 @@ function EditDocument() {
 
   function sendToDatabase() {
     console.log("Attemping to save...")
-    const TOKEN = auth.currentUser.uid
-    if(state.status !== 404 &&  TOKEN === owner){
-      firestore.collection("Documents").doc(state.DocID).set({DocOwner: TOKEN, title: state.modules[0].data, data: state.modules, view: 0});
-      console.log("Save successful!")
-    }else{
-      console.log("Save failed!")  
-    } 
+
+    if (auth.currentUser.uid !== state.owner) { // TODO: validate this server-side
+      console.log("Save failed: not document owner");
+      return;
+    }
+
+    if (state.status !== STATUSES.ok) {
+      console.log("Save failed: status is " + state.status);
+      return;
+    }
+    
+    firestore.collection("Documents").doc(state.DocID).update({
+      title: state.modules[0].data,
+      data: state.modules,
+      view: 0,
+    });
+    console.log("Save successful!");
   }
 
   //the added button should probably be changed to some kind of timer
@@ -140,10 +179,14 @@ function EditDocument() {
     });
   }
 
-  if(loading) return <div> Loading </div>
-  if(state.status === 404)
-    return <div> Error 404 Page not Found </div>
-  if(state.modules.length===0)
+  if(state.status === STATUSES.loading)
+    return <div>Loading</div>;
+  if(state.status === STATUSES.not_found)
+    return <div>Sorry, the document you have requested does not exist.</div>;
+  if(state.status === STATUSES.unknown_error)
+    return <div>Error loading document. See console for details.</div>;
+
+  if(state.modules.length === 0)
     addModule('title');
 
   return (
@@ -160,20 +203,21 @@ function EditDocument() {
         {state.modules.map((m, i) => {
           const ModuleComponent = MODULE_TYPES[m.type];
           return (
-            <div key={m.key} className="module-wrapper"
-            onDoubleClick = {() => {
-              setModuleEditing(i, !m.editing)
-            }}
-            >
-              <ModuleComponent
-                data={m.data}
-                setData={(data) => setModuleData(i, data)}
-                tempData={m.tempData}
-                setTempData={(tempData) => setModuleTempData(i, tempData)}
-                editing={m.editing}
-                setEditing={(editing) => setModuleEditing(i, editing)}
-                i={i}
-              />
+            <div key={m.key} className="module-container">
+              <div
+                className="module-wrapper"
+                onDoubleClick = {() => setModuleEditing(i, !m.editing)}
+              >
+                <ModuleComponent
+                  data={m.data}
+                  setData={(data) => setModuleData(i, data)}
+                  tempData={m.tempData}
+                  setTempData={(tempData) => setModuleTempData(i, tempData)}
+                  editing={m.editing}
+                  setEditing={(editing) => setModuleEditing(i, editing)}
+                  i={i}
+                />
+              </div>
               <div className="module-buttons">
                 <button onClick={() => setModuleEditing(i, !m.editing)}>
                   {m.editing ? 'Done' : 'Edit'}

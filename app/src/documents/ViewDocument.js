@@ -74,7 +74,7 @@ function ViewDocument() {
         {state.modules.map((m, i) => {
           const ModuleComponent = MODULE_TYPES[m.type];
           return (
-            <div key={m.key} className="module-wrapper">
+            <div key={m.key} className="module-container">
               <ModuleComponent
                 data={m.data}
                 setData={(data) => setModuleData(i, data)}
