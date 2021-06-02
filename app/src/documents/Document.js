@@ -189,7 +189,6 @@ function Document () {
   async function deleteDoc(){
     if(state.editing){
       if(confirm("Are you sure you want to delete?")){
-        console.log("Delete would succeed")
         await firestore.collection("Documents").doc(id).delete().then(() => {
           console.log("Document successfully deleted.")
           history.push("/")

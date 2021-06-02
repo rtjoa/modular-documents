@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 import SearchBar from '../shared/SearchBar.js';
 import '../styles/MyDocuments.scss';
 import { auth, firestore } from '../firebase.js';
@@ -40,14 +40,13 @@ function MyDocuments() {
           });
           return docs
         });
+        console.log("UserDocs: " + userDocs)
       });
     }).catch( ()=> console.log("An error has occured in acquiring the user's documents") );
   }, [])
   
   searchDocumentTitle("");
-  console.log("UserDocs: " + userDocs)
   const history = useHistory()
-  let { id } = useParams();
 
   return (
     <div>
@@ -65,13 +64,18 @@ function MyDocuments() {
       </div>
       <br />
       <div className="document-cards-list">
-        {userDocs.map( (data) => (
-           <div className='card-wrapper' key={data.id}>
-              <DocumentCard name={data.title} url={data.id} img={tempIMG} />
-           </div>
-        ))}
+        {!auth.currentUser ? <div className="not-signed-in"> Please sign in to see your documents! </div> 
+          :
+          userDocs.length === 0 ? 
+            <div className="my-documents-empty"> Click <q>Create Doc</q> to create a new document!</div> 
+            :
+            userDocs.map( (data) => (
+              <div className='card-wrapper' key={data.id}>
+                <DocumentCard name={data.title} url={data.id} img={tempIMG} />
+              </div>
+            ))
+        }
       </div>
-      I am an MyDocuments component! Document ID: {id}
     </div>
   );
 }
