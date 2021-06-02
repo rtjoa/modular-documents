@@ -27,9 +27,9 @@ export function ImageModule(props) {
     if (image) {
       storageRef.child(image.name).put(image).then(() => {
         alert("Image has been uploaded successfully!");
-        if(props.data.status === "complete"){
-          deleteFromFirebase(props.data.name)
-        }
+        // if(props.data.status === "complete"){
+        //   deleteFromFirebase(props.data.name)
+        // }
         props.setData({
           ...props.data,
           status: "loading",
@@ -66,16 +66,16 @@ export function ImageModule(props) {
     }
   }
 
-  async function deleteFromFirebase(name){
-    const storageRef = storage.ref();
-    const imageRef = storageRef.child(name);
-      imageRef.delete().then(() => {
-        console.log("Image deleted from database");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // async function deleteFromFirebase(name){
+  //   const storageRef = storage.ref();
+  //   const imageRef = storageRef.child(name);
+  //     imageRef.delete().then(() => {
+  //       console.log("Image deleted from database");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   if (props.editing) {
     return (
