@@ -205,11 +205,11 @@ function Document () {
 
   switch(state.status){
     case STATUSES.loading:
-      return <div>Loading</div>;
+      return <div className="user-message">Loading</div>;
     case STATUSES.not_found:
-      return <div>Sorry, the document you have requested does not exist.</div>;
+      return <div className="user-message">Sorry, the document you have requested does not exist.</div>;
     case STATUSES.unknown_error:
-      return <div>Error loading document. See console for details.</div>;
+      return <div className="user-message"> Error loading document. See console for details.</div>;
     default:
       if(state.modules.length === 0)
         addModule('title');

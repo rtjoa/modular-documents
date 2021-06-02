@@ -63,17 +63,19 @@ function MyDocuments() {
         </div>
       </div>
       <br />
-      <div className="document-cards-list">
-        {!auth.currentUser ? <div className="not-signed-in"> Please sign in to see your documents! </div> 
+      <div>
+        {!auth.currentUser ? <div className="user-message"> Please sign in to see your documents! </div> 
           :
           userDocs.length === 0 ? 
-            <div className="my-documents-empty"> Click <q>Create Doc</q> to create a new document!</div> 
+            <div className="user-message"> Click <q>Create Doc</q> to create a new document!</div> 
             :
-            userDocs.map( (data) => (
-              <div className='card-wrapper' key={data.id}>
-                <DocumentCard name={data.title} url={data.id} img={tempIMG} />
-              </div>
-            ))
+            <div className="document-cards-list">
+              {userDocs.map( (data) => (
+                <div className='card-wrapper' key={data.id}>
+                  <DocumentCard name={data.title} url={data.id} img={tempIMG} />
+                </div>
+              ))}
+            </div>
         }
       </div>
     </div>
