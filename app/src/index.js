@@ -9,6 +9,8 @@ import MyDocuments from './documents/MyDocuments';
 import './styles/base.scss';
 import { auth, googleProvider } from './firebase.js';
 
+import logo from './shared/logo.png';
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -56,7 +58,7 @@ class App extends React.Component {
             links.
           */}
           <Link className="logo" to="/welcome">
-            🧊🖊️
+            <img src={logo}/>
           </Link>
           <Link className="navbar-link" to="/">My Docs</Link>
           <Link className="navbar-link" to="/explore">Explore</Link>

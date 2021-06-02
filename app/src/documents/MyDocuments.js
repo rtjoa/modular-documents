@@ -4,7 +4,7 @@ import SearchBar from '../shared/SearchBar.js';
 import '../styles/MyDocuments.scss';
 import { auth, firestore } from '../firebase.js';
 
-import tempIMG from '../cards/temp.png';
+import logo from '../shared/logo.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
 async function searchDocumentTitle(query){
@@ -72,7 +72,7 @@ function MyDocuments() {
             <div className="document-cards-list">
               {userDocs.map( (data) => (
                 <div className='card-wrapper' key={data.id}>
-                  <DocumentCard name={data.title} url={data.id} img={tempIMG} />
+                  <DocumentCard name={data.title} url={data.id} img={logo} />
                 </div>
               ))}
             </div>
