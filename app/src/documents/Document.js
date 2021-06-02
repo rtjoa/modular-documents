@@ -128,11 +128,6 @@ function Document () {
   }
 
   function setModuleEditing(i, editing) {
-    if (!state.editing) {
-      alert("You do not have permission to edit this document."
-        + " Click \"Make a copy\" to get an editable version");
-      return;
-    }
     setState((state) => {
       const modules = state.modules.slice();
       modules[i].editing = editing;
@@ -141,6 +136,15 @@ function Document () {
 
       return { ...state, modules: modules };
     });
+  }
+
+  function startEditingModule(i) {
+    if (state.editing) {
+      setModuleEditing(i, true);
+    } else {
+      alert("You do not have permission to edit this document."
+        + " Click \"Make a copy\" to get an editable version");
+    }
   }
 
   function setModuleData(i, data) {
@@ -217,7 +221,7 @@ function Document () {
             <div key={m.key} className="module-container">
               <div
                 className="module-wrapper"
-                onDoubleClick = {() => setModuleEditing(i, !m.editing)}
+                onDoubleClick = {() => startEditingModule(i)}
               >
                 <ModuleComponent
                   data={m.data}
