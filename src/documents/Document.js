@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router'
+import { useHistory } from 'react-router'
 import PropTypes from 'prop-types';
 import { firestore, auth } from '../firebase.js';
 
@@ -25,8 +25,8 @@ const STATUSES = Object.freeze({
   unknown_error: 3,
 });
 
-function Document () {
-  const { id } = useParams();
+function Document(props) {
+  const id = props.id || props.match.params.id;
   const history = useHistory();
   const [state, setState] = useState({
     DocID: id, 
@@ -274,6 +274,17 @@ function Document () {
     </div>
   );
 }
+
+Document.propTypes = {
+  type: PropTypes.string,
+  addModule: PropTypes.func,
+  match: PropTypes.shape({
+    params: PropTypes.shape({ 
+      id: PropTypes.string,
+    }),
+  }),
+  id: PropTypes.string,
+};
 
 function AddModuleButton(props) {
   return (

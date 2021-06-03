@@ -4,12 +4,13 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Document from './documents/Document.js';
 import Explore from './explore/explore.js';
-import Welcome from './welcome/Welcome.js';
 import MyDocuments from './documents/MyDocuments';
 import './styles/base.scss';
 import { auth, googleProvider } from './firebase.js';
 
 import logo from './assets/logo.png';
+
+const WELCOME_DOC_ID = "oT2Cjcdg6GgdLaooRLqc";
 
 class App extends React.Component {
   constructor(props) {
@@ -52,33 +53,24 @@ class App extends React.Component {
     return (
       <Router>
         <nav>
-          {/*
-            Eventually, we'll want the home page to direct to My Documents for
-            logged in users, and Welcome otherwise. For now, they are separate
-            links.
-          */}
-          <Link to="/welcome">
+          <Link to="/">
             <img className="logo" src={logo}/>
           </Link>
-          <Link className="navbar-link" to="/">My Docs</Link>
+          <Link className="navbar-link" to="/documents">My Docs</Link>
           <Link className="navbar-link" to="/explore">Explore</Link>
-          <Link className="navbar-link" to="/document/NUy1X0C3nCsPexG46dVj">Example Document</Link>
           {authButton}
         </nav>
-
 
         <Switch>
           <Route path="/explore">
             <Explore />
           </Route>
-          <Route path="/welcome">
-            <Welcome />
-          </Route>
-          <Route path="/document/:id">
-            <Document />
+          <Route path="/document/:id" component={Document} />
+          <Route path="/documents">
+            <MyDocuments />
           </Route>
           <Route path="/">
-            <MyDocuments />
+            <Document id={WELCOME_DOC_ID}/>
           </Route>
         </Switch>
       </Router>
