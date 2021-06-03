@@ -9,7 +9,6 @@ import { TextModule } from '../modules/TextModule.js';
 import { ImageModule } from '../modules/ImageModule';
 import { MultipleChoiceModule } from '../modules/MultipleChoiceModule.js';
 import { LatexModule } from '../modules/LatexModule.js';
-import { TitleModule } from '../modules/TitleModule.js';
 import { createDoc } from './MyDocuments.js';
 
 import '../styles/Document.scss';
@@ -18,7 +17,6 @@ const MODULE_TYPES = Object.freeze({
   text: TextModule,
   image: ImageModule,
   multipleChoice: MultipleChoiceModule,
-  title: TitleModule,
   latex: LatexModule,
 });
 

@@ -8,7 +8,6 @@ export function ImageModule(props) {
   const storageRef = storage.ref();
 
   const onImageChange = (e) => {
-    console.log(props.data)
     const reader = new FileReader();
     let file = e.target.files[0]; 
     if (file) {
@@ -21,7 +20,6 @@ export function ImageModule(props) {
     } else {
       setImage(null);
     }
-    console.log(props.data)
   };
 
   async function uploadToFirebase(){
