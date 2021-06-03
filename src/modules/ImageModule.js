@@ -32,7 +32,7 @@ export function ImageModule(props) {
           status: "loading",
           name: image.name,
         })
-        props.setEditing(false)
+        props.doneEditing()
         getFromFirebase()
       }).catch((error) => {
         alert("An error occurred while uploading the image")

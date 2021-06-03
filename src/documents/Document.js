@@ -36,7 +36,7 @@ function Document(props) {
     title: "",
     nextKey: 0,
     status: STATUSES.loading,
-    editing: false,
+    moduleEditing: null,
   });
 
   useEffect(() => {
@@ -46,7 +46,6 @@ function Document(props) {
           let modules = doc.get('data');
           for (let i = 0; i < modules.length; i++) {
             modules[i].tempData = MODULE_TYPES[modules[i].type].initTempData;
-            modules[i].editing = false;
             modules[i].key = i;
           }
           setState({
@@ -86,7 +85,7 @@ function Document(props) {
         data: MODULE_TYPES[type].initData,
         tempData: MODULE_TYPES[type].initTempData,
         key: state.nextKey,
-        editing: true,
+        moduleEditing: state.nextKey,
       });
       return {
         ...state,
@@ -132,11 +131,12 @@ function Document(props) {
   function setModuleEditing(i, editing) {
     setState((state) => {
       const modules = state.modules.slice();
-      modules[i].editing = editing;
       // Reset tempData
       modules[i].tempData = MODULE_TYPES[modules[i].type].initTempData;
-
-      return { ...state, modules: modules };
+      if(editing)
+        return { ...state, modules: modules, moduleEditing:modules[i].key};
+      else 
+        return { ...state, modules: modules, moduleEditing:null};
     });
   }
 
@@ -166,7 +166,7 @@ function Document(props) {
   function sendToDatabase() {
     console.log("Attemping to save...")
 
-    if (!state.editing) { // TODO: validate this server-side
+    if (!state.editing) { 
       console.log("Save failed: not document owner");
       return;
     }
@@ -258,7 +258,7 @@ function Document(props) {
             state.modules.map((m, i) => {
               const ModuleComponent = MODULE_TYPES[m.type];
               const className = 'module-container '
-                + (m.editing ? 'module-container-edit' : 'module-container-view');
+                + ( (state.moduleEditing===m.key) ? 'module-container-edit' : 'module-container-view');
               return (
                 <div key={m.key} className={className}>
                   <div className="module-wrapper">
@@ -268,13 +268,13 @@ function Document(props) {
                         setData={(data) => setModuleData(i, data)}
                         tempData={m.tempData}
                         setTempData={(tempData) => setModuleTempData(i, tempData)}
-                        editing={m.editing}
-                        setEditing={(editing) => setModuleEditing(i, editing)}
+                        editing={m.key == state.moduleEditing}
                         i={i}
+                        doneEditing={() => setModuleEditing(i,false)}
                       />
                     </DoubleClickOrTapWrapper>
                   </div>
-                  {m.editing &&
+                  {state.moduleEditing===m.key &&
                     <div className="module-buttons">
                       <button className="module-toggle-edit-button" onClick={() => setModuleEditing(i, false)}>
                         Done
