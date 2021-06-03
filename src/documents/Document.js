@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router'
 import PropTypes from 'prop-types';
 import { firestore, auth } from '../firebase.js';
+import { useDoubleTap } from 'use-double-tap';
 
 import { TextModule } from '../modules/TextModule.js';
 import { ImageModule } from '../modules/ImageModule';
@@ -243,19 +244,18 @@ function Document(props) {
             const ModuleComponent = MODULE_TYPES[m.type];
             return (
               <div key={m.key} className="module-container">
-                <div
-                  className="module-wrapper"
-                  onDoubleClick = {() => startEditingModule(i)}
-                >
-                  <ModuleComponent
-                    data={m.data}
-                    setData={(data) => setModuleData(i, data)}
-                    tempData={m.tempData}
-                    setTempData={(tempData) => setModuleTempData(i, tempData)}
-                    editing={m.editing}
-                    setEditing={(editing) => setModuleEditing(i, editing)}
-                    i={i}
-                  />
+                <div className="module-wrapper">
+                  <DoubleClickOrTapWrapper onDoubleClickOrTap={() => startEditingModule(i)}>
+                    <ModuleComponent
+                      data={m.data}
+                      setData={(data) => setModuleData(i, data)}
+                      tempData={m.tempData}
+                      setTempData={(tempData) => setModuleTempData(i, tempData)}
+                      editing={m.editing}
+                      setEditing={(editing) => setModuleEditing(i, editing)}
+                      i={i}
+                    />
+                  </DoubleClickOrTapWrapper>
                 </div>
                 {m.editing &&
                   <div className="module-buttons">
@@ -289,6 +289,20 @@ Document.propTypes = {
     }),
   }),
   id: PropTypes.string,
+};
+
+function DoubleClickOrTapWrapper(props) {
+  const bind = useDoubleTap(props.onDoubleClickOrTap);
+  return (
+    <div {...bind} onDoubleClick={props.onDoubleClickOrTap}>
+      {props.children}
+    </div>
+  );
+}
+
+DoubleClickOrTapWrapper.propTypes = {
+  children: PropTypes.node,
+  onDoubleClickOrTap: PropTypes.func,
 };
 
 function AddModuleButton(props) {
