@@ -74,6 +74,10 @@ function Document(props) {
     fetchDoc();
   }, [id, auth.currentUser]);
 
+  useEffect(() => {
+    document.title = (state.title || 'Untitled Document') + ' - Modular Documents';
+  }, [state.title]);
+
   function addModule(type) {
     setState((state) => {
       const modules = state.modules.slice();
