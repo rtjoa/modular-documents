@@ -7,19 +7,19 @@ import { auth, firestore } from '../firebase.js';
 import logo from '../shared/logo.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
-async function searchDocumentTitle(query){
+/* async function searchDocumentTitle(query){
   console.log("Query: " + query)
-  // if (!auth.currentUser) {
-  //   console.log("Not Signed In");
-  //   return;
-  // }
-  // firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).where("title", ">=", query).where("title", "<=", query + '\uf8ff').get().then((querySnapshot) => {
-  //   querySnapshot.forEach((doc) => {
-  //     //send these doc.id's to get displayed
-  //     console.log(doc.id);
-  //   });
-  // });
-}
+  if (!auth.currentUser) {
+    console.log("Not Signed In");
+    return;
+  }
+  firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).where("title", ">=", query).where("title", "<=", query + '\uf8ff').get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      //send these doc.id's to get displayed
+      console.log(doc.id);
+    });
+  });
+} */
 
 function MyDocuments() {
   const [userDocs, setUserDocs] = useState([])
@@ -45,14 +45,26 @@ function MyDocuments() {
     }).catch( ()=> console.log("An error has occured in acquiring the user's documents") );
   }, [])
   
-  searchDocumentTitle("");
+  //searchDocumentTitle("");
   const history = useHistory()
+
+  function searchDocumentTitleInMyDocs() {
+    let query = "Test"
+    firestore.collection("Documents").where("title", ">=", query).where("title", "<=", query + '\uf8ff').where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        //send these doc.id's to get displayed
+        console.log(doc.id);
+      });
+    });
+  }
 
   return (
     <div>
       <div className="searchAndCreate">
         <div className="searchRegion">
-          <SearchBar placeholder="Search for a document by title or content" />
+          <SearchBar 
+            placeholder="Search for a document by title" 
+            searchFunction = {()=>searchDocumentTitleInMyDocs()}/>
           {/* idk the purpose of this line, im doing this to supress errors <createIcon />*/}
         </div>
         <div>
