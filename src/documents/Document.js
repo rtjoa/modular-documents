@@ -215,7 +215,12 @@ function Document(props) {
 
   switch(state.status){
     case STATUSES.loading:
-      return <div className="user-message">Loading</div>;
+      return(
+        <div className="loading-wrapper">
+          <div className="loader"></div> 
+          <div className="user-message">Loading</div>
+        </div>
+      ) 
     case STATUSES.not_found:
       return <div className="user-message">Sorry, the document you have requested does not exist.</div>;
     case STATUSES.unknown_error:
