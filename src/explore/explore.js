@@ -22,8 +22,8 @@ function Explore() {
   }, []);
 
   return (
-    <div>
-      <div className="searchHeading"> {`Explore other people's work!`} </div>
+    <div className="explore-page">
+      <div className="search-heading"> {`Explore other people's work!`} </div>
       <SearchBar searchFunction = {onSearch}/>
       <div className="document-cards-list">
         {searchDocs.length ? 
