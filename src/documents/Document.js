@@ -182,7 +182,6 @@ function Document(props) {
       title: title,
       lowercaseTitle: title.toLowerCase(),
       data: state.modules,
-      view: 0,
     });
     console.log("Save successful!");
   }
