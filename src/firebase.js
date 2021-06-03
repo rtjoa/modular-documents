@@ -14,13 +14,4 @@ export const firestore = firebase.firestore();
 export default firebase;
 export const auth = firebase.auth();
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
-export const storage = firebase.storage()
-
-export const signInWithGoogle = () => {
-  auth.signInWithPopup(googleProvider).then((res) => {
-    console.log(res.user)
-    
-  }).catch((error) => {
-    console.log(error.message)
-  })
-};
+export const storage = firebase.storage();
