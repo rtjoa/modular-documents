@@ -13,9 +13,21 @@ function SearchBar(props) {
   
   return (
     <div className="search">
-      <input onChange={onInputChange} value={inputText} type="text" placeholder="Search for a document by title" />
-      <button onClick={() => props.searchFunction(inputText)} className="searchButton" >
-        <img src={search} alt="search icon"/>
+      <input 
+        onChange={onInputChange} 
+        value={inputText} 
+        type="text" 
+        placeholder="Search for a document by title"
+        onKeyPress={event => {
+          if (event.key === 'Enter') {
+            props.searchFunction(inputText)
+            event.target.blur()
+          }
+        }} />
+      <button 
+        onClick={() => props.searchFunction(inputText)} 
+        className="searchButton" >
+          <img src={search} alt="search icon"/>
       </button>
     </div>
   );
