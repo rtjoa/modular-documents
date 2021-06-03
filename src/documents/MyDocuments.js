@@ -7,101 +7,63 @@ import { auth, firestore } from '../firebase.js';
 import logo from '../assets/logo.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
-/* async function searchDocumentTitle(query){
-  console.log("Query: " + query)
-  if (!auth.currentUser) {
-    console.log("Not Signed In");
-    return;
-  }
-  firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).where("title", ">=", query).where("title", "<=", query + '\uf8ff').get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      //send these doc.id's to get displayed
-      console.log(doc.id);
-    });
-  });
-} */
+import { searchDocuments } from '../search/search.js';
 
 function MyDocuments() {
-  const [userDocs, setUserDocs] = useState([])
-  const [searchDocs, setSearchDocs] = useState([])
+  const [searchDocs, setSearchDocs] = useState([]);
+  const [lastQuery, setLastQuery] = useState("");
   
-  useEffect(async () => { 
-    while (!auth.currentUser) {
-      console.log("Not Signed In...");
-      await new Promise(r => setTimeout(r, 1000))
-    }
-    await firestore.collection("Documents").where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        //send these doc.id's to get displayed
-        setUserDocs((userDocs) => {
-          const docs = userDocs.slice();
-          docs.push({
-            id: doc.id,
-            title: (doc.get('data')[0] && doc.get('data')[0]['data']['title'] != "" ? doc.get('data')[0]['data']['title'] : "Untitled Document")
-          });
-          return docs
-        });
-      });
-    }).catch( ()=> console.log("An error has occured in acquiring the user's documents") );
-  }, [])
-  
-  //searchDocumentTitle("");
-  const history = useHistory()
+  const history = useHistory();
 
-  function searchDocumentTitleInMyDocs() {
-    setSearchDocs([])
-    let query = "Test"
-    firestore.collection("Documents").where("title", ">=", query).where("title", "<=", query + '\uf8ff').where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        setSearchDocs((searchDocs) => {
-          const docs = searchDocs.slice();
-          docs.push({
-            id: doc.id,
-            title: (doc.get('data')[0] && doc.get('data')[0]['data']['title'] != "" ? doc.get('data')[0]['data']['title'] : "Untitled Document")
-          });
-          return docs
-        });
-      });
-    }).catch( ()=> console.log("An error has occured in searching in the user's documents") );
+  async function onSearch(query) {
+    if (!auth.currentUser) return;
+    const docs = await searchDocuments(query, auth.currentUser.uid);
+    setSearchDocs(docs);
+    setLastQuery(query);
+  }
+  
+  useEffect(() => {
+    onSearch(lastQuery);
+  }, [auth.currentUser]);
+
+  function checkForErrors() {
+    if (!auth.currentUser) {
+      return "Please sign in to see your documents!";
+    }
+    
+    if (!searchDocs.length) {
+      return lastQuery ?
+        "No matching documents found." :
+        "Click \"Create Doc\" to create a new document!";
+    }
+    return "";
   }
 
+  const errorMessage = checkForErrors();
+  
   return (
     <div>
       <div className="searchAndCreate">
         <div className="searchRegion">
-          <SearchBar 
-            placeholder="Search for a document by title" 
-            searchFunction = {()=>searchDocumentTitleInMyDocs()}/>
-          {/* idk the purpose of this line, im doing this to supress errors <createIcon />*/}
+          <SearchBar searchFunction = {onSearch}/>
         </div>
         <div>
           <button className="button" onClick={() => createDoc(history)}>
-            {' '}
-            Create Doc{' '}
+            Create Doc
           </button>
         </div>
       </div>
       <br />
       <div>
-        {!auth.currentUser ? <div className="user-message"> Please sign in to see your documents! </div> 
-          :
-          userDocs.length === 0 ? 
-            <div className="user-message"> Click <q>Create Doc</q> to create a new document!</div> 
-            :
-            <div className="document-cards-list">
-              {searchDocs.length  ? (
-                  searchDocs.map( (data) => (
-                    <div className='card-wrapper' key={data.id}>
-                      <DocumentCard name={data.title} url={data.id} img={logo} />
-                    </div>)
-              )) : (
-                userDocs.map( (data) => (
-                  <div className='card-wrapper' key={data.id}>
-                    <DocumentCard name={data.title} url={data.id} img={logo} />
-                  </div>
-                )))
-              }
-            </div>
+        {errorMessage ?
+          <div className="user-message"> {errorMessage} </div> :
+          <div className="document-cards-list">
+            {searchDocs.map((data) =>
+              <div className='card-wrapper' key={data.id}>
+                <DocumentCard name={data.title} url={data.id} img={logo} />
+              </div>
+            )}
+          </div>
         }
       </div>
     </div>
@@ -116,7 +78,7 @@ export async function createDoc(history, data=[]) {
   
   await firestore.collection("Documents").add({
     DocOwner: auth.currentUser.uid, 
-    view: 0, 
+    visibility: 0,
     data: data,
   }).then((docRef) => {
     history.push('/document/'+docRef.id)
