@@ -109,10 +109,17 @@ export function MultipleChoiceModule(props) {
             ))}
         </div>
             {props.data.options.map((option, i) => (
-            <div key={i}>
-                <input onChange={() => onOptionChoose(i)} type="radio" id={option} name={"mc-module-view-" + props.i} value={i}/>
-                <label htmlFor={option}>{option}</label>
-            </div>
+              <div key={i}>
+                  <input
+                    onChange={() => onOptionChoose(i)}
+                    type="radio"
+                    id={`mc-module-view-${props.i}-${i}`}
+                    name={`mc-module-view-${props.i}`} value={i}
+                  />
+                  <label htmlFor={`mc-module-view-${props.i}-${i}`}>
+                    {option}
+                  </label>
+              </div>
             ))}
             {props.tempData.choice === null &&
               <p className='prompt'><em>Select an answer...</em></p>}
