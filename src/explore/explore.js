@@ -31,6 +31,7 @@ function Explore() {
       <div className="document-cards-list">
         {searchDocs.length ? 
           searchDocs.map((data) => (
+            data.title && 
             <div className='card-wrapper' key={data.id}>
               <DocumentCard name={data.title} url={data.id} img={logo} />
             </div>))
