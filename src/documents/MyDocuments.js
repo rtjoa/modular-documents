@@ -74,16 +74,20 @@ function MyDocuments() {
   );
 }
 
-export async function createDoc(history, data=[]) {
+export async function createDoc(history, title="", data=[]) {
   if (!auth.currentUser) {
     alert('Please sign in to create a document.');
     return;
   }
   
+  title = title || "Untitled Document";
+  
   await firestore.collection("Documents").add({
     DocOwner: auth.currentUser.uid, 
     visibility: 0,
     data: data,
+    title: title,
+    lowercaseTitle: title.toLowerCase(),
   }).then((docRef) => {
     history.push('/document/'+docRef.id)
     console.log("Document written with ID: ", docRef.id);

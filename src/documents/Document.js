@@ -28,10 +28,10 @@ const STATUSES = Object.freeze({
 });
 
 function Document(props) {
-  const id = props.id || props.match.params.id;
+  const paramsId = props.match && props.match.params && props.match.params.id;
+  const id = props.id || paramsId;
   const history = useHistory();
   const [state, setState] = useState({
-    DocID: id, 
     modules: [],
     title: "",
     nextKey: 0,
@@ -179,7 +179,7 @@ function Document(props) {
     
     const title = state.title || "Untitled Document";
 
-    firestore.collection("Documents").doc(state.DocID).update({
+    firestore.collection("Documents").doc(id).update({
       title: title,
       lowercaseTitle: title.toLowerCase(),
       data: state.modules,
@@ -246,7 +246,11 @@ function Document(props) {
             </span>
           </>}
         <span className="toolbar-group">
-          <button className="toolbar-button" onClick={() => createDoc(history, state.modules)}>Make a Copy</button>
+          <button
+            className="toolbar-button"
+            onClick={() => createDoc(history, "Copy of " + state.title, state.modules)}>
+            Make a Copy
+          </button>
         </span>
         {state.editing && <span className="toolbar-group">
           <button className="toolbar-button" onClick={() => deleteDoc()}>Delete Document</button>
