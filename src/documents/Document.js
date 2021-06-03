@@ -217,7 +217,7 @@ function Document(props) {
 
 
   return (
-    <div className="document-page">
+    <div className={`document-page ${state.editing?'document-page-editing':''}`}>
       <div className="toolbar">
         {state.editing &&
           <>
@@ -242,8 +242,10 @@ function Document(props) {
         <div className="document">
           {state.modules.map((m, i) => {
             const ModuleComponent = MODULE_TYPES[m.type];
+            const className = 'module-container '
+              + (m.editing ? 'module-container-edit' : 'module-container-view');
             return (
-              <div key={m.key} className="module-container">
+              <div key={m.key} className={className}>
                 <div className="module-wrapper">
                   <DoubleClickOrTapWrapper onDoubleClickOrTap={() => startEditingModule(i)}>
                     <ModuleComponent
