@@ -9,6 +9,9 @@ import logo from '../assets/logo.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
 function Explore() {
+  useEffect(() => {
+    document.title = "Explore - Modular Documents";
+  }, []);
 
   const [searchDocs, setSearchDocs] = useState([])
   

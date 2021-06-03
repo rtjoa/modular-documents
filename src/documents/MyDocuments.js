@@ -10,6 +10,10 @@ import DocumentCard from '../cards/DocumentCards.js';
 import { searchDocuments } from '../search/search.js';
 
 function MyDocuments() {
+  useEffect(() => {
+    document.title = "My Documents - Modular Documents";
+  }, []);
+
   const [searchDocs, setSearchDocs] = useState([]);
   const [lastQuery, setLastQuery] = useState("");
   
