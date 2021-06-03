@@ -1,13 +1,24 @@
 .text-module-edit {
     textarea {
       width: 100%;
-      box-shadow: 0 0 10px lightgrey;
       resize: vertical;
       height: 90px;
     }
 }
 
 .text-module-view {
+    &.align-left {
+        text-align: left;
+    }
+    &.align-center {
+        text-align: center;
+    }
+    &.align-right {
+        text-align: right;
+    }
+    &.align-justify {
+        text-align: justify;
+    }
     p {
         margin-block: 0;
     }
