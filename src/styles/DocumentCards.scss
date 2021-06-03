@@ -1,3 +1,24 @@
+.document-cards-list {
+  a {
+    &:link {
+      text-decoration: none;
+      color: inherit;
+    }
+    &:visited {
+      text-decoration: none;
+      color: inherit;
+    }
+    &:hover {
+      text-decoration: underline;
+      color: inherit;
+    }
+    &:active {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+}
+
 .document-cards-container {
   background-color: lightgray;
   display: flex;
@@ -29,23 +50,4 @@
   border-radius: 10px;
   position: absolute;
   bottom: 0;
-}
-
-a {
-  &:link {
-    text-decoration: none;
-    color: inherit;
-  }
-  &:visited {
-    text-decoration: none;
-    color: inherit;
-  }
-  &:hover {
-    text-decoration: underline;
-    color: inherit;
-  }
-  &:active {
-    text-decoration: none;
-    color: inherit;
-  }
 }

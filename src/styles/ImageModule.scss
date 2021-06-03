@@ -1,0 +1,13 @@
+.image-upload-wrapper {
+    box-shadow: 0px 0px 10px lightgrey;
+}
+
+.image-module {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    img {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}

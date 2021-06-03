@@ -1,16 +1,5 @@
 import React from 'react';
 
-/*
-  TODO:
-    Update the `VIEW` when submitting the form
-    Put a warning of some sort if a correctAnswer is not chosen when going from edit -> view
-    Complete the CheckAnswer function and implementation
-
-  NOTES:
-    when changing from view -> edit and vice versa, if the quiz has already been attempted, 
-      the answerChoice variable does not revert itself to -1
-*/
-
 export function MultipleChoiceModule(props) {
   // Editing: Change question text
   const onQuestionChange = (event) => {

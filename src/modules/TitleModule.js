@@ -1,11 +1,9 @@
 import React from 'react';
 
+import '../styles/TitleModule.scss';
 export function TitleModule(props) {
   const onTextChange = (event) => {
-    // if(event.target.value !== "")
       props.setData({ title: event.target.value });
-    // else
-    //   props.setData({ text: " " });
   };
 
   if (props.editing) {

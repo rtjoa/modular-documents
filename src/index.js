@@ -48,8 +48,8 @@ class App extends React.Component {
 
   render() {
     let authButton = this.state.user ?
-      <Link className="button" onClick = {this.logout}>Log Out</Link>
-      : <Link className="button" onClick={this.login}>Log In</Link>
+      <a className="button" onClick = {this.logout}>Log Out</a>
+      : <a className="button" onClick={this.login}>Log In</a>
     return (
       <Router>
         <nav>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { storage } from '../firebase.js';
 
+import '../styles/ImageModule.scss';
+
 export function ImageModule(props) {
   const [image, setImage] = useState(null);
   const storageRef = storage.ref();
@@ -32,6 +34,7 @@ export function ImageModule(props) {
           status: "loading",
           name: image.name,
         })
+        props.setEditing(false)
         getFromFirebase()
       }).catch((error) => {
         alert("An error occurred while uploading the image")

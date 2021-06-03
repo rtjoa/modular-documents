@@ -1,0 +1,21 @@
+.text-module-edit {
+    textarea {
+      width: 100%;
+      box-shadow: 0 0 10px lightgrey;
+      resize: vertical;
+      height: 90px;
+    }
+}
+
+.text-module-view {
+    p {
+        margin-block: 0;
+    }
+    a {
+        color: #00e;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

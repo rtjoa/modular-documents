@@ -2,6 +2,8 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown'
 const gfm = require('remark-gfm');
 
+import '../styles/TextModule.scss';
+
 export function TextModule(props) {
   const onTextChange = (event) => {
       props.setData({ text: event.target.value });
@@ -17,7 +19,7 @@ export function TextModule(props) {
     return (
       <div className="text-module-view">
         { props.data.text.trim() ? props.data.text.split('\n').map((line, i) => (
-          <ReactMarkdown remarkPlugins={[gfm]} key={i}>{line}</ReactMarkdown>
+          <ReactMarkdown linkTarget="_blank" remarkPlugins={[gfm]} key={i}>{line}</ReactMarkdown>
         )) : <EmptyText/> }
       </div>
     );

@@ -6,12 +6,12 @@ import '../styles/DocumentCards.scss';
 
 function DocumentCards(props) {
   return (
-    <div className="document-cards-container">
-      <Link to={`/document/${props.url}`} id="link">
-        <h3 className="document-cards-name">{props.name}</h3>
-      </Link>
-      <img src={props.img} alt={props.name} className="document-cards-image" />
-    </div>
+    <Link to={`/document/${props.url}`}>
+      <div className="document-cards-container">
+          <h3 className="document-cards-name">{props.name}</h3>
+        <img src={props.img} alt={props.name} className="document-cards-image" />
+      </div>
+    </Link>
   );
 }
 

@@ -237,42 +237,44 @@ function Document(props) {
           <button className="toolbar-button" onClick={() => deleteDoc()}>Delete Document</button>
         </span>}
       </div>
-      <div className="document">
-        {state.modules.map((m, i) => {
-          const ModuleComponent = MODULE_TYPES[m.type];
-          return (
-            <div key={m.key} className="module-container">
-              <div
-                className="module-wrapper"
-                onDoubleClick = {() => startEditingModule(i)}
-              >
-                <ModuleComponent
-                  data={m.data}
-                  setData={(data) => setModuleData(i, data)}
-                  tempData={m.tempData}
-                  setTempData={(tempData) => setModuleTempData(i, tempData)}
-                  editing={m.editing}
-                  setEditing={(editing) => setModuleEditing(i, editing)}
-                  i={i}
-                />
-              </div>
-              {m.editing &&
-                <div className="module-buttons">
-                  <button className="module-toggle-edit-button" onClick={() => setModuleEditing(i, false)}>
-                    Done
-                  </button>
-                  {i != 0 &&
-                    [
-                      <button onClick={() => moveModuleUp(i)} disabled={i == 1} key={1}>&uarr;</button>,
-                      <button onClick={() => moveModuleDown(i)} disabled={i == state.modules.length-1} key={2}>&darr;</button>,
-                      <button onClick={() => deleteModule(i)} key={3}>&#10005;</button>,
-                    ]
-                  }
+      <div className="document-container">
+        <div className="document">
+          {state.modules.map((m, i) => {
+            const ModuleComponent = MODULE_TYPES[m.type];
+            return (
+              <div key={m.key} className="module-container">
+                <div
+                  className="module-wrapper"
+                  onDoubleClick = {() => startEditingModule(i)}
+                >
+                  <ModuleComponent
+                    data={m.data}
+                    setData={(data) => setModuleData(i, data)}
+                    tempData={m.tempData}
+                    setTempData={(tempData) => setModuleTempData(i, tempData)}
+                    editing={m.editing}
+                    setEditing={(editing) => setModuleEditing(i, editing)}
+                    i={i}
+                  />
                 </div>
-              }
-            </div>
-          );
-        })}
+                {m.editing &&
+                  <div className="module-buttons">
+                    <button className="module-toggle-edit-button" onClick={() => setModuleEditing(i, false)}>
+                      Done
+                    </button>
+                    {i != 0 &&
+                      [
+                        <button onClick={() => moveModuleUp(i)} disabled={i == 1} key={1}>&uarr;</button>,
+                        <button onClick={() => moveModuleDown(i)} disabled={i == state.modules.length-1} key={2}>&darr;</button>,
+                        <button onClick={() => deleteModule(i)} key={3}>&#10005;</button>,
+                      ]
+                    }
+                  </div>
+                }
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

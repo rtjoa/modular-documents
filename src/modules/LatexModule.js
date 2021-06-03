@@ -10,13 +10,13 @@ export function LatexModule(props) {
 
   if (props.editing) {
     return (
-      <div className="text-module-edit">
+      <div className="latex-module-edit">
         <textarea onChange={onTextChange} value={props.data.text}></textarea>
       </div>
     );
   } else {
     return (
-      <div className="text-module-view">
+      <div className="latex-module-view">
         { props.data.text.trim() ? props.data.text.split('\n').map((line, i) => (
         <div key={i}> 
                 <Latex displayMode={true}>{line}</Latex>
@@ -29,10 +29,10 @@ export function LatexModule(props) {
 
 function EmptyText(){
   return(
-    <div>Double-click to edit this Latex</div>
+    <div>Double-click to edit this LaTeX</div>
   )
 }
 
 LatexModule.initData = { text: '' };
 LatexModule.initTempData = null;
-LatexModule.moduleName = 'Latex';
+LatexModule.moduleName = 'LaTeX';
