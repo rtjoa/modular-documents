@@ -3,6 +3,7 @@ import { useHistory } from 'react-router'
 import PropTypes from 'prop-types';
 import { firestore, auth } from '../firebase.js';
 import { useDoubleTap } from 'use-double-tap';
+import { isMobile } from 'react-device-detect';
 
 import { TextModule } from '../modules/TextModule.js';
 import { ImageModule } from '../modules/ImageModule';
@@ -294,7 +295,7 @@ Document.propTypes = {
 };
 
 function DoubleClickOrTapWrapper(props) {
-  const bind = useDoubleTap(props.onDoubleClickOrTap);
+  const bind = useDoubleTap(isMobile?props.onDoubleClickOrTap:null);
   return (
     <div {...bind} onDoubleClick={props.onDoubleClickOrTap}>
       {props.children}
