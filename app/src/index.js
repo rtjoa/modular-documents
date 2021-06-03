@@ -57,8 +57,8 @@ class App extends React.Component {
             logged in users, and Welcome otherwise. For now, they are separate
             links.
           */}
-          <Link className="logo" to="/welcome">
-            <img src={logo}/>
+          <Link to="/welcome">
+            <img className="logo" src={logo}/>
           </Link>
           <Link className="navbar-link" to="/">My Docs</Link>
           <Link className="navbar-link" to="/explore">Explore</Link>
