@@ -55,6 +55,7 @@ function Document(props) {
             status: STATUSES.ok,
             editing: auth.currentUser && doc.get('DocOwner') === auth.currentUser.uid,
             title: doc.get('title'),
+            moduleEditing: null,
           });
         } else {
           setState({
