@@ -78,9 +78,15 @@
   text-align: center;
 }
 
-.text-module-view{
-  div{
-    word-wrap: break-word;
+.text-module-view {
+  p {
+    margin-block: 0;
+  }
+  a {
+    color: #00e;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 .image-upload-wrapper{
