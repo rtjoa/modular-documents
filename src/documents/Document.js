@@ -173,6 +173,7 @@ function Document(props) {
     
     firestore.collection("Documents").doc(state.DocID).update({
       title: state.title,
+      lowercaseTitle: state.title.toLowerCase(),
       data: state.modules,
       view: 0,
     });
