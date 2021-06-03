@@ -23,6 +23,7 @@ import DocumentCard from '../cards/DocumentCards.js';
 
 function MyDocuments() {
   const [userDocs, setUserDocs] = useState([])
+  const [searchDocs, setSearchDocs] = useState([])
   
   useEffect(async () => { 
     while (!auth.currentUser) {
@@ -40,7 +41,6 @@ function MyDocuments() {
           });
           return docs
         });
-        console.log("UserDocs: " + userDocs)
       });
     }).catch( ()=> console.log("An error has occured in acquiring the user's documents") );
   }, [])
@@ -52,10 +52,16 @@ function MyDocuments() {
     let query = "Test"
     firestore.collection("Documents").where("title", ">=", query).where("title", "<=", query + '\uf8ff').where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        //send these doc.id's to get displayed
-        console.log(doc.id);
+        setSearchDocs((searchDocs) => {
+          const docs = searchDocs.slice();
+          docs.push({
+            id: doc.id,
+            title: (doc.get('data')[0] && doc.get('data')[0]['data']['title'] != "" ? doc.get('data')[0]['data']['title'] : "Untitled Document")
+          });
+          return docs
+        });
       });
-    });
+    }).catch( ()=> console.log("An error has occured in acquiring the user's documents") );
   }
 
   return (
@@ -82,11 +88,20 @@ function MyDocuments() {
             <div className="user-message"> Click <q>Create Doc</q> to create a new document!</div> 
             :
             <div className="document-cards-list">
-              {userDocs.map( (data) => (
-                <div className='card-wrapper' key={data.id}>
-                  <DocumentCard name={data.title} url={data.id} img={logo} />
-                </div>
-              ))}
+              {searchDocs.length  ? (
+                  console.log("searched"),
+                  searchDocs.map( (data) => (
+                    <div className='card-wrapper' key={data.id}>
+                      <DocumentCard name={data.title} url={data.id} img={logo} />
+                    </div>)
+              )) : (
+                console.log("no search results"),
+                userDocs.map( (data) => (
+                  <div className='card-wrapper' key={data.id}>
+                    <DocumentCard name={data.title} url={data.id} img={logo} />
+                  </div>
+                )))
+              }
             </div>
         }
       </div>
