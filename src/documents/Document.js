@@ -85,12 +85,12 @@ function Document(props) {
         data: MODULE_TYPES[type].initData,
         tempData: MODULE_TYPES[type].initTempData,
         key: state.nextKey,
-        moduleEditing: state.nextKey,
       });
       return {
         ...state,
         modules: modules,
         nextKey: state.nextKey + 1,
+        moduleEditing: state.nextKey
       };
     });
   }
