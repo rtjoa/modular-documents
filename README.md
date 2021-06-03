@@ -1,7 +1,9 @@
 # Modular Documents
 ### A modular document creation system
 
-![Modular Documents Logo](/public/logo.png)
+<p align="center">
+  <img alt="Modular Documents Logo" src="/public/logo.png">
+</p>
 
 ### To view in your browser, go to this website: [Modular Documents](https://modular-documents.netlify.app/)
 
