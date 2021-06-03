@@ -25,10 +25,6 @@ const STATUSES = Object.freeze({
   unknown_error: 3,
 });
 
-const capitalizeWord = (word) =>
-  word ? word[0].toUpperCase() + word.substr(1) : '';
-const capitalizeWords = (s) => s.split(' ').map(capitalizeWord).join(' ');
-
 function Document () {
   const { id } = useParams();
   const history = useHistory();
@@ -285,7 +281,7 @@ function AddModuleButton(props) {
       className="toolbar-button"
       onClick={() => props.addModule(props.type)}
     >
-      + {capitalizeWords(props.type)}
+      + {MODULE_TYPES[props.type].moduleName}
     </button>
   );
 }
