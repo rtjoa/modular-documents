@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import SearchBar from '../shared/SearchBar.js';
+import SearchBar from '../search/SearchBar.js';
 import '../styles/MyDocuments.scss';
 import { auth, firestore } from '../firebase.js';
 
-import logo from '../shared/logo.png';
+import logo from '../assets/logo.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
 /* async function searchDocumentTitle(query){

@@ -11,7 +11,7 @@ import React from 'react';
       the answerChoice variable does not revert itself to -1
 */
 
-export function QuizModule(props) {
+export function MultipleChoiceModule(props) {
   // Editing: Change question text
   const onQuestionChange = (event) => {
     props.setData({
@@ -73,7 +73,7 @@ export function QuizModule(props) {
 
   if (props.editing) {
     return (
-      <div className="quiz-module-edit">
+      <div className="mc-module-edit">
         <textarea onChange={onQuestionChange} value={props.data.question} placeholder="Question"></textarea> <br/>
         <div>
         {props.data.options.map((option, i) => (
@@ -81,7 +81,7 @@ export function QuizModule(props) {
                 <input
                   onChange={() => onAnswerChange(i)}
                   type="radio"
-                  name={"quiz-module-edit-" + props.i}
+                  name={"mc-module-edit-" + props.i}
                   value={i}
                   checked={props.data.answer === i}
                 />
@@ -99,7 +99,7 @@ export function QuizModule(props) {
     );
   } else {
     return (
-      <div className="quiz-module-view">
+      <div className="mc-module-view">
         {}
         <div>
             {props.data.answer === null &&
@@ -114,7 +114,7 @@ export function QuizModule(props) {
         </div>
             {props.data.options.map((option, i) => (
             <div key={i}>
-                <input onChange={() => onOptionChoose(i)} type="radio" id={option} name={"quiz-module-view-" + props.i} value={i}/>
+                <input onChange={() => onOptionChoose(i)} type="radio" id={option} name={"mc-module-view-" + props.i} value={i}/>
                 <label htmlFor={option}>{option}</label>
             </div>
             ))}
@@ -127,6 +127,6 @@ export function QuizModule(props) {
   }
 }
 
-QuizModule.initData = { question: '' , options: ['', '', ''], answer: null };
-QuizModule.initTempData = { choice: null };
-QuizModule.moduleName = 'Quiz';
+MultipleChoiceModule.initData = { question: '' , options: ['', '', ''], answer: null };
+MultipleChoiceModule.initTempData = { choice: null };
+MultipleChoiceModule.moduleName = 'Multiple Choice';

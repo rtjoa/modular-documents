@@ -3,10 +3,10 @@ import { useParams, useHistory } from 'react-router'
 import PropTypes from 'prop-types';
 import { firestore, auth } from '../firebase.js';
 
-import { TextModule } from './modules/TextModule.js';
-import { ImageModule } from './modules/ImageModule.js';
-import { QuizModule } from './modules/QuizModule.js';
-import { TitleModule } from './modules/TitleModule.js';
+import { TextModule } from '../modules/TextModule.js';
+import { ImageModule } from '../modules/ImageModule';
+import { MultipleChoiceModule } from '../modules/MultipleChoiceModule.js';
+import { TitleModule } from '../modules/TitleModule.js';
 import { createDoc } from './MyDocuments.js';
 
 import '../styles/Document.scss';
@@ -14,7 +14,7 @@ import '../styles/Document.scss';
 const MODULE_TYPES = Object.freeze({
   text: TextModule,
   image: ImageModule,
-  quiz: QuizModule,
+  multipleChoice: MultipleChoiceModule,
   title: TitleModule,
 });
 
@@ -225,7 +225,7 @@ function Document () {
             <span className="toolbar-group">
                 <AddModuleButton type={'text'} addModule={addModule}/>
                 <AddModuleButton type={'image'} addModule={addModule} />
-                <AddModuleButton type={'quiz'} addModule={addModule} />
+                <AddModuleButton type={'multipleChoice'} addModule={addModule} />
             </span>
             <span className="toolbar-group">
                 <button className="toolbar-button" onClick={sendToDatabase}>Save</button>

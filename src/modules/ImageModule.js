@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { storage } from '../../firebase.js';
+import { storage } from '../firebase.js';
 
 export function ImageModule(props) {
   const [image, setImage] = useState(null);

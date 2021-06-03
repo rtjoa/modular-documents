@@ -1,9 +1,9 @@
 import {React, useState} from 'react';
 import '../styles/explore.scss';
-import SearchBar from '../shared/SearchBar.js';
+import SearchBar from '../search/SearchBar.js';
 import { firestore } from '../firebase.js';
 
-import logo from '../shared/logo.png';
+import logo from '../assets/logo.png';
 import DocumentCard from '../cards/DocumentCards.js';
 
 function Explore() {

@@ -9,7 +9,7 @@ import MyDocuments from './documents/MyDocuments';
 import './styles/base.scss';
 import { auth, googleProvider } from './firebase.js';
 
-import logo from './shared/logo.png';
+import logo from './assets/logo.png';
 
 class App extends React.Component {
   constructor(props) {
