@@ -155,6 +155,7 @@ function Document(props) {
 
   function promptTitle() {
     const newTitle = prompt("Set document title:", state.title);
+    if (newTitle === null) return;
     setState((state) => ({ ...state, title: newTitle }));
   }
 
