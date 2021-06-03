@@ -46,7 +46,7 @@ function MyDocuments() {
   const errorMessage = checkForErrors();
   
   return (
-    <div>
+    <div className="my-docs-page">
       <div className="searchAndCreate">
         <div className="searchRegion">
           <SearchBar searchFunction = {onSearch}/>
