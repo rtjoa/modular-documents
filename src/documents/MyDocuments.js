@@ -64,7 +64,7 @@ function MyDocuments() {
           <div className="document-cards-list">
             {searchDocs.map((data) =>
               <div className='card-wrapper' key={data.id}>
-                <DocumentCard name={data.title} url={data.id} img={logo} />
+                <DocumentCard name={data.title ? data.title : "Untitled Document"} url={data.id} img={logo} />
               </div>
             )}
           </div>
