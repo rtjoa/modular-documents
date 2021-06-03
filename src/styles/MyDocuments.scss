@@ -18,6 +18,12 @@
   }
 }
 
+.my-docs-page{
+  flex-grow: 1;
+  overflow: auto;
+  height: 80vh;
+}
+
 .searchAndCreate {
   display: flex;
 }
