@@ -172,9 +172,11 @@ function Document(props) {
       return;
     }
     
+    const title = state.title || "Untitled Document";
+
     firestore.collection("Documents").doc(state.DocID).update({
-      title: state.title,
-      lowercaseTitle: state.title.toLowerCase(),
+      title: title,
+      lowercaseTitle: title.toLowerCase(),
       data: state.modules,
       view: 0,
     });

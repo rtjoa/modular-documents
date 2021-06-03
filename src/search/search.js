@@ -17,6 +17,6 @@ export async function searchDocuments(query="", user=null) {
 
     return (await request.get()).docs.map(doc => ({
         id: doc.id,
-        title: doc.get('title') || "Untitled Document",
+        title: doc.get('title'),
     }));
 }
