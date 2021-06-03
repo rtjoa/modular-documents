@@ -1,6 +1,5 @@
 import React from 'react';
 var Latex = require('react-latex');
-// import Latex from 'react-latex-next';
 import '../styles/LatexModule.scss';
 
 export function LatexModule(props) {  
@@ -56,7 +55,7 @@ export function LatexModule(props) {
 
 function EmptyText(){
   return(
-    <div>Double-click to edit this LaTeX</div>
+    <div>Double-click to edit this <Latex>$\LaTeX$</Latex></div>
   )
 }
 
