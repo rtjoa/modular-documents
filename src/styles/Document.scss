@@ -82,6 +82,16 @@
     white-space: nowrap;
     overflow-x: auto;
   }
+
+  .title {
+    margin: 0 10px;
+  }
+}
+
+.document-page-editing {
+  .title {
+    cursor: pointer;
+  }
 }
 
 .toolbar-group {

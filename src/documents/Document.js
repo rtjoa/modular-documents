@@ -35,6 +35,7 @@ function Document(props) {
   const [state, setState] = useState({
     DocID: id, 
     modules: [],
+    title: "",
     nextKey: 0,
     status: STATUSES.loading,
     editing: false,
@@ -56,6 +57,7 @@ function Document(props) {
             nextKey: modules.length,
             status: STATUSES.ok,
             editing: auth.currentUser && doc.get('DocOwner') === auth.currentUser.uid,
+            title: doc.get('title'),
           });
         } else {
           setState({
@@ -93,7 +95,7 @@ function Document(props) {
   }
 
   function moveModuleUp(i) {
-    if (i === 0 || i === 1) return;
+    if (i === 0) return;
 
     setState((state) => {
       const modules = state.modules.slice();
@@ -118,8 +120,6 @@ function Document(props) {
   }
 
   function deleteModule(i) {
-    if (i === 0) return
-
     setState((state) => {
       const modules = state.modules.slice();
       modules.splice(i, 1);
@@ -155,6 +155,10 @@ function Document(props) {
     });
   }
 
+  function promptTitle() {
+    const newTitle = prompt("Set document title:", state.title);
+    setState((state) => ({ ...state, title: newTitle }));
+  }
 
   function sendToDatabase() {
     console.log("Attemping to save...")
@@ -170,7 +174,7 @@ function Document(props) {
     }
     
     firestore.collection("Documents").doc(state.DocID).update({
-      title: state.modules[0].data.title,
+      title: state.title,
       data: state.modules,
       view: 0,
     });
@@ -210,16 +214,14 @@ function Document(props) {
       return <div className="user-message">Sorry, the document you have requested does not exist.</div>;
     case STATUSES.unknown_error:
       return <div className="user-message"> Error loading document. See console for details.</div>;
-    default:
-      if(state.modules.length === 0)
-        addModule('title');
-      break;
   }
-
 
   return (
     <div className={`document-page ${state.editing?'document-page-editing':''}`}>
       <div className="toolbar">
+        <span className="title" onClick={state.editing?promptTitle:null}>
+          {state.title || "Untitled Document"}
+        </span>
         {state.editing &&
           <>
             <span className="toolbar-group">
@@ -265,13 +267,9 @@ function Document(props) {
                     <button className="module-toggle-edit-button" onClick={() => setModuleEditing(i, false)}>
                       Done
                     </button>
-                    {i != 0 &&
-                      [
-                        <button onClick={() => moveModuleUp(i)} disabled={i == 1} key={1}>&uarr;</button>,
-                        <button onClick={() => moveModuleDown(i)} disabled={i == state.modules.length-1} key={2}>&darr;</button>,
-                        <button onClick={() => deleteModule(i)} key={3}>&#10005;</button>,
-                      ]
-                    }
+                    <button onClick={() => moveModuleUp(i)} disabled={i === 0}>&uarr;</button>
+                    <button onClick={() => moveModuleDown(i)} disabled={i === state.modules.length-1}>&darr;</button>
+                    <button onClick={() => deleteModule(i)}>&#10005;</button>
                   </div>
                 }
               </div>
