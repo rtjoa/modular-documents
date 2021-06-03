@@ -6,6 +6,7 @@ import { firestore, auth } from '../firebase.js';
 import { TextModule } from '../modules/TextModule.js';
 import { ImageModule } from '../modules/ImageModule';
 import { MultipleChoiceModule } from '../modules/MultipleChoiceModule.js';
+import { LatexModule } from '../modules/LatexModule.js';
 import { TitleModule } from '../modules/TitleModule.js';
 import { createDoc } from './MyDocuments.js';
 
@@ -16,6 +17,7 @@ const MODULE_TYPES = Object.freeze({
   image: ImageModule,
   multipleChoice: MultipleChoiceModule,
   title: TitleModule,
+  latex: LatexModule,
 });
 
 const STATUSES = Object.freeze({
@@ -222,6 +224,7 @@ function Document () {
                 <AddModuleButton type={'text'} addModule={addModule}/>
                 <AddModuleButton type={'image'} addModule={addModule} />
                 <AddModuleButton type={'multipleChoice'} addModule={addModule} />
+                <AddModuleButton type={'latex'} addModule={addModule} />
             </span>
             <span className="toolbar-group">
                 <button className="toolbar-button" onClick={sendToDatabase}>Save</button>

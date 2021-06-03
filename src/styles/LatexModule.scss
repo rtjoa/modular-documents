@@ -1,0 +1,6 @@
+// the default behavior of the plugin for latex is to print both the converted data and the original text
+// this overrides it by making the original text hidden
+.katex-html{
+    font-size: 0;
+    visibility: hidden;
+}
