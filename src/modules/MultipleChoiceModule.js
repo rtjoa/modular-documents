@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../styles/MultipleChoiceModule.scss';
+
 export function MultipleChoiceModule(props) {
   // Editing: Change question text
   const onQuestionChange = (event) => {
@@ -67,23 +69,28 @@ export function MultipleChoiceModule(props) {
         <div>
         {props.data.options.map((option, i) => (
             <div key={i}>
-                <input
-                  onChange={() => onAnswerChange(i)}
-                  type="radio"
-                  name={"mc-module-edit-" + props.i}
-                  value={i}
-                  checked={props.data.answer === i}
-                />
-                <input
-                  onChange={(event) => onOptionChange(event, i)}
-                  value={option}
-                  placeholder={"Answer choice " + (i+1)}
-                />
-                <button onClick={() => onOptionRemove(i)}>x</button>
+                <div className="option-container">
+                  <input
+                    onChange={() => onAnswerChange(i)}
+                    type="radio"
+                    name={"mc-module-edit-" + props.i}
+                    value={i}
+                    checked={props.data.answer === i}
+                  />
+                  <span className="option-text-container">
+                    <input
+                      className="option-text"
+                      onChange={(event) => onOptionChange(event, i)}
+                      value={option}
+                      placeholder={"Answer choice " + (i+1)}
+                    />
+                    <button onClick={() => onOptionRemove(i)} className='delete-option'>&#10005;</button>
+                  </span>
+                </div>
             </div>
         ))}
         </div>
-        <button onClick={onOptionAdd}>Add Answer Choice</button>
+        <button onClick={onOptionAdd} className='add-option'>Add Answer Choice</button>
       </div>
     );
   } else {
@@ -107,8 +114,10 @@ export function MultipleChoiceModule(props) {
                 <label htmlFor={option}>{option}</label>
             </div>
             ))}
+            {props.tempData.choice === null &&
+              <p className='prompt'><em>Select an answer...</em></p>}
             {props.tempData.choice !== null && props.tempData.choice === props.data.answer &&
-              <p>Correct!</p>}
+              <p className='correct'>Correct!</p>}
             {props.tempData.choice !== null && props.tempData.choice !== props.data.answer &&
               <p>Not quite. Try again?</p>}
       </div>
