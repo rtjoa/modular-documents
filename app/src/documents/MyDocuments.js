@@ -49,6 +49,7 @@ function MyDocuments() {
   const history = useHistory()
 
   function searchDocumentTitleInMyDocs() {
+    setSearchDocs([])
     let query = "Test"
     firestore.collection("Documents").where("title", ">=", query).where("title", "<=", query + '\uf8ff').where("DocOwner", "==", auth.currentUser.uid).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -61,7 +62,7 @@ function MyDocuments() {
           return docs
         });
       });
-    }).catch( ()=> console.log("An error has occured in acquiring the user's documents") );
+    }).catch( ()=> console.log("An error has occured in searching in the user's documents") );
   }
 
   return (
@@ -89,13 +90,11 @@ function MyDocuments() {
             :
             <div className="document-cards-list">
               {searchDocs.length  ? (
-                  console.log("searched"),
                   searchDocs.map( (data) => (
                     <div className='card-wrapper' key={data.id}>
                       <DocumentCard name={data.title} url={data.id} img={logo} />
                     </div>)
               )) : (
-                console.log("no search results"),
                 userDocs.map( (data) => (
                   <div className='card-wrapper' key={data.id}>
                     <DocumentCard name={data.title} url={data.id} img={logo} />

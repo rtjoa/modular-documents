@@ -12,6 +12,7 @@ function Explore() {
 
   function searchDocumentTitleInExplore() {
     let query = "Jo"
+    setSearchDocs([])
     firestore.collection("Documents").where("title", ">=", query).where("title", "<=", query + '\uf8ff').where("view", "==", 0).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         setSearchDocs((searchDocs) => {
