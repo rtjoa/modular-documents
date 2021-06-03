@@ -1,5 +1,11 @@
-.searchHeading {
+.search-heading {
   margin-top: 100px;
   text-align: center;
   font-size: xx-large;
+}
+
+.explore-page {
+  flex-grow: 1;
+  overflow: auto;
+  height: 80vh;
 }
