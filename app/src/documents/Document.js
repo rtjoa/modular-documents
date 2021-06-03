@@ -170,7 +170,7 @@ function Document () {
     }
     
     firestore.collection("Documents").doc(state.DocID).update({
-      title: state.modules[0].data,
+      title: state.modules[0].data.title,
       data: state.modules,
       view: 0,
     });
