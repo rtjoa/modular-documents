@@ -241,38 +241,46 @@ function Document(props) {
       </div>
       <div className="document-container">
         <div className="document">
-          {state.modules.map((m, i) => {
-            const ModuleComponent = MODULE_TYPES[m.type];
-            const className = 'module-container '
-              + (m.editing ? 'module-container-edit' : 'module-container-view');
-            return (
-              <div key={m.key} className={className}>
-                <div className="module-wrapper">
-                  <DoubleClickOrTapWrapper onDoubleClickOrTap={() => startEditingModule(i)}>
-                    <ModuleComponent
-                      data={m.data}
-                      setData={(data) => setModuleData(i, data)}
-                      tempData={m.tempData}
-                      setTempData={(tempData) => setModuleTempData(i, tempData)}
-                      editing={m.editing}
-                      setEditing={(editing) => setModuleEditing(i, editing)}
-                      i={i}
-                    />
-                  </DoubleClickOrTapWrapper>
-                </div>
-                {m.editing &&
-                  <div className="module-buttons">
-                    <button className="module-toggle-edit-button" onClick={() => setModuleEditing(i, false)}>
-                      Done
-                    </button>
-                    <button onClick={() => moveModuleUp(i)} disabled={i === 0}>&uarr;</button>
-                    <button onClick={() => moveModuleDown(i)} disabled={i === state.modules.length-1}>&darr;</button>
-                    <button onClick={() => deleteModule(i)}>&#10005;</button>
+          {state.modules.length ?
+            state.modules.map((m, i) => {
+              const ModuleComponent = MODULE_TYPES[m.type];
+              const className = 'module-container '
+                + (m.editing ? 'module-container-edit' : 'module-container-view');
+              return (
+                <div key={m.key} className={className}>
+                  <div className="module-wrapper">
+                    <DoubleClickOrTapWrapper onDoubleClickOrTap={() => startEditingModule(i)}>
+                      <ModuleComponent
+                        data={m.data}
+                        setData={(data) => setModuleData(i, data)}
+                        tempData={m.tempData}
+                        setTempData={(tempData) => setModuleTempData(i, tempData)}
+                        editing={m.editing}
+                        setEditing={(editing) => setModuleEditing(i, editing)}
+                        i={i}
+                      />
+                    </DoubleClickOrTapWrapper>
                   </div>
-                }
+                  {m.editing &&
+                    <div className="module-buttons">
+                      <button className="module-toggle-edit-button" onClick={() => setModuleEditing(i, false)}>
+                        Done
+                      </button>
+                      <button onClick={() => moveModuleUp(i)} disabled={i === 0}>&uarr;</button>
+                      <button onClick={() => moveModuleDown(i)} disabled={i === state.modules.length-1}>&darr;</button>
+                      <button onClick={() => deleteModule(i)}>&#10005;</button>
+                    </div>
+                  }
+                </div>
+              );
+            })
+            : <div className="empty-document">
+                <em>
+                  Empty document.
+                  {state.editing && " Add modules with the buttons in the toolbar!"}
+                </em>
               </div>
-            );
-          })}
+          }
         </div>
       </div>
     </div>
