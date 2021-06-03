@@ -28,15 +28,17 @@ function Explore() {
     <div className="explore-page">
       <div className="search-heading"> {`Explore other people's work!`} </div>
       <SearchBar searchFunction = {onSearch}/>
-      <div className="document-cards-list">
-        {searchDocs.length ? 
-          searchDocs.map((data) => (
-            data.title && 
-            <div className='card-wrapper' key={data.id}>
-              <DocumentCard name={data.title} url={data.id} img={logo} />
-            </div>))
-          : (<div> No matching documents found.</div>)
-            }
+      <div className="document-cards-list-container">
+        <div className="document-cards-list">
+          {searchDocs.length ? 
+            searchDocs.map((data) => (
+              data.title && 
+              <div className='card-wrapper' key={data.id}>
+                <DocumentCard name={data.title} url={data.id} img={logo} />
+              </div>))
+            : (<div> No matching documents found.</div>)
+          }
+        </div>
       </div>
     </div>
   );

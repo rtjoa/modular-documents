@@ -4,21 +4,25 @@ import PropTypes from 'prop-types';
 import '../styles/DocumentCards.scss';
 
 
-function DocumentCards(props) {
+function DocumentCard(props) {
   return (
     <Link to={`/document/${props.url}`}>
-      <div className="document-cards-container">
-          <h3 className="document-cards-name">{props.name}</h3>
-        <img src={props.img} alt={props.name} className="document-cards-image" />
+      <div className="document-card-container">
+          <div className="document-card-name-container">
+            <h3 className="document-card-name">{props.name}</h3>
+          </div>
+          <div className="document-card-image-container">
+            <img src={props.img} alt={props.name} className="document-card-image" />
+          </div>
       </div>
     </Link>
   );
 }
 
-DocumentCards.propTypes = {
+DocumentCard.propTypes = {
   name: PropTypes.string,
   url: PropTypes.string,
   img: PropTypes.string,
 };
 
-export default DocumentCards;
+export default DocumentCard;

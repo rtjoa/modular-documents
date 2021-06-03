@@ -1,4 +1,18 @@
+.document-cards-list-container {
+  display: flex;
+  justify-content: center;
+  margin: 25px 0;
+  padding: 0 20px;
+}
+
 .document-cards-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  flex-wrap: wrap;
+  display: inline-flex;
+  flex-shrink: 1;
   a {
     &:link {
       text-decoration: none;
@@ -19,21 +33,28 @@
   }
 }
 
-.document-cards-container {
-  background-color: lightgray;
+.document-card-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 20px;
-  padding: 20px;
-  margin: 0 15px;
+  border: 2px solid grey;
+  border-radius: 10px;
+  margin: 0 15px 30px 15px;
   width: 200px;
   height: 250px;
-  margin-top: 30px;
   position: relative;
+  overflow: hidden;
 }
 
-.document-cards-name {
+.document-card-name-container {
+  min-height: 90px;
+  height: 90px;
+  width: 100%;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.document-card-name {
   font-size: 24px;
   margin: 0px;
   overflow: hidden;
@@ -43,11 +64,14 @@
   -webkit-box-orient: vertical;
 }
 
-.document-cards-image {
-  width: 155px;
-  height: 135px;
-  margin: 15px;
-  border-radius: 10px;
-  position: absolute;
-  bottom: 0;
+.document-card-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.document-card-image {
+  height: 125px;
 }

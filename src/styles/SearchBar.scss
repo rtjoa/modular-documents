@@ -18,6 +18,12 @@
   padding: 7px 5px 0px 5px;
   margin-left: 10px;
   border-radius: 5px;
+  width: 47px;
+  cursor: pointer;
+  border: 2px solid black;
+  &:hover {
+    background: #e3e3e3;
+  }
 }
 
 .searchButton img {
