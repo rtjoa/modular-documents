@@ -26,7 +26,11 @@ export function CodeModule(props) {
     const boxId = `code-module-edit-${props.i}-box`;
     return (
       <div className="code-module-edit">
-        <textarea onChange={onTextChange} value={props.data.text}></textarea>
+        <textarea
+          onChange={onTextChange}
+          value={props.data.text}
+          placeholder="Type code here..."
+        />
         Language (<a href={PRISM_LANGUAGE_LIST} target='_blank' rel="noreferrer">list</a>): 
         <input className="lang-input" onChange={onLanguageChange} value={props.data.language} />
         
@@ -47,8 +51,12 @@ export function CodeModule(props) {
           language={props.data.language}
           showLineNumbers={props.data.lineNums}
           style={ghcolors}
+          customStyle={{
+            margin: 0,
+            background: 'none',
+          }}
         >
-          {props.data.text || "Double-click to edit" }
+          {props.data.text || "// Double-click to edit" }
         </SyntaxHighlighter>
       </div>
     );
