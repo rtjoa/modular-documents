@@ -167,11 +167,6 @@ function Document(props) {
   function sendToDatabase() {
     console.log("Attemping to save...")
 
-    if (!state.editing) { 
-      console.log("Save failed: not document owner");
-      return;
-    }
-
     if (state.status !== STATUSES.ok) {
       console.log("Save failed: status is " + state.status);
       return;
@@ -183,8 +178,19 @@ function Document(props) {
       title: title,
       lowercaseTitle: title.toLowerCase(),
       data: state.modules,
+    }).then(() => {
+      console.log("Save successful!");
+    }).catch((error) => {
+      switch (error.code) {
+        case 'permission-denied':
+          alert("Save failed: permission denied.");
+          break;
+        default:
+          console.log(error);
+          alert("Save failed. Error: " + console.log(error.code));
+          break;
+      }
     });
-    console.log("Save successful!");
   }
 
   //the added button should probably be changed to some kind of timer
