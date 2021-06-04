@@ -9,6 +9,7 @@ import { TextModule } from '../modules/TextModule.js';
 import { ImageModule } from '../modules/ImageModule';
 import { MultipleChoiceModule } from '../modules/MultipleChoiceModule.js';
 import { LatexModule } from '../modules/LatexModule.js';
+import { CodeModule } from '../modules/CodeModule.js';
 import { createDoc } from './MyDocuments.js';
 
 import '../styles/Document.scss';
@@ -18,6 +19,7 @@ const MODULE_TYPES = Object.freeze({
   image: ImageModule,
   multipleChoice: MultipleChoiceModule,
   latex: LatexModule,
+  code: CodeModule,
 });
 
 const STATUSES = Object.freeze({
@@ -246,6 +248,7 @@ function Document(props) {
                 <AddModuleButton type={'image'} addModule={addModule} />
                 <AddModuleButton type={'multipleChoice'} addModule={addModule} />
                 <AddModuleButton type={'latex'} addModule={addModule} />
+                <AddModuleButton type={'code'} addModule={addModule} />
             </span>
             <span className="toolbar-group">
                 <button className="toolbar-button" onClick={sendToDatabase}>Save</button>
