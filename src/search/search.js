@@ -12,7 +12,7 @@ export async function searchDocuments(query="", user=null) {
     }
         
     if (user !== null) {
-        request = request.where("DocOwner", "==", auth.currentUser.uid);
+        request = request.where("owner", "==", auth.currentUser.uid);
     }
 
     return (await request.get()).docs.map(doc => ({

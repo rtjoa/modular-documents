@@ -83,7 +83,7 @@ export async function createDoc(history, title="", data=[]) {
   title = title || "Untitled Document";
   
   await firestore.collection("Documents").add({
-    DocOwner: auth.currentUser.uid, 
+    owner: auth.currentUser.uid, 
     visibility: 0,
     data: data,
     title: title,

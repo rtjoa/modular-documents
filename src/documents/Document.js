@@ -53,7 +53,7 @@ function Document(props) {
             modules: modules,
             nextKey: modules.length,
             status: STATUSES.ok,
-            editing: auth.currentUser && doc.get('DocOwner') === auth.currentUser.uid,
+            editing: auth.currentUser && doc.get('owner') === auth.currentUser.uid,
             title: doc.get('title'),
             moduleEditing: null,
           });
