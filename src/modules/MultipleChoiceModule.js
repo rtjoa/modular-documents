@@ -96,7 +96,6 @@ export function MultipleChoiceModule(props) {
   } else {
     return (
       <div className="mc-module-view">
-        {}
         <div>
             {props.data.answer === null &&
               <p>(Warning: Correct answer not set.)</p>}

@@ -10,7 +10,9 @@ import { ImageModule } from '../modules/ImageModule';
 import { MultipleChoiceModule } from '../modules/MultipleChoiceModule.js';
 import { LatexModule } from '../modules/LatexModule.js';
 import { CodeModule } from '../modules/CodeModule.js';
+import { UnknownTypeModule } from '../modules/UnknownTypeModule.js';
 import { createDoc } from './MyDocuments.js';
+import {ErrorBoundary} from 'react-error-boundary'
 
 import '../styles/Document.scss';
 
@@ -47,7 +49,7 @@ function Document(props) {
         if (doc.exists) {
           let modules = doc.get('data');
           for (let i = 0; i < modules.length; i++) {
-            modules[i].tempData = MODULE_TYPES[modules[i].type].initTempData;
+            modules[i].tempData = (MODULE_TYPES[modules[i].type] || UnknownTypeModule).initTempData;
             modules[i].key = i;
           }
           setState({
@@ -135,7 +137,7 @@ function Document(props) {
     setState((state) => {
       const modules = state.modules.slice();
       // Reset tempData
-      modules[i].tempData = MODULE_TYPES[modules[i].type].initTempData;
+      modules[i].tempData = (MODULE_TYPES[modules[i].type] || UnknownTypeModule).initTempData;
       if(editing)
         return { ...state, modules: modules, moduleEditing:modules[i].key};
       else 
@@ -269,22 +271,31 @@ function Document(props) {
         <div className="document">
           {state.modules.length ?
             state.modules.map((m, i) => {
-              const ModuleComponent = MODULE_TYPES[m.type];
+              const ModuleComponent = (MODULE_TYPES[state.modules[i].type] || UnknownTypeModule);
               const className = 'module-container '
                 + ( (state.moduleEditing===m.key) ? 'module-container-edit' : 'module-container-view');
               return (
                 <div key={m.key} className={className}>
                   <div className="module-wrapper">
                     <DoubleClickOrTapWrapper onDoubleClickOrTap={() => startEditingModule(i)}>
-                      <ModuleComponent
-                        data={m.data}
-                        setData={(data) => setModuleData(i, data)}
-                        tempData={m.tempData}
-                        setTempData={(tempData) => setModuleTempData(i, tempData)}
-                        editing={m.key == state.moduleEditing}
-                        i={i}
-                        doneEditing={() => setModuleEditing(i,false)}
-                      />
+                      <ErrorBoundary
+                        fallbackRender={() => 
+                          <div className="module-error">
+                            Error when rendering module of type &ldquo;{m.type}.&rdquo;
+                          </div>}
+                        resetKeys={[JSON.stringify(m)]}
+                      >
+                        <ModuleComponent
+                          data={m.data}
+                          setData={(data) => setModuleData(i, data)}
+                          tempData={m.tempData}
+                          setTempData={(tempData) => setModuleTempData(i, tempData)}
+                          editing={m.key == state.moduleEditing}
+                          i={i}
+                          type={m.type}
+                          doneEditing={() => setModuleEditing(i,false)}
+                        />
+                      </ErrorBoundary>
                     </DoubleClickOrTapWrapper>
                   </div>
                   {state.moduleEditing===m.key &&
