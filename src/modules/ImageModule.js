@@ -6,6 +6,7 @@ import '../styles/ImageModule.scss';
 export function ImageModule(props) {
   const storageRef = storage.ref();
 
+  //Editing: When user chooses an image to upload, read it in, and send it to firebase after it has been read
   const onImageChange = (e) => {
     const reader = new FileReader();
     let file = e.target.files[0]; 
@@ -19,6 +20,8 @@ export function ImageModule(props) {
     }
   };
 
+  //Editing: Uploads to firebase storage using their .put() function. 
+  //Also gets the downloard url at the same time, so that src can be set and the image can be rendered.
   async function uploadToFirebase(image) {
     try {
       props.setTempData({uploading: true});
@@ -35,6 +38,7 @@ export function ImageModule(props) {
     }
   }
 
+  //If editing, render the upload button / the uploading message
   if (props.editing) {
     return (
       <div className="image-upload-wrapper">
@@ -43,6 +47,7 @@ export function ImageModule(props) {
       </div>
     );
   } else {
+    //If viewing, render the image, or noImage if there is no src.
     return (
       <div className="image-module">
         <img src={props.data.src || '/noImage.png'}></img>
