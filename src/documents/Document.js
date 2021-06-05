@@ -31,9 +31,12 @@ const STATUSES = Object.freeze({
   unknown_error: 3,
 });
 
+// Document component displays and holds modules for a document
 function Document(props) {
+  // Document id can be passed from either props or URL params; prioritizes props
   const paramsId = props.match && props.match.params && props.match.params.id;
   const id = props.id || paramsId;
+
   const history = useHistory();
   const [state, setState] = useState({
     modules: [],
@@ -43,15 +46,19 @@ function Document(props) {
     moduleEditing: null,
   });
 
+  // Fetch the document corresponding to the given id
   useEffect(() => {
     const fetchDoc = async () => {
       await firestore.collection("Documents").doc(id).get().then(doc => {
         if (doc.exists) {
           let modules = doc.get('data');
+
+          // Initialize temporary data and key for each module
           for (let i = 0; i < modules.length; i++) {
             modules[i].tempData = (MODULE_TYPES[modules[i].type] || UnknownTypeModule).initTempData;
             modules[i].key = i;
           }
+
           setState({
             ...state,
             modules: modules,
@@ -61,13 +68,13 @@ function Document(props) {
             title: doc.get('title'),
             moduleEditing: null,
           });
-        } else {
+        } else { // doc does not exist
           setState({
             ...state,
             status: STATUSES.not_found,
           });
         }
-      }).catch((error) => {
+      }).catch((error) => { // .get() fails
         console.log(error);
         setState({
           ...state,
@@ -76,12 +83,14 @@ function Document(props) {
       });
     };
     fetchDoc();
-  }, [id, auth.currentUser]);
+  }, [id, auth.currentUser]); // Re-fetch if the id or user changes
 
+  // Set page title
   useEffect(() => {
     document.title = (state.title || 'Untitled Document') + ' - Modular Documents';
   }, [state.title]);
 
+  // Append a module of the specified to the end of the document
   function addModule(type) {
     setState((state) => {
       const modules = state.modules.slice();
@@ -100,6 +109,7 @@ function Document(props) {
     });
   }
 
+  // Move the ith module up, if it's not at the top
   function moveModuleUp(i) {
     if (i === 0) return;
 
@@ -114,6 +124,7 @@ function Document(props) {
     });
   }
 
+  // Move the ith module down, if it's not at the bottom
   function moveModuleDown(i) {
     setState((state) => {
       if (i === state.modules.length - 1) return state;
@@ -125,6 +136,7 @@ function Document(props) {
     });
   }
 
+  // Delete the ith module
   function deleteModule(i) {
     setState((state) => {
       const modules = state.modules.slice();
@@ -133,27 +145,40 @@ function Document(props) {
     });
   }
 
-  function setModuleEditing(i, editing) {
+  // Set the currently-edited module to given index
+  function setModuleEditing(i) {
     setState((state) => {
       const modules = state.modules.slice();
-      // Reset tempData
-      modules[i].tempData = (MODULE_TYPES[modules[i].type] || UnknownTypeModule).initTempData;
-      if(editing)
-        return { ...state, modules: modules, moduleEditing:modules[i].key};
-      else 
-        return { ...state, modules: modules, moduleEditing:null};
+
+      // Reset tempData of previously-editing module
+      if (state.moduleEditing !== null) {
+        const activeModule = modules[state.moduleEditing];
+        const activeModuleType =(MODULE_TYPES[activeModule.type] || UnknownTypeModule);
+        activeModule.tempData = activeModuleType.initTempData;
+      }
+
+      // Update state
+      return { ...state, modules: modules, moduleEditing: i};
     });
   }
 
+  // Stop editing the currently-editing module
+  function doneEditing() {
+    setModuleEditing(null);
+  }
+
+  // Start editing the module at index i
   function startEditingModule(i) {
     if (state.editing) {
-      setModuleEditing(i, true);
+      setModuleEditing(i);
     } else {
       alert("You do not have permission to edit this document."
         + " Click \"Make a copy\" to get an editable version");
     }
   }
 
+  // Set the encapsulated data of the ith module
+  // Used to generate setData callbacks for each module
   function setModuleData(i, data) {
     setState((state) => {
       const modules = state.modules.slice();
@@ -162,12 +187,25 @@ function Document(props) {
     });
   }
 
+  // Set the encapsulated temporary data of the ith module. Temp data is not
+  // saved, and reset whenever we finish editing a module. The below function is
+  // used to generate setData callbacks for each module.
+  function setModuleTempData(i, tempData) {
+    setState((state) => {
+      const modules = state.modules.slice();
+      modules[i].tempData = tempData;
+      return { ...state, modules: modules };
+    });
+  }
+
+  // Prompt the user to set a new title
   function promptTitle() {
     const newTitle = prompt("Set document title:", state.title);
     if (newTitle === null) return;
     setState((state) => ({ ...state, title: newTitle }));
   }
 
+  // Save the document to the database
   function sendToDatabase() {
     console.log("Attemping to save...")
 
@@ -197,15 +235,7 @@ function Document(props) {
     });
   }
 
-  //the added button should probably be changed to some kind of timer
-  function setModuleTempData(i, tempData) {
-    setState((state) => {
-      const modules = state.modules.slice();
-      modules[i].tempData = tempData;
-      return { ...state, modules: modules };
-    });
-  }
-
+  // Delete the current document.
   async function deleteDoc(){
     if(state.editing){
       if(confirm("Are you sure you want to delete?")){
@@ -223,6 +253,7 @@ function Document(props) {
     }
   }
 
+  // Handle non-ok statuses
   switch(state.status){
     case STATUSES.loading:
       return(
@@ -293,14 +324,14 @@ function Document(props) {
                           editing={m.key == state.moduleEditing}
                           i={i}
                           type={m.type}
-                          doneEditing={() => setModuleEditing(i,false)}
+                          doneEditing={doneEditing}
                         />
                       </ErrorBoundary>
                     </DoubleClickOrTapWrapper>
                   </div>
                   {state.moduleEditing===m.key &&
                     <div className="module-buttons">
-                      <button className="module-toggle-edit-button" onClick={() => setModuleEditing(i, false)}>
+                      <button className="module-toggle-edit-button" onClick={doneEditing}>
                         Done
                       </button>
                       <button onClick={() => moveModuleUp(i)} disabled={i === 0}>&uarr;</button>
@@ -310,13 +341,13 @@ function Document(props) {
                   }
                 </div>
               );
-            })
-            : <div className="empty-document">
-                <em>
-                  Empty document.
-                  {state.editing && " Add modules with the buttons in the toolbar!"}
-                </em>
-              </div>
+            }) :
+            <div className="empty-document">
+              <em>
+                Empty document.
+                {state.editing && " Add modules with the buttons in the toolbar!"}
+              </em>
+            </div>
           }
         </div>
       </div>
@@ -335,6 +366,8 @@ Document.propTypes = {
   id: PropTypes.string,
 };
 
+// Component that appropriately binds a double-click or double-tap listener
+// based on the device type
 function DoubleClickOrTapWrapper(props) {
   const bind = useDoubleTap(isMobile?props.onDoubleClickOrTap:null);
   return (
@@ -349,6 +382,7 @@ DoubleClickOrTapWrapper.propTypes = {
   onDoubleClickOrTap: PropTypes.func,
 };
 
+// Button used to add a new module the specified type to the document
 function AddModuleButton(props) {
   return (
     <button
