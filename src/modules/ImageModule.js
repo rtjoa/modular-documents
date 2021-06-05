@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { storage } from '../firebase.js';
+import React from 'react';
+import { storage, auth } from '../firebase.js';
 
 import '../styles/ImageModule.scss';
 
 export function ImageModule(props) {
-  const [image, setImage] = useState(null);
   const storageRef = storage.ref();
 
   const onImageChange = (e) => {
@@ -13,74 +12,45 @@ export function ImageModule(props) {
     if (file) {
       reader.onload = () => {
         if (reader.readyState === 2) {
-          setImage(file);
+          uploadToFirebase(file);
         }
       };
       reader.readAsDataURL(e.target.files[0]);
-    } else {
-      setImage(null);
     }
   };
 
-  async function uploadToFirebase(){
-    console.log("Upload started")
-    if (image) {
-      storageRef.child(image.name).put(image).then(() => {
-        alert("Image has been uploaded successfully!");
-        props.setData({
-          ...props.data,
-          status: "loading",
-          name: image.name,
-        })
-        props.doneEditing()
-        getFromFirebase()
-      }).catch((error) => {
-        alert("An error occurred while uploading the image")
-        console.log(error)
-      });
-    } else {
-      alert("Please upload an image first.");
-      console.log("Upload failed, no image chosen")
-    }
-    console.log(props.data)
-  }
-
-  async function getFromFirebase(){
-    console.log("Request started")
-    if(image){
-      storageRef.child(image.name).getDownloadURL().then((url) => {
-        props.setData({ 
-          src: url, 
-          status: "complete",
-          name: image.name
-        });
-        console.log("Image retrieval succeeded")
-        console.log(props.data)
-      }).catch(() => {
-        console.log("Error retrieving image");
-      });
-    }else{
-      console.log("Request failed, image is not set")
+  async function uploadToFirebase(image) {
+    try {
+      props.setTempData({uploading: true});
+      const fileName = (auth.currentUser && auth.currentUser.uid) + '-' + image.name;
+      const snapshot = await storageRef.child(fileName).put(image);
+      const downloadURL = await snapshot.ref.getDownloadURL();
+      props.setData({src: downloadURL});
+      props.doneEditing();
+    } catch(error) {
+      console.log(error);
+      alert("An error occurred while uploading.");
+    } finally {
+      props.setTempData({uploading: false});
     }
   }
 
   if (props.editing) {
     return (
       <div className="image-upload-wrapper">
-        <input type="file" accept="image/x-png,image/jpeg" onChange={(e) => {onImageChange(e); }}/>
-        <button onClick={uploadToFirebase}>Upload Image</button>
+        <input type="file" accept="image/x-png,image/jpeg" onChange={onImageChange}/>
+        {props.tempData.uploading && <span>Uploading...</span>}
       </div>
     );
   } else {
-    console.log(props.data)
     return (
       <div className="image-module">
-        {props.data.status === "loading" ? "Loading..." : <img src={props.data.src}></img>}
-       </div>
+        <img src={props.data.src || '/noImage.png'}></img>
+      </div>
     );
   }
 }
 
-ImageModule.initData = { src: '/noImage.png', status: "no_image", name: "/noImage.png" };
-ImageModule.initTempData = null
+ImageModule.initData = {src: ''};
+ImageModule.initTempData = {uploading: false};
 ImageModule.moduleName = 'Image';
