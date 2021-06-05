@@ -15,11 +15,13 @@ function Explore() {
 
   const [searchDocs, setSearchDocs] = useState([])
   
+  //Calls searchDocuments, and sets the resulting docs to be rendered
   async function onSearch(query) {
     const docs = await searchDocuments(query);
     setSearchDocs(docs);
   }
 
+  //On load to call searchDocuments and set docs to be renderd
   useEffect(() => {
     onSearch("");
   }, []);

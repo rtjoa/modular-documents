@@ -5,10 +5,12 @@ const gfm = require('remark-gfm');
 import '../styles/TextModule.scss';
 
 export function TextModule(props) {
+  //Editing: user changes text in textbox
   const onTextChange = (event) => {
       props.setData({ ...props.data, text: event.target.value });
   };
 
+  //Editing: user changes the alignment drop-down menu
   const onAlignChange = (event) => {
       props.setData({ ...props.data, align: event.target.value });
   };
@@ -36,6 +38,7 @@ export function TextModule(props) {
   }
 }
 
+//EmptyText when user doesn't set the text
 function EmptyText(){
   return(
     <div>Double-click to edit this text</div>

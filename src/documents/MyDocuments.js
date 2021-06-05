@@ -14,11 +14,13 @@ function MyDocuments() {
     document.title = "My Documents - Modular Documents";
   }, []);
 
+  //States used for searching through database
   const [searchDocs, setSearchDocs] = useState([]);
   const [lastQuery, setLastQuery] = useState("");
   
   const history = useHistory();
 
+  //Calls searchDocuments, as well as sets states for later.
   async function onSearch(query) {
     if (!auth.currentUser) return;
     const docs = await searchDocuments(query, auth.currentUser.uid);
@@ -26,6 +28,7 @@ function MyDocuments() {
     setLastQuery(query);
   }
   
+  //On load, get all the user's docs
   useEffect(() => {
     onSearch(lastQuery);
   }, [auth.currentUser]);
@@ -45,6 +48,8 @@ function MyDocuments() {
 
   const errorMessage = checkForErrors();
   
+  //Renders the search bar, as well as
+  //an error message, or the documents resulting from the onSearch() call
   return (
     <div className="my-docs-page">
       <div className="searchAndCreate">
@@ -74,6 +79,8 @@ function MyDocuments() {
   );
 }
 
+//Creates a new doc using firestores' .add() function
+//Also redirects user to their newly made document
 export async function createDoc(history, title="", data=[]) {
   if (!auth.currentUser) {
     alert('Please sign in to create a document.');

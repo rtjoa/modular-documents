@@ -22,6 +22,7 @@ class App extends React.Component {
     this.logout = this.logout.bind(this)
   }
 
+  //Login and logout buttons
   login() {
     auth.signInWithPopup(googleProvider).then((result) => {
       this.setState({
@@ -38,6 +39,7 @@ class App extends React.Component {
     })
   }
 
+  //On load, sets user (if user is logned in)
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -46,6 +48,7 @@ class App extends React.Component {
     })
   }
 
+  //Creates the navbar and router
   render() {
     let authButton = this.state.user ?
       <a className="button" onClick = {this.logout}>Log Out</a>
